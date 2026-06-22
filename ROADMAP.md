@@ -3,6 +3,28 @@ De-risk first. The UI is the easy ~30%; the project lives or dies on **onion hos
 **Monero payment detection on a phone**. So those are priorites first.
 
 
+```
+
+
+        SHOP OWNER PHONE                                  CUSTOMER PHONE
+ ┌───────────────────────────────┐                ┌───────────────────────────────┐
+ │  UI (Jetpack Compose)         │                │  UI (Jetpack Compose)         │
+ │  ─────────────────────────    │                │  ─────────────────────────    │
+ │  Tor (Option A: Rust          │                │  Core (same as owner)         │
+ │        Option B: C)           │                │                               │
+ │   • onion service HOST  ◀────┼──── Tor ───────┼──▶ onion CLIENT              │
+ │   • HTTP/WS server (JSON)     │   (onion       │   • HTTP/WS client            │
+ │   • monero view-only wallet   │    streams)    │   • shop cache (SQLite)       │
+ │   • store DB (source of truth)│                │   • customer signing keypair  │
+ │   • foreground service        │                │   • foreground service (chat) │
+ └───────────────────────────────┘                └───────────────────────────────┘
+            │                                                  
+            ▼ Tor SOCKS                                        
+     remote monerod (view-only scan)                          
+
+
+```
+
 ## Milestone 1: Monero
 `monero_c` **view-only** wallet on a phone, scanning a **remote node over Tor
 SOCKS**, derives a **per-order subaddress**, detects a **confirmed** stagenet/testnet deposit
