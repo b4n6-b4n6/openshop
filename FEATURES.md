@@ -256,11 +256,7 @@ We do not care to about quantity going negative in edge cases
 
 No escrow or multisig in this version!
 
-Release 2 APK's
-  * tor snowflake auto-configured version
-  * regular version
-
 Cannot purchase a product if it has quantity less or equal to 0
 
 Please also implement every case where network requests at onions are handled with a timeout in a reasonable time (30 seconds)
-and implement these failure codepaths etc
+and implement these failure codepaths error screens etc
