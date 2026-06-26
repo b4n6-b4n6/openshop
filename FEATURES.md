@@ -81,7 +81,7 @@ Pressing "ADD NEW PRODUCT" would yield a screen where is displayed
   * "CHANGE PRODUCT PHOTO" (button)
   * "CURRENCY" (currency list)
   * "PRICE" (number input)
-  * "QUANTITY" (integer number input)
+  * "AVAILABLE QUANTITY" (integer number input)
   * 
   * "ADD" (button)
   * "BACK" (button)
@@ -93,7 +93,7 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
     * product photo (image)
     * price (number)
     * currency (text)
-    * quantity (number)
+    * available quantity (number)
     * "EDIT" (button)
   * 
   * "BACK" (button)
@@ -105,23 +105,9 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
   * "CHANGE PRODUCT PHOTO" (button)
   * "CURRENCY" (currency list)
   * "PRICE" (number input)
-  * "QUANTITY" (integer number input)
+  * "AVAILABLE QUANTITY" (integer number input)
   * 
   * "UPDATE" (button)
-  * "BACK" (button)
-
-**VIEW MY ORDERS SCREEN**  
-Pressing "VIEW MY ORDERS SCREEN" would yield a screen where is displayed
-  * orders (list) where each item is displayed
-    * product name (text)
-    * product photo (image)
-    * product description (rich text)
-    * price (number)
-    * currency (text)
-    * quantity (number)
-    * txid (text)
-    * creation datetime (text)
-  * 
   * "BACK" (button)
 
 ## Shop customer screens
@@ -146,7 +132,10 @@ Pressing "PRODUCTS" would yield a screen where is displayed
     * product photo (image)
     * price (number)
     * currency (text)
-    * quantity (number)
+    * 
+    * "AVAILABLE QUANTITY" (text)
+    * available quantity (number)
+    * 
     * "PURCHASE" (button)
   * 
   * "BACK" (button)
@@ -158,22 +147,46 @@ Pressing "PURCHASE" would yield a screen where is displayed
   * product description (rich text)
   * price (number)
   * currency (text)
-  * quantity (number)
+  * 
+  * "AVAILABLE QUANTITY" (text)
+  * available quantity (number)
   * 
   * "PURCHASE QUANTITY" (integer number input)
   * "PURCHASE" (button)
   * "BACK" (button)
 
-**ORDER SCREEN**  
-Pressing "PURCHASE" would yield a screen where is displayed
-  * deposit amount in xmr (number)
+## Shared orders screens
+
+**VIEW ORDER SCREEN**  
+Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
+  * product name (text)
+  * product photo (image)
+  * product description (rich text)
+  * 
+  * "PAYMENT DETAILS" (text)
+  * deposit invoice qr code (image)
+  * deposit address (text)
+  * 
+  * deposit amount in btc (number)
   * "XMR" (text)
+  * 
   * deposit amount in currency (number)
   * currency (text)
-  * ...
+  * "PURCHASE QUANTITY" (text)
+  * quantity (number)
+  * 
+  * one of
+    * "BLOCKCHAIN TRANSACTION CONFIRMED" (text) (when tx confirmed)
+    * "BLOCKCHAIN TRANSACTION CONFIRMING (N/M)" (text)
+      * N = number of current confirmations
+      * M = number of required confirmations
+    * "BLOCKCHAIN TRANSACTION NOT DETECTED" (text)
+  * txid (text)
+  * 
+  * "BACK" (button)
 
 **VIEW ORDERS SCREEN**  
-Pressing "ORDERS" would yield a screen where is displayed
+Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
   * orders (list) where each item is displayed
     * product name (text)
     * product photo (image)
@@ -182,40 +195,46 @@ Pressing "ORDERS" would yield a screen where is displayed
     * quantity (number)
     * txid (text)
     * creation datetime (text)
+    * 
+    * "VIEW" (button)
   * 
   * "BACK" (button)
 
+## Shared chat screens
+
 **CHATS SCREEN**
   * chats (list) where each item is displayed
-    * id
+    * one of
+      * shop onion address (text)
+      * customer uuid (text)
     * last message datetime (text)
     * read/unread state indicator
   * 
   * "BACK" (button)
 
 **CHAT SCREEN**
-  * id
-  * messages (list) where each item is displayed
+  * one of
+    * shop onion address (text)
+    * customer uuid (text)
+  * messages (list) where each item is displayed, one of
     * text messsage
       * content (text)
       * creation datetime (text)
-    * OR
     * image messsage
       * content (image)
       * creation datetime (text)
-    * OR
     * new order creation message
       * product name (text)
       * product photo (image)
       * price (number)
       * currency (text)
-      * quantity (number)
       * txid (text)
       * creation datetime (text)
   * 
   * "TEXT MESSAGE" (text input)
   * "SEND TEXT" (button)
   * "SEND IMAGE" (button)
+  * 
   * "BACK" (button)
 
 # Feature implementation details
