@@ -8,4 +8,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  build: {
+    // emit the production build to <repo root>/index
+    outDir: '../index',
+    emptyOutDir: true,
+  },
 })
