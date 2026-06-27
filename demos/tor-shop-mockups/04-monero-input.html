@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Open New Shop</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <div class="brand"><strong>::</strong> ONION SHOP <strong>::</strong></div>
+    <h1 class="title">Open New Shop</h1>
+    <p style="color: var(--graphite-light); font-size: 12px;">
+      Your Monero wallet details stay local. They never leave this device.
+    </p>
+    <form action="05-shop-opening.html" method="get">
+      <div class="field">
+        <label class="label" for="addr">Monero Wallet Primary Address</label>
+        <input id="addr" type="text" name="addr" placeholder="4…" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="label" for="key">Monero Wallet Private View Key</label>
+        <input id="key" type="password" name="key" placeholder="64-char hex" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="label" for="height">Monero Wallet Restore Block Height</label>
+        <input id="height" type="number" name="height" placeholder="e.g. 3100000" min="0">
+      </div>
+      <div style="height: 16px"></div>
+      <button type="submit" class="btn btn--primary">Create</button>
+    </form>
+    <a href="01-initial.html" class="btn">Back</a>
+  </main>
+</body>
+</html>
