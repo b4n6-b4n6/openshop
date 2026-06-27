@@ -8,7 +8,9 @@
   "scripts": {
     "test": "node ./node_modules/.bin/jest",
     "frontend": "node src/frontend",
-    "frontend-dev": "NODE_ENV=development nodemon src/frontend"
+    "frontend-dev": "NODE_ENV=development nodemon src/frontend",
+    "lint": "node ./node_modules/.bin/eslint src",
+    "lint-config": "node ./node_modules/.bin/eslint eslint.config.js"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
