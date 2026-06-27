@@ -1,0 +1,104 @@
+import { useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ImagePlus, Send } from "lucide-react";
+import { AppFrame } from "../../app/AppFrame";
+import { ChatBubble } from "../../components/ui/ChatBubble";
+import { ImageViewer } from "../../components/ui/ImageViewer";
+import { IconButton } from "../../components/ui/IconButton";
+import { Spinner } from "../../components/ui/Spinner";
+import { getMessages, sendMessage } from "../../api/chat";
+
+export function Chat() {
+  const { onion, id = "" } = useParams();
+  const chatId = decodeURIComponent(id);
+  const me = onion ? "customer" : "owner";
+  const back = onion ? `/s/${onion}/chats` : "/shop/chats";
+
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useQuery({
+    queryKey: ["messages", chatId],
+    queryFn: () => getMessages(chatId),
+  });
+
+  const [text, setText] = useState("");
+  const [viewing, setViewing] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function refresh() {
+    await queryClient.invalidateQueries({ queryKey: ["messages", chatId] });
+  }
+
+  async function onSendText() {
+    const value = text.trim();
+    if (!value) return;
+    setText("");
+    await sendMessage(chatId, me, { type: "text", text: value });
+    await refresh();
+  }
+
+  function onPickImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async () => {
+      await sendMessage(chatId, me, { type: "image", media: String(reader.result) });
+      await refresh();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  return (
+    <AppFrame
+      title={chatId}
+      back={back}
+      bottomBar={
+        <div className="flex items-center gap-2">
+          <input
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && onSendText()}
+            placeholder="Text message"
+            className="h-11 flex-1 rounded-xl border border-border bg-surface-2 px-4 text-[15px] text-text placeholder:text-faint outline-none focus:border-accent focus:ring-2 focus:ring-accent/30"
+          />
+          <IconButton label="Send image" onClick={() => fileRef.current?.click()}>
+            <ImagePlus className="size-5" />
+          </IconButton>
+          <button
+            aria-label="Send text"
+            onClick={onSendText}
+            disabled={!text.trim()}
+            className="inline-flex size-11 items-center justify-center rounded-xl bg-accent text-on-accent transition-colors hover:bg-accent-hover disabled:opacity-40"
+          >
+            <Send className="size-5" />
+          </button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onPickImage}
+          />
+        </div>
+      }
+    >
+      {isLoading ? (
+        <div className="flex justify-center py-16">
+          <Spinner />
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2.5 px-4 py-5">
+          {data?.map((m) => (
+            <ChatBubble key={m.id} message={m} me={me} onImageClick={setViewing} />
+          ))}
+        </div>
+      )}
+
+      <ImageViewer
+        src={viewing ?? ""}
+        open={viewing !== null}
+        onClose={() => setViewing(null)}
+      />
+    </AppFrame>
+  );
+}
