@@ -198,6 +198,7 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
     * one of
       * shop onion address (text)
       * customer uuid (text)
+    * online status indicator
     * last message datetime (text)
     * read/unread state indicator
   * 
@@ -207,6 +208,7 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
   * one of
     * shop onion address (text)
     * customer uuid (text)
+  * online status indicator
   * messages (list) where each item is displayed, one of
     * text messsage
       * content (text)
