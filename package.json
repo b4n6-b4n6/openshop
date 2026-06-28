@@ -3,14 +3,15 @@
   "dependencies": {
     "@koa/router": "^15.6.0",
     "koa": "^3.2.1",
-    "pg": "^8.22.0"
+    "pg": "^8.22.0",
+    "qrcode": "^1.5.4"
   },
   "scripts": {
-    "test": "node ./node_modules/.bin/jest",
     "frontend": "node src/frontend",
     "frontend-dev": "NODE_ENV=development nodemon src/frontend",
-    "lint": "node ./node_modules/.bin/eslint src",
-    "lint-config": "node ./node_modules/.bin/eslint eslint.config.js"
+    "lint": "yarn eslint src",
+    "lint-config": "yarn eslint eslint.config.js",
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest ./node_modules/.bin/jest src"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
@@ -20,7 +21,8 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jest": "^29.15.3",
     "globals": "^17.7.0",
-    "jest": "^30.4.2"
+    "jest": "^30.4.2",
+    "nodemon": "^3.1.14"
   },
   "engines": {
     "node": ">=24.0.0"
