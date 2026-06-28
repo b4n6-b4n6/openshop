@@ -12,10 +12,10 @@ const rootPage = () => `<!doctype html>
   </style>
 </head>
 <body>
-  <form action="/onion-spinner-progress">
+  <form action="/onion-spinner">
     <button>OPEN NEW SHOP</button>
   </form>
-  <form action="/browse-input">
+  <form action="/browser-input">
     <button>BROWSE SHOP</button>
   </form>
 </body>

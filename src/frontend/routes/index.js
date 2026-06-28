@@ -5,8 +5,8 @@ import viewMyShop from './viewMyShop.js';
 
 const router = new Router();
 router
-  .get('/onion-spinner-progress', onionSpinnerProgress)
-  .get('/view-my-shop', viewMyShop)
+  .get('/onion-spinner', onionSpinnerProgress)
+  .get('/my-shop', viewMyShop)
   .get('/', root);
 
 export default () => router.routes();
