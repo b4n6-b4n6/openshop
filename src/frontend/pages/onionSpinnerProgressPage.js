@@ -6,7 +6,7 @@ const onionSpinnerProgressPage = ({ progress }) => `<!doctype html>
 <head>
   ${head()}
   ${progress !== 100 ? refresher() : ''}
-  ${progress === 100 ? refresher({ url: '/view-my-shop' }) : ''}
+  ${progress === 100 ? refresher({ url: '/my-shop' }) : ''}
 
   <style>
     button {

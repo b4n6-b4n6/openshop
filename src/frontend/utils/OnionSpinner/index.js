@@ -12,6 +12,7 @@ export default class OnionSpinner {
     this.isSpinning = true;
 
     spinUp({
+      torrcPath: './torrc/my_shop',
       onBootstrapping: (progress) => {
         this.progress = progress;
       },

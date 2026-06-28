@@ -6,11 +6,12 @@ const readMyOnion = async () => (
 );
 
 const spinUp = ({
+  torrcPath,
   onBootstrapped,
   onBootstrapping,
   onError,
 }) => {
-  const p = spawn('tor', ['-f', './my_shop_onion/torrc']);
+  const p = spawn('tor', ['-f', torrcPath]);
 
   const consume = (lines) => {
     lines
