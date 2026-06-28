@@ -5,4 +5,4 @@ const router = new Router();
 router
   .get('/', root);
 
-export default router.routes();
+export default () => router.routes();
