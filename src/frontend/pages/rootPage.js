@@ -1,14 +1,24 @@
 import head from './head.js';
 
-const root = () => `<!doctype html>
+const rootPage = () => `<!doctype html>
 <html>
 <head>
   ${head()}
+
+  <style>
+    button {
+      font-size: 250%;
+    }
+  </style>
 </head>
 <body>
-  <button>OPEN NEW SHOP</button> <br>
-  <button>BROWSE SHOP</button>
+  <form action="/onion-spinner-progress">
+    <button>OPEN NEW SHOP</button>
+  </form>
+  <form action="/browse-input">
+    <button>BROWSE SHOP</button>
+  </form>
 </body>
 </html>`;
 
-export default root;
+export default rootPage;
