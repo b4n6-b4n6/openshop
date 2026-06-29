@@ -13,7 +13,7 @@ const spinUp = ({
 }) => {
   const p = spawn('tor', ['-f', torrcPath]);
 
-  let outData = ''
+  let outData = '';
   const outConsume = (lines) => {
     outData += lines;
 
@@ -44,7 +44,7 @@ const spinUp = ({
 
   p.stdout.on('data', (buffer) => { outConsume(buffer.toString()); });
   p.on('close', (code) => {
-    console.error(outData)
+    console.error(outData);
 
     p.emit('error', new Error(`tor closed with status code of ${code}`));
   });

@@ -1,18 +1,20 @@
 import Router from '@koa/router';
 
 import root from './root.js';
-import browserInput from './browserInput.js';
-import browserInputAddress from './browserInputAddress.js';
+import browser from './browser.js';
+import browserInputGet from './browserInputGet.js';
+import browserInputPost from './browserInputPost.js';
 import onionSpinnerProgress from './onionSpinnerProgress.js';
-import viewMyShop from './viewMyShop.js';
+import myShopView from './myShopView.js';
 
 const router = new Router();
 router
-  .get('/browser-input', browserInput)
-  .post('/browser-input', browserInputAddress)
+  .get('/browser-input', browserInputGet)
+  .post('/browser-input', browserInputPost)
+  .get('/browser', browser)
   // .get('/browser', viewMyShop)
   .get('/onion-spinner', onionSpinnerProgress)
-  .get('/my-shop', viewMyShop)
+  .get('/my-shop', myShopView)
   .get('/', root);
 
 export default () => router.routes();

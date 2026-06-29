@@ -1,6 +1,6 @@
 import createShops from './index.js';
 
-const ONION_ADDRESS = 'http://2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion'
+const ONION_ADDRESS = '2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion';
 
 test('can get no shop', async () => {
   const shops = await createShops();
