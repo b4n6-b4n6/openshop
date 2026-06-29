@@ -1,3 +1,4 @@
+import { TORRC_PATH } from '../../../const.js';
 import spinUp from './spinUp.js';
 
 export default class OnionSpinner {
@@ -12,7 +13,7 @@ export default class OnionSpinner {
     this.isSpinning = true;
 
     spinUp({
-      torrcPath: './torrc/my_shop',
+      torrcPath: TORRC_PATH,
       onBootstrapping: (progress) => {
         this.progress = progress;
       },

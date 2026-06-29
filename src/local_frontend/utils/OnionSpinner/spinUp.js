@@ -1,8 +1,11 @@
+/* eslint-disable camelcase */
+
 import { spawn } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
+import fs from 'node:fs/promises';
+import { ONION_PATH } from '../../../const.js';
 
 const readMyOnion = async () => (
-  readFile('./my_shop_onion/hostname', 'utf8')
+  fs.readFile(`${ONION_PATH}/hostname`, 'utf8')
 );
 
 const spinUp = ({
@@ -21,16 +24,16 @@ const spinUp = ({
       .split('\n')
       .filter((v) => !!v)
       .forEach((line) => {
-        const parts = line.split(/(?: \[)|(?:\] )/);
-        if (!parts) { return; }
+        const line_parts = line.split(/(?: \[)|(?:\] )/);
+        if (!line_parts) { return; }
 
-        const log = parts[2];
+        const log = line_parts[2];
 
         if (log.startsWith('Bootstrapped ')) {
-          const parts_2 = log.match(/Bootstrapped (\d+)%/);
-          if (!(parts_2 && !!parts_2[1])) { return; }
+          const log_parts = log.match(/Bootstrapped (\d+)%/);
+          if (!log_parts || !log_parts.length || log_parts.length < 2) { return; }
 
-          const percent = Number(parts_2[1]);
+          const percent = Number(log_parts[1]);
           onBootstrapping(percent);
 
           if (percent === 100) {

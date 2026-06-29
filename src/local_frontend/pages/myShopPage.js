@@ -1,6 +1,6 @@
 import head from './head.js';
 
-const viewMyShopPage = ({ onion }) => `<!doctype html>
+const myShopPage = ({ onion }) => `<!doctype html>
 <html>
 <head>
   ${head()}
@@ -16,4 +16,4 @@ const viewMyShopPage = ({ onion }) => `<!doctype html>
 </body>
 </html>`;
 
-export default viewMyShopPage;
+export default myShopPage;

@@ -9,8 +9,10 @@
     "qrcode": "^1.5.4"
   },
   "scripts": {
-    "frontend": "node src/frontend",
-    "frontend-dev": "NODE_ENV=development nodemon src/frontend",
+    "onion-frontend": "node src/onion_frontend",
+    "onion-frontend-dev": "NODE_ENV=development nodemon src/onion_frontend",
+    "local-frontend": "node src/local_frontend",
+    "local-frontend-dev": "NODE_ENV=development nodemon src/local_frontend",
     "lint": "yarn eslint src",
     "lint-config": "yarn eslint eslint.config.js",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest ./node_modules/.bin/jest src",

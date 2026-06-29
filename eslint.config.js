@@ -28,7 +28,6 @@ export default [
     },
     rules: {
       'no-console': 'off',
-      "camelcase": "off",
       'import/extensions': ['error', 'always', {
         ignorePackages: true,
       }],
