@@ -1,13 +1,18 @@
 import Koa from 'koa';
-// import createBackend from './middlewares/backend';
+import { koaBody } from 'koa-body';
+
 import routes from './routes/index.js';
-import singularAccess from './middlewares/singularAccess.js';
+// import createBackend from './middlewares/backend';
+import session from './middlewares/session.js';
 import onionSpinner from './middlewares/onionSpinner.js';
+import singularAccess from './middlewares/singularAccess.js';
 
 // const backend = await createBackend();
 const app = new Koa();
 
 app
+  .use(koaBody())
+  .use(session(app))
   // .use(backend)
   .use(onionSpinner())
   .use(singularAccess())

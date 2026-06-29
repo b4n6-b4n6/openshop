@@ -12,17 +12,40 @@ const browserInputPage = () => `<!doctype html>
   </style>
 </head>
 <body>
-  <form action="/browser">
+  <form action='/browser-input'>
     <input
-      name="address"
-      type="text"
-      placeholder="SHOP ADDRESS"
+      name='onion'
+      type='text'
+      placeholder='SHOP ADDRESS'
       required
     /> <br />
     <button>BROWSE SHOP</button>
   </form>
+  <script>
+    const form = document.querySelector('form')
 
-  <button onclick="history.back()">BACK</button>
+    form.onsubmit = (event) => {
+      event.preventDefault()
+
+      const onion = document.querySelector('[name=onion]').value
+      if (!onion) { return }
+
+      ;(async () => {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new URLSearchParams({ onion })
+        })
+
+        if (res.ok) {
+          location.href = '/browser'
+        }
+      })()
+    }
+  </script>
+
+  <form action='/'>
+    <button>BACK</button>
+  </form>
 </body>
 </html>`;
 

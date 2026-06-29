@@ -3,6 +3,8 @@
   "dependencies": {
     "@koa/router": "^15.6.0",
     "koa": "^3.2.1",
+    "koa-body": "^8.0.0",
+    "koa-session": "^7.0.2",
     "pg": "^8.22.0",
     "qrcode": "^1.5.4"
   },
