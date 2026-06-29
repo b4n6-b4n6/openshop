@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 
 const readMyOnion = async () => (
-  readFile('./my_shop_onion/hidden_service/hostname', 'utf8')
+  readFile('./my_shop_onion/hostname', 'utf8')
 );
 
 const spinUp = ({

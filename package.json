@@ -11,7 +11,8 @@
     "frontend-dev": "NODE_ENV=development nodemon src/frontend",
     "lint": "yarn eslint src",
     "lint-config": "yarn eslint eslint.config.js",
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest ./node_modules/.bin/jest src"
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest ./node_modules/.bin/jest src",
+    "tor-proxy-server": "tor -f torrc/proxy"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

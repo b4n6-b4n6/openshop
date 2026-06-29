@@ -1,2 +1,3 @@
 SocksPort 39050 OnionTrafficOnly
+DataDir .tor-proxy
 RunAsDaemon 0
