@@ -13,7 +13,10 @@ const spinUp = ({
 }) => {
   const p = spawn('tor', ['-f', torrcPath]);
 
-  const consume = (lines) => {
+  let outData = ''
+  const outConsume = (lines) => {
+    outData += lines;
+
     lines
       .split('\n')
       .filter((v) => !!v)
@@ -39,8 +42,12 @@ const spinUp = ({
       });
   };
 
-  p.stdout.on('data', (buffer) => { consume(buffer.toString()); });
-  p.on('close', (code) => { p.emit('error', new Error(`tor closed with ${code}`)); });
+  p.stdout.on('data', (buffer) => { outConsume(buffer.toString()); });
+  p.on('close', (code) => {
+    console.error(outData)
+
+    p.emit('error', new Error(`tor closed with status code of ${code}`));
+  });
   p.on('error', (error) => { onError(error); });
 };
 
