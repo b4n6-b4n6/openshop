@@ -1,2 +1,2 @@
-SocksPort 39050
+SocksPort 39050 OnionTrafficOnly
 RunAsDaemon 0
