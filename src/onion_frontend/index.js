@@ -6,6 +6,7 @@ import onionFilter from './middlewares/onionFilter.js';
 import waitForMyShopOnion from './utils/waitForMyShopOnion.js';
 
 (async () => {
+  console.log('Waiting for my onion...');
   await waitForMyShopOnion();
 
   const app = new Koa();

@@ -1,6 +1,6 @@
 import head from './head.js';
 
-const shopPage = ({ onion }) => `<!doctype html>
+const shopPage = ({ enableBackButton, onion }) => `<!doctype html>
 <html>
 <head>
   ${head()}
@@ -13,6 +13,14 @@ const shopPage = ({ onion }) => `<!doctype html>
 </head>
 <body>
   <pre>${onion}</pre>
+
+  ${
+  enableBackButton ? (
+    `<form action='/'>
+        <button>BACK</button>
+      </form>`
+  ) : ''
+}
 </body>
 </html>`;
 

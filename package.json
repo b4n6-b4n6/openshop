@@ -6,7 +6,8 @@
     "koa-body": "^8.0.0",
     "koa-session": "^7.0.2",
     "pg": "^8.22.0",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "socks-proxy-agent": "^10.1.0"
   },
   "scripts": {
     "onion-frontend": "node src/onion_frontend",
