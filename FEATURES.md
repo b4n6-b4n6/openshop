@@ -11,12 +11,6 @@ Notifications (for sure require disabling battery optimisations on android!)
 QR Code enlargement
   * tapping the QR code icon should display (fullscreen) the QR (onion URL) and tapping one more time will close it
 
-Currency list updating
-  * Update in reasonable intervals (10min)
-  * Make currency list fetching a brutally blocking behaviour that will block the user screen and input
-      with a big spinner until it has been updated and if it fails to fetch block user screen and input indefinitely
-      (we never want the user to use the app while it has wrong currency rates)
-
 Purchase flow
   * straightforward/naive solution here - when shop owner app detects confirmed xmr deposit, do 2 things...
     * reduce quantity in owner shop
@@ -37,6 +31,3 @@ We do not care to about quantity going negative in edge cases
 No escrow or multisig in this version!
 
 Cannot purchase a product if it has quantity less or equal to 0
-
-Please also implement every case where network requests at onions are handled with a timeout in a reasonable time (30 seconds)
-and implement these failure codepaths error screens etc
