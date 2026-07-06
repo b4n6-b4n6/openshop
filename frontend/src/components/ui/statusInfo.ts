@@ -24,7 +24,7 @@ export interface StatusInfo {
 export const connInfo: Record<IndicatorState, StatusInfo> = {
   online: {
     tone: "success",
-    text: "Onion",
+    text: "Online",
     detail: "Onion service reachable over Tor.",
     pulse: false,
   },
