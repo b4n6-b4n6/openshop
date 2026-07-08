@@ -1,6 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import http from 'node:http';
 import { SocksProxyAgent } from 'socks-proxy-agent';
+import browserErrorPage from '../pages/browserErrorPage.js';
 
 const TIMEOUT = 30 * 1000;
 
@@ -32,7 +33,6 @@ export default (ctx) => new Promise((resolve) => {
   delete headers.te;
   delete headers.trailer;
   delete headers.upgrade;
-  delete headers.cookie;
 
   headers['user-agent'] = 'OpenShop/0.0.0';
 
@@ -67,7 +67,7 @@ export default (ctx) => new Promise((resolve) => {
     console.error(err);
 
     ctx.status = 502;
-    ctx.body = 'ERROR';
+    ctx.body = browserErrorPage();
 
     resolve();
   });

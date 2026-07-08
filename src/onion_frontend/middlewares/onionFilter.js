@@ -1,9 +1,5 @@
-import readMyShopOnion from '../utils/readMyShopOnion.js';
-
 export default () => async (ctx, next) => {
-  const onion = await readMyShopOnion();
-
-  if (ctx.request.header.host !== onion) {
+  if (ctx.request.header.host !== ctx.constants.MY_SHOP_ONION) {
     ctx.status = 403;
     ctx.body = 'Forbidden';
     return;

@@ -37,7 +37,7 @@ const browserInputPage = () => `<!doctype html>
         })
 
         if (res.ok) {
-          location.href = '/browser'
+          location.href = '/browser/'
         }
       })()
     }

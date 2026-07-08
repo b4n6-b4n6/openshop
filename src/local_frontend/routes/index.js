@@ -15,4 +15,5 @@ router
   // .get('/browser', viewMyShop)
   .get('/onion-spinner', onionSpinnerProgress)
   .get('/my-shop', myShop);
+
 export default () => router.routes();

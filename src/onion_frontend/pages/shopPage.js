@@ -16,7 +16,7 @@ const shopPage = ({ enableBackButton, onion }) => `<!doctype html>
 
   ${
   enableBackButton ? (
-    `<form action='/'>
+    `<form action='/browser-input'>
         <button>BACK</button>
       </form>`
   ) : ''

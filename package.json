@@ -2,8 +2,11 @@
   "name": "openshop",
   "dependencies": {
     "@koa/router": "^15.6.0",
+    "jsonwebtoken": "^9.0.3",
     "koa": "^3.2.1",
     "koa-body": "^8.0.0",
+    "koa-compose": "^4.1.0",
+    "koa-jwt": "^4.0.4",
     "koa-session": "^7.0.2",
     "pg": "^8.22.0",
     "qrcode": "^1.5.4",
@@ -17,7 +20,8 @@
     "lint": "yarn eslint src",
     "lint-config": "yarn eslint eslint.config.js",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest ./node_modules/.bin/jest src",
-    "tor-proxy-server": "tor -f torrc/proxy"
+    "tor-proxy": "tor -f torrc/proxy",
+    "tor-my-shop-onion": "tor -f torrc/my_shop"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

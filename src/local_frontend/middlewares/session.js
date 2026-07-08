@@ -18,7 +18,7 @@ const memoryStore = {
     store.set(key, { data: sess, expires });
   },
 
-  async destroy(key, { ctx }) {
+  async destroy(key) {
     store.delete(key);
   },
 };

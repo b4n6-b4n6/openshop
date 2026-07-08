@@ -1,15 +1,11 @@
-import readMyShopOnion from '../utils/readMyShopOnion.js';
 import shopPage from '../pages/shopPage.js';
+import checkOpenShopBrowser from '../utils/checkOpenShopBrowser.js';
 
 export default async (ctx) => {
-  const onion = await readMyShopOnion();
-  const isOpenShopBrowser = (
-    ctx.headers['user-agent']?.startsWith('OpenShop')
-  );
-  console.log(ctx.headers);
+  const onion = ctx.constants.MY_SHOP_ONION;
 
   ctx.body = shopPage({
-    enableBackButton: isOpenShopBrowser,
+    enableBackButton: checkOpenShopBrowser(ctx),
     onion,
   });
 };
