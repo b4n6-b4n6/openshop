@@ -2,7 +2,7 @@ import createShops from './index.js';
 
 const ONION_ADDRESS = '2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion';
 
-test('can get no shop', async () => {
+test('can get a non-existent shop', async () => {
   const shops = await createShops();
 
   expect(await shops.get(ONION_ADDRESS)).toEqual(undefined);
@@ -59,20 +59,20 @@ test('can update a shop: name, description', async () => {
   await shops.destroy();
 });
 
-test('can update a shop: profile_photo, banner_photo (a)', async () => {
+test('can update a shop: profile_photo, banner_photo', async () => {
   const shops = await createShops();
 
   await shops.update({
     address: ONION_ADDRESS,
-    profile_photo: Buffer.from("deadbeef", "hex"),
-    banner_photo: Buffer.from("d222d222", "hex"),
+    profile_photo: Buffer.from('deadbeef', 'hex'),
+    banner_photo: Buffer.from('d222d222', 'hex'),
     name: 'Test Shop',
     description: 'We offer to test many stuffs!',
   });
   expect(await shops.get(ONION_ADDRESS)).toEqual({
     address: ONION_ADDRESS,
-    profile_photo: Buffer.from("deadbeef", "hex"),
-    banner_photo: Buffer.from("d222d222", "hex"),
+    profile_photo: Buffer.from('deadbeef', 'hex'),
+    banner_photo: Buffer.from('d222d222', 'hex'),
     name: 'Test Shop',
     description: 'We offer to test many stuffs!',
   });
@@ -80,7 +80,7 @@ test('can update a shop: profile_photo, banner_photo (a)', async () => {
   await shops.destroy();
 });
 
-test('can update a shop: name, description, profile_photo, banner_photo (b)', async () => {
+test('can update a shop: name, description, profile_photo, banner_photo', async () => {
   const shops = await createShops();
 
   await shops.update({
@@ -92,8 +92,8 @@ test('can update a shop: name, description, profile_photo, banner_photo (b)', as
   });
   await shops.update({
     address: ONION_ADDRESS,
-    profile_photo: Buffer.from("deadbeef", "hex"),
-    banner_photo: Buffer.from("d222d222", "hex"),
+    profile_photo: Buffer.from('deadbeef', 'hex'),
+    banner_photo: Buffer.from('d222d222', 'hex'),
     name: 'Test Shop',
     description: 'We offer to test many stuffs!',
   });
@@ -106,8 +106,8 @@ test('can update a shop: name, description, profile_photo, banner_photo (b)', as
   });
   expect(await shops.get(ONION_ADDRESS)).toEqual({
     address: ONION_ADDRESS,
-    profile_photo: Buffer.from("deadbeef", "hex"),
-    banner_photo: Buffer.from("d222d222", "hex"),
+    profile_photo: Buffer.from('deadbeef', 'hex'),
+    banner_photo: Buffer.from('d222d222', 'hex'),
     name: 'Test Shop',
     description: 'We offer to test many stuffs!',
   });

@@ -11,10 +11,10 @@ class Shops {
       `
         ${CREATE_TABLE} shops (
           address text primary key,
-          profile_photo bytea,
-          banner_photo bytea,
           name text not null,
-          description text not null
+          description text not null,
+          profile_photo bytea,
+          banner_photo bytea
         )
       `,
     );
@@ -23,22 +23,34 @@ class Shops {
   }
 
   async update({
-    address, profile_photo, banner_photo, name, description,
+    address, name, description, profile_photo, banner_photo,
   }) {
     const result = await this.pool.query(
       `
-        INSERT INTO shops(address, profile_photo, banner_photo, name, description)
-        VALUES($1, $2, $3, $4, $5)
-        ON CONFLICT (address)
-        DO UPDATE SET
-          profile_photo = EXCLUDED.profile_photo,
-          banner_photo = EXCLUDED.banner_photo,
-          name = EXCLUDED.name,
-          description = EXCLUDED.description
+        MERGE INTO shops AS shop
+        USING (VALUES($1, $2, $3, $4::bytea, $5::bytea))
+        AS updated_shop (address, name, description, profile_photo, banner_photo)
+        ON shop.address = updated_shop.address
+        WHEN MATCHED THEN
+          UPDATE SET
+            name = updated_shop.name,
+            description = updated_shop.description,
+            profile_photo = COALESCE(updated_shop.profile_photo, shop.profile_photo),
+            banner_photo = COALESCE(updated_shop.banner_photo, shop.banner_photo)
+        WHEN NOT MATCHED THEN
+          INSERT (address, name, description, profile_photo, banner_photo)
+          VALUES (
+            updated_shop.address,
+            updated_shop.name,
+            updated_shop.description,
+            updated_shop.profile_photo,
+            updated_shop.banner_photo
+          )
+        ;
       `,
-      [address, profile_photo, banner_photo, name, description],
+      [address, name, description, profile_photo, banner_photo],
     );
-    if (result.rowCount !== 1) { throw new Error('Users.create rowCount !== 1'); }
+    if (result.rowCount !== 1) { throw new Error('Shops.create rowCount !== 1'); }
   }
 
   async get(address) {
