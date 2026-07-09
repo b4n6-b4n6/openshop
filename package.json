@@ -19,7 +19,7 @@
     "local-frontend-dev": "NODE_ENV=development nodemon src/local_frontend",
     "lint": "yarn eslint src",
     "lint-config": "yarn eslint eslint.config.js",
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest ./node_modules/.bin/jest src",
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest src",
     "tor-proxy": "tor -f torrc/proxy",
     "tor-my-shop-onion": "tor -f torrc/my_shop"
   },
