@@ -31,7 +31,7 @@ test('can create a shop', async () => {
   await shops.destroy();
 });
 
-test('can update a shop name, description', async () => {
+test('can update a shop: name, description', async () => {
   const shops = await createShops();
 
   await shops.update({
@@ -59,7 +59,7 @@ test('can update a shop name, description', async () => {
   await shops.destroy();
 });
 
-test('can update a shop profile_photo, banner_photo (a)', async () => {
+test('can update a shop: profile_photo, banner_photo (a)', async () => {
   const shops = await createShops();
 
   await shops.update({
@@ -80,7 +80,7 @@ test('can update a shop profile_photo, banner_photo (a)', async () => {
   await shops.destroy();
 });
 
-test('can update a shop name, description, profile_photo, banner_photo (b)', async () => {
+test('can update a shop: name, description, profile_photo, banner_photo (b)', async () => {
   const shops = await createShops();
 
   await shops.update({

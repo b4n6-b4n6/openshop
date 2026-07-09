@@ -19,10 +19,12 @@ Purchase flow
 Chat messages have 2 types
   * text
   * image
-  * new order creation
+  * order status updates: order created
+  * order status updates: tx detected
+  * order status updates: tx confirmed
 
-Chat image message enlargement
-  * tapping the image message should display (fullscreen) the image and tapping one more time will close it
+Chat image message fuctionality
+  * Do not display the image nor a thumbnail. Only offer to download it.
 
 We do not care to about quantity going negative in edge cases
   * for example, if 2 customers try to buy the same last product
