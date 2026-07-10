@@ -10,11 +10,11 @@ class Shops {
     await this.pool.query(
       `
         ${CREATE_TABLE} shops (
-          address text primary key,
-          name text not null,
-          description text not null,
-          profile_photo bytea,
-          banner_photo bytea
+          address TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          description TEXT NOT NULL,
+          profile_photo BYTEA,
+          banner_photo BYTEA
         )
       `,
     );
@@ -50,7 +50,7 @@ class Shops {
       `,
       [address, name, description, profile_photo, banner_photo],
     );
-    if (result.rowCount !== 1) { throw new Error('Shops.create rowCount !== 1'); }
+    if (result.rowCount !== 1) { throw new Error('Shops.update rowCount !== 1'); }
   }
 
   async get(address) {
