@@ -4,6 +4,23 @@ import { SocksProxyAgent } from 'socks-proxy-agent';
 import { BROWSED_ONION_COOKIE_NAME } from '../../const.js';
 import browserErrorPage from '../pages/browserErrorPage.js';
 
+const sanitiseCookie = (cookie, browsedOnion) => {
+  const stripCookieRegExp = (
+    new RegExp(`^${RegExp.escape(browsedOnion)}\\.`, '')
+  );
+
+  return (
+    cookie
+      .split('; ')
+      .filter((line) => line.startsWith(browsedOnion))
+      .map((line) => line.replace(stripCookieRegExp, ''))
+      .join('; ')
+  );
+};
+const sanitiseSetCookie = (setCookie, browsedOnion) => (
+  `${browsedOnion}.${setCookie}`
+);
+
 const TIMEOUT = 30 * 1000;
 
 const socksAgent = new SocksProxyAgent('socks5h://127.0.0.1:39050');
@@ -34,13 +51,9 @@ export default (ctx) => new Promise((resolve) => {
   delete headers.te;
   delete headers.trailer;
   delete headers.upgrade;
-  
+
   if (headers.cookie) {
-    headers.cookie = headers
-      .cookie
-      .split('; ')
-      .filter((line) => line.startsWith(browsedOnion))
-      .join('; ')
+    headers.cookie = sanitiseCookie(headers.cookie, browsedOnion);
   }
 
   headers['user-agent'] = 'OpenShop/0.0.0';
@@ -61,7 +74,14 @@ export default (ctx) => new Promise((resolve) => {
     ctx.status = proxyRes.statusCode || 502;
 
     Object.entries(proxyRes.headers).forEach(([key, value]) => {
-      if (value) { ctx.set(key, value); }
+      if (!value) { return; }
+
+      ctx.set(
+        key,
+        key === 'set-cookie'
+          ? value.map((line) => sanitiseSetCookie(line, browsedOnion))
+          : value,
+      );
     });
 
     proxyRes.pipe(ctx.res);

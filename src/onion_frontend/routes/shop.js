@@ -1,8 +1,9 @@
 import shopPage from '../pages/shopPage.js';
 import checkOpenShopBrowser from '../utils/checkOpenShopBrowser.js';
+import readMyShopOnion from '../utils/readMyShopOnion.js';
 
 export default async (ctx) => {
-  const onion = ctx.constants.MY_SHOP_ONION;
+  const onion = await readMyShopOnion();
 
   ctx.body = shopPage({
     enableBackButton: checkOpenShopBrowser(ctx),

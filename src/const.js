@@ -8,3 +8,4 @@ export const CURRENCIES = [
   'btc', 'eur', 'usd', 'aud', 'nzd', 'gbp', 'cny', 'jpy', 'rub',
 ];
 export const BROWSED_ONION_COOKIE_NAME = 'browsed_onion';
+export const JWT_COOKIE_NAME = 'jwt';

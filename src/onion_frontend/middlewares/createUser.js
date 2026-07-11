@@ -1,9 +1,8 @@
 import createUserClaim from '../utils/createUserClaim.js';
 import checkOpenShopBrowser from '../utils/checkOpenShopBrowser.js';
+import { JWT_COOKIE_NAME } from '../../const.js';
 
 export default () => async (ctx, next) => {
-  const { JWT_COOKIE_NAME } = ctx.constants;
-
   if (!ctx.cookies.get(JWT_COOKIE_NAME)) {
     ctx.cookies.set(
       JWT_COOKIE_NAME,
