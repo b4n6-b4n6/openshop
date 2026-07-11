@@ -101,6 +101,14 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
   * "UPDATE" (button)
   * "BACK" (button)
 
+**CHATS SCREEN**
+  * chats (list) where each item is displayed
+    * customer uuid (text)
+    * last message datetime (text)
+    * read/unread state indicator
+  * 
+  * "BACK" (button)
+
 ## Shop customer screens
 
 **VIEW SHOP SCREEN**  
@@ -167,12 +175,11 @@ Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
   * quantity (number)
   * 
   * one of
-    * "BLOCKCHAIN TRANSACTION CONFIRMED" (text) (when tx confirmed)
-    * "BLOCKCHAIN TRANSACTION CONFIRMING (N/M)" (text)
-      * N = number of current confirmations
-      * M = number of required confirmations
-    * "BLOCKCHAIN TRANSACTION NOT DETECTED" (text)
+    * "INCOMING TRANSACTION DETECTED" (text)
+    * "INCOMING TRANSACTION CONFIRMED" (text)
   * txid (text)
+  * 
+  * creation datetime (text)
   * 
   * "BACK" (button)
 
@@ -193,22 +200,10 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
 
 ## Shared chat screens
 
-**CHATS SCREEN**
-  * chats (list) where each item is displayed
-    * one of
-      * shop onion address (text)
-      * customer uuid (text)
-    * online status indicator
-    * last message datetime (text)
-    * read/unread state indicator
-  * 
-  * "BACK" (button)
-
 **CHAT SCREEN**
   * one of
     * shop onion address (text)
     * customer uuid (text)
-  * online status indicator
   * messages (list) where each item is displayed, one of
     * text messsage
       * content (text)
@@ -216,7 +211,11 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
     * image messsage
       * content (image)
       * creation datetime (text)
-    * new order creation message
+    * order status update
+      * order status update type, one of
+        * "NEW ORDER"
+        * "INCOMING TRANSACTION DETECTED"
+        * "INCOMING TRANSACTION CONFIRMED"
       * product name (text)
       * product photo (image)
       * price (number)

@@ -18,6 +18,7 @@ Purchase flow implementation
 
 Chat image message implementation
   * Do not display the image nor a thumbnail. Only offer to download it.
+  * Do not resize/compress
 
 Chat messages have 3 types
   * text
