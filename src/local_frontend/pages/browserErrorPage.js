@@ -17,7 +17,6 @@ const browserErrorPage = () => `<!doctype html>
   <form action='/browser-input'>
     <button>BACK</button>
   </form>
-}
 </body>
 </html>`;
 

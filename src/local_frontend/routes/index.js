@@ -12,7 +12,6 @@ router
   .get('/browser-input', browserInput)
   .post('/browser-input', browserInputPost)
   .all('/browser{/*browsePath}', browser)
-  // .get('/browser', viewMyShop)
   .get('/onion-spinner', onionSpinnerProgress)
   .get('/my-shop', myShop);
 

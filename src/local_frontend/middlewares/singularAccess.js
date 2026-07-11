@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 
-const SAK_COOKIE_NAME = 'sak';
-const SAK_FILE_NAME = '.sak';
+const KEY_COOKIE_NAME = 'sak';
+const KEY_FILE_NAME = '.sak';
 
 const generateRandomKey = () => (
   crypto.randomBytes(32).toString('hex')
@@ -10,18 +10,18 @@ const generateRandomKey = () => (
 
 const prepareSingularAccessKey = async () => {
   try {
-    await fs.access(SAK_FILE_NAME);
+    await fs.access(KEY_FILE_NAME);
   } catch (err) {
     if (err.code === 'ENOENT') {
       const rightKey = generateRandomKey();
-      await fs.writeFile(SAK_FILE_NAME, rightKey);
+      await fs.writeFile(KEY_FILE_NAME, rightKey);
       return [rightKey, true];
     }
 
     throw err;
   }
 
-  const rightKey = (await fs.readFile(SAK_FILE_NAME)).toString();
+  const rightKey = (await fs.readFile(KEY_FILE_NAME)).toString();
   return [rightKey, false];
 };
 
@@ -30,13 +30,13 @@ export default () => async (ctx, next) => {
 
   if (isFresh) {
     ctx.cookies.set(
-      SAK_COOKIE_NAME,
+      KEY_COOKIE_NAME,
       rightKey,
       { expires: new Date('9999-12-31T23:59:59.999Z') },
     );
   }
 
-  const key = ctx.cookies.get(SAK_COOKIE_NAME);
+  const key = ctx.cookies.get(KEY_COOKIE_NAME);
   if (key !== rightKey) {
     ctx.status = 403;
     ctx.body = 'Forbidden';
