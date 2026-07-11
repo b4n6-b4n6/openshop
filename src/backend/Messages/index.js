@@ -18,7 +18,9 @@ class Messages {
           text_content TEXT,
           check ((image_content is null) != (text_content is null)),
 
-          created_at TIMESTAMP NOT NULL DEFAULT now()
+          created_at TIMESTAMP NOT NULL DEFAULT now(),
+          received_at TIMESTAMP,
+          read_at TIMESTAMP
         )
       `,
     );
