@@ -3,5 +3,6 @@ trash
 node_modules/
 dist/
 .sak
+.bo
 .tor-my-shop
 .tor-proxy
