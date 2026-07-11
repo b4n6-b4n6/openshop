@@ -1,4 +1,5 @@
 import IsValidOnion from '../utils/IsValidOnion.js';
+import browserErrorPage from '../pages/browserErrorPage.js';
 
 export default async (ctx) => {
   const { session, request } = ctx;
@@ -7,10 +8,9 @@ export default async (ctx) => {
   if (IsValidOnion(onion)) {
     session.onion = onion;
 
-    ctx.status = 200;
-    ctx.body = 'OK';
+    ctx.redirect('/browser/');
   } else {
     ctx.status = 500;
-    ctx.body = 'NOT A VALID ONION';
+    ctx.body = browserErrorPage();
   }
 };
