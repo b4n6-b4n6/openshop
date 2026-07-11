@@ -1,15 +1,16 @@
 /* eslint-disable import/no-unresolved */
 import http from 'node:http';
 import { SocksProxyAgent } from 'socks-proxy-agent';
+import { BROWSED_ONION_COOKIE_NAME } from '../../const.js';
 import browserErrorPage from '../pages/browserErrorPage.js';
 
 const TIMEOUT = 30 * 1000;
 
 const socksAgent = new SocksProxyAgent('socks5h://127.0.0.1:39050');
 export default (ctx) => new Promise((resolve) => {
-  const { onion } = ctx.session;
+  const browsedOnion = ctx.cookies.get(BROWSED_ONION_COOKIE_NAME);
 
-  if (!onion) {
+  if (!browsedOnion) {
     ctx.redirect('/browser-input');
     resolve();
     return;
@@ -19,7 +20,7 @@ export default (ctx) => new Promise((resolve) => {
   const targetPath = browsePath.startsWith('/') ? browsePath : `/${browsePath}`;
   const targetUrl = new URL(
     targetPath + (ctx.querystring ? `?${ctx.querystring}` : ''),
-    `http://${onion}`,
+    `http://${browsedOnion}`,
   );
 
   // Clean headers (remove hop-by-hop)
@@ -33,6 +34,7 @@ export default (ctx) => new Promise((resolve) => {
   delete headers.te;
   delete headers.trailer;
   delete headers.upgrade;
+  console.log(headers.cookies)
 
   headers['user-agent'] = 'OpenShop/0.0.0';
 

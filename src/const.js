@@ -7,3 +7,4 @@ export const USER_CLAIM_TYPE = 'USER_CLAIM';
 export const CURRENCIES = [
   'btc', 'eur', 'usd', 'aud', 'nzd', 'gbp', 'cny', 'jpy', 'rub',
 ];
+export const BROWSED_ONION_COOKIE_NAME = 'browsed_onion';
