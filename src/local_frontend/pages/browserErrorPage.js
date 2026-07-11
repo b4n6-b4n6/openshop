@@ -1,6 +1,6 @@
 import head from './head.js';
 
-const browserErrorPage = () => `<!doctype html>
+const browserErrorPage = ({ message }) => `<!doctype html>
 <html>
 <head>
   ${head()}
@@ -9,10 +9,13 @@ const browserErrorPage = () => `<!doctype html>
     button {
       font-size: 250%;
     }
+    pre {
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
-  <pre>ERROR</pre>
+  <pre>ERROR - ${message}</pre>
 
   <form action='/browser-input'>
     <button>BACK</button>

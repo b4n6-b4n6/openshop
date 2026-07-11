@@ -34,7 +34,14 @@ export default (ctx) => new Promise((resolve) => {
   delete headers.te;
   delete headers.trailer;
   delete headers.upgrade;
-  console.log(headers.cookies)
+  
+  if (headers.cookie) {
+    headers.cookie = headers
+      .cookie
+      .split('; ')
+      .filter((line) => line.startsWith(browsedOnion))
+      .join('; ')
+  }
 
   headers['user-agent'] = 'OpenShop/0.0.0';
 
@@ -69,7 +76,7 @@ export default (ctx) => new Promise((resolve) => {
     console.error(err);
 
     ctx.status = 502;
-    ctx.body = browserErrorPage();
+    ctx.body = browserErrorPage({ message: err.message });
 
     resolve();
   });

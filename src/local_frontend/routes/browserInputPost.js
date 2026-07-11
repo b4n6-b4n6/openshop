@@ -16,6 +16,6 @@ export default async (ctx) => {
     ctx.redirect('/browser/');
   } else {
     ctx.status = 500;
-    ctx.body = browserErrorPage();
+    ctx.body = browserErrorPage({ message: 'invalid address format' });
   }
 };
