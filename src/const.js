@@ -5,7 +5,7 @@ export const JWT_SECRET = (
 );
 export const USER_CLAIM_TYPE = 'USER_CLAIM';
 export const CURRENCIES = [
-  'btc', 'eur', 'usd', 'aud', 'nzd', 'gbp', 'cny', 'jpy', 'rub',
+  'eur', 'usd', 'aud', 'nzd', 'gbp', 'cny', 'jpy', 'rub',
 ];
 export const BROWSED_ONION_COOKIE_NAME = 'browsed_onion';
 export const JWT_COOKIE_NAME = 'jwt';

@@ -22,9 +22,7 @@ class Shops {
     return this;
   }
 
-  async update({
-    address, name, description, profile_photo, banner_photo,
-  }) {
+  async update({ address, name, description, profile_photo, banner_photo }) {
     const result = await this.pool.query(
       `
         MERGE INTO shops AS shop
@@ -50,6 +48,7 @@ class Shops {
       `,
       [address, name, description, profile_photo, banner_photo],
     );
+
     if (result.rowCount !== 1) { throw new Error('Shops.update rowCount !== 1'); }
   }
 

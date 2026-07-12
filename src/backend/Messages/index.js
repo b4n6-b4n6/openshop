@@ -28,10 +28,7 @@ class Messages {
     return this;
   }
 
-  async create({
-    image_content, text_content,
-    sender, receiver,
-  }) {
+  async create({ image_content, text_content, sender, receiver }) {
     const result = await this.pool.query(
       `
         INSERT INTO messages(image_content, text_content, sender, receiver)
@@ -39,6 +36,7 @@ class Messages {
       `,
       [image_content, text_content, sender, receiver],
     );
+
     if (result.rowCount !== 1) { throw new Error('Messages.create rowCount !== 1'); }
   }
 
