@@ -3,7 +3,7 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import { MY_SHOP_ONION_PATH } from '../../../const.js';
 
-const readMyOnion = async () => (
+const readMyOnionHostname = async () => (
   (await fs.readFile(`${MY_SHOP_ONION_PATH}/hostname`, 'utf8')).trim()
 );
 
@@ -36,8 +36,8 @@ const spinUp = ({
           onBootstrapping(percent);
 
           if (percent === 100) {
-            readMyOnion().then((onion) => {
-              onBootstrapped(onion);
+            readMyOnionHostname().then((oh) => {
+              onBootstrapped(oh);
             });
           }
         }

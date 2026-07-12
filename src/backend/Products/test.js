@@ -172,7 +172,7 @@ test('can update a product: photo', async () => {
       currency: 'usd',
       price: '1.60',
       available_quantity: 100,
-    }
+    },
   ]);
 
   await products.destroy();

@@ -1,15 +1,17 @@
+/* eslint-disable camelcase */
 import { BROWSED_ONION_COOKIE_NAME } from '../../const.js';
-import IsValidOnion from '../utils/IsValidOnion.js';
+import IsValidOnionHostname from '../utils/IsValidOnionHostname.js';
 import browserErrorPage from '../pages/browserErrorPage.js';
 
 export default async (ctx) => {
   const { request } = ctx;
-  const { onion } = request.body;
+  const { browsed_onion_address } = request.body;
+  console.log(request.body);
 
-  if (IsValidOnion(onion)) {
+  if (IsValidOnionHostname(browsed_onion_address)) {
     ctx.cookies.set(
       BROWSED_ONION_COOKIE_NAME,
-      onion,
+      browsed_onion_address,
       { expires: new Date('9999-12-31T23:59:59.999Z') },
     );
 

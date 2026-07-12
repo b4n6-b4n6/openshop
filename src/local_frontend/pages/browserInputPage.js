@@ -14,7 +14,7 @@ const browserInputPage = () => `<!doctype html>
 <body>
   <form action='/browser-input' method='post'>
     <input
-      name='onion'
+      name='browsed_onion_address'
       type='text'
       placeholder='SHOP ADDRESS'
       required

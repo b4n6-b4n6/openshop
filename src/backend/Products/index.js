@@ -27,7 +27,9 @@ class Products {
     return this;
   }
 
-  async create({ name, photo, description, price, currency, available_quantity }) {
+  async create({
+    name, photo, description, price, currency, available_quantity,
+  }) {
     const result = await this.pool.query(
       `
         INSERT INTO products(name, photo, description, price, currency, available_quantity)
@@ -41,7 +43,9 @@ class Products {
     return result.rows[0].id;
   }
 
-  async update({ id, name, photo, description, price, currency, available_quantity }) {
+  async update({
+    id, name, photo, description, price, currency, available_quantity,
+  }) {
     const result = await this.pool.query(
       `
         UPDATE products

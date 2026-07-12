@@ -28,7 +28,9 @@ class Messages {
     return this;
   }
 
-  async create({ image_content, text_content, sender, receiver }) {
+  async create({
+    image_content, text_content, sender, receiver,
+  }) {
     const result = await this.pool.query(
       `
         INSERT INTO messages(image_content, text_content, sender, receiver)
