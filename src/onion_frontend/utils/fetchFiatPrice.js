@@ -26,5 +26,5 @@ const fetchFiatPrice = async () => {
   return result;
 };
 
-const REMEMBER_FOR = 1000 * 60 * 90;
+const REMEMBER_FOR = 1000 * 60 * 5;
 export default createDebounced(fetchFiatPrice, REMEMBER_FOR);

@@ -1,7 +1,7 @@
 export default (func) => {
   let lastResult;
 
-  return async () => {
+  return () => {
     if (!lastResult) {
       lastResult = func();
     }

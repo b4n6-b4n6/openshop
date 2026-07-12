@@ -2,11 +2,11 @@ export default (func, rememberFor) => {
   let lastResult;
   let lastCheckTime;
 
-  return async () => {
+  return () => {
     const now = Date.now();
 
     if (!lastCheckTime || now - lastCheckTime > rememberFor) {
-      lastResult = await func();
+      lastResult = func();
       lastCheckTime = now;
     }
 
