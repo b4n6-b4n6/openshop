@@ -1,5 +1,5 @@
-export const ONION_PATH = './my_shop_onion';
-export const TORRC_PATH = './torrc/my_shop';
+export const MY_SHOP_ONION_PATH = './my_shop_onion';
+export const MY_SHOP_TORRC_PATH = './torrc/my_shop';
 
 export const USER_CLAIM_TYPE = 'USER_CLAIM';
 export const CURRENCIES = [

@@ -2,7 +2,7 @@
 
 import fs from 'node:fs/promises';
 import timers from 'node:timers/promises';
-import { ONION_PATH } from '../../const.js';
+import { MY_SHOP_ONION_PATH } from '../../const.js';
 
 const checkAccess = async (path) => {
   try {
@@ -20,7 +20,7 @@ const checkAccess = async (path) => {
 
 export default async () => {
   for (;;) {
-    if (await checkAccess(`${ONION_PATH}/hostname`)) {
+    if (await checkAccess(`${MY_SHOP_ONION_PATH}/hostname`)) {
       break;
     }
     await timers.setTimeout(2500);

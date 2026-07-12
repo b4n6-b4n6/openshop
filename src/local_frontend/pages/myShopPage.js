@@ -1,6 +1,6 @@
 import head from './head.js';
 
-const myShopPage = ({ onion }) => `<!doctype html>
+const myShopPage = ({ address }) => `<!doctype html>
 <html>
 <head>
   ${head()}
@@ -12,7 +12,7 @@ const myShopPage = ({ onion }) => `<!doctype html>
   </style>
 </head>
 <body>
-  <pre>${onion}</pre>
+  <pre>${address}</pre>
 </body>
 </html>`;
 
