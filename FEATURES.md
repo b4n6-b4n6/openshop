@@ -25,6 +25,11 @@ Chat messages have 3 types
   * image
   * order status changes
 
+Rich text input implemetation (for product & shop description)
+  it's a textarea
+  when viewed - parse and display the bbcode (rich text)
+  when edited - allow pasting of image into textarea as [img]data:image/...[/img]
+
 Order status has 3 states
   * created
   * incoming payment transaction detected
