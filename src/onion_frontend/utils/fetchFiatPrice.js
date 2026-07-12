@@ -1,9 +1,13 @@
 import { CoinGeckoClient } from 'coingecko-api-v3';
 import createDebounced from './createDebounced.js';
-import { CURRENCIES } from '../../const.js';
+import {
+  CURRENCIES,
+  FETCH_FIAT_PRICE_REMEMBER_FOR,
+  FETCH_FIAT_PRICE_TIMEOUT,
+} from '../../const.js';
 
 const client = new CoinGeckoClient({
-  timeout: 30000,
+  timeout: FETCH_FIAT_PRICE_TIMEOUT,
 });
 const fetchFiatPrice = async () => {
   const response = await client.simplePrice({
@@ -26,5 +30,4 @@ const fetchFiatPrice = async () => {
   return result;
 };
 
-const REMEMBER_FOR = 1000 * 60 * 5;
-export default createDebounced(fetchFiatPrice, REMEMBER_FOR);
+export default createDebounced(fetchFiatPrice, FETCH_FIAT_PRICE_REMEMBER_FOR);

@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import http from 'node:http';
 import { SocksProxyAgent } from 'socks-proxy-agent';
-import { BROWSED_ONION_COOKIE_NAME } from '../../const.js';
+import { BROWSED_ONION_COOKIE_NAME, BROWSER_TIMEOUT } from '../../const.js';
 import browserErrorPage from '../pages/browserErrorPage.js';
 
 const sanitiseCookie = (cookie, browsedOnion) => {
@@ -20,8 +20,6 @@ const sanitiseCookie = (cookie, browsedOnion) => {
 const sanitiseSetCookie = (setCookie, browsedOnion) => (
   `${browsedOnion}.${setCookie}`
 );
-
-const TIMEOUT = 30 * 1000;
 
 const socksAgent = new SocksProxyAgent('socks5h://127.0.0.1:39050');
 export default (ctx) => new Promise((resolve) => {
@@ -66,7 +64,7 @@ export default (ctx) => new Promise((resolve) => {
     path: targetUrl.pathname + targetUrl.search,
     method: ctx.method,
     agent: socksAgent,
-    timeout: TIMEOUT,
+    timeout: BROWSER_TIMEOUT,
     headers,
   };
 
