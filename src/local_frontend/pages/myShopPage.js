@@ -13,6 +13,10 @@ const myShopPage = ({ address }) => `<!doctype html>
 </head>
 <body>
   <pre>${address}</pre>
+
+  <form action='/'>
+    <button>CLOSE SHOP</button>
+  </form>
 </body>
 </html>`;
 

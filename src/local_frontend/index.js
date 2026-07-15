@@ -17,8 +17,8 @@ const app = new Koa();
 app
   .use(singularAccess())
   .use(onionSpinner())
-  .use(walletSetupMw)
   .use(backendMw)
+  .use(walletSetupMw)
   .use(koaBody())
   .use(exportBrowsedOnion())
   .use(routes())

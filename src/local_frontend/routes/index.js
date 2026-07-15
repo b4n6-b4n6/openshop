@@ -13,10 +13,10 @@ router
   .get('/', root)
   .get('/browser-input', browserInput)
   .post('/browser-input', browserInputPost)
-  .all('/browser{/*browsePath}', browser)
   .get('/wallet-setup', walletSetupProgress)
   .post('/wallet-setup', walletSetupPost)
   .get('/onion-spinner', onionSpinnerProgress)
+  .all('/browser{/*browsePath}', browser)
   .get('/my-shop', myShop);
 
 export default () => router.routes();

@@ -13,8 +13,8 @@ class WalletSetup {
 
   async restore({ primaryAddress, privateViewKey, restoreHeight }) {
     if (this.restoring || this.completed) { return; }
-    this.restoring = true;
 
+    this.restoring = true;
     try {
       const wallet = await moneroTs.createWalletFull({
         path: MY_SHOP_WALLET_PATH,
@@ -34,7 +34,6 @@ class WalletSetup {
 
       this.lastErrorMessage = err.message;
     }
-
     this.restoring = false;
   }
 }

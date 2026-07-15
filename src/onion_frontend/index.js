@@ -1,11 +1,13 @@
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
 
-import routes from './routes/index.js';
 import onionFilter from './middlewares/onionFilter.js';
-import waitForFile from '../utils/waitForFile.js';
+import walletHandlerMw from './middlewares/walletHandlerMw.js';
 import createUser from './middlewares/createUser.js';
 import validateUser from './middlewares/validateUser.js';
+import routes from './routes/index.js';
+
+import waitForFile from '../utils/waitForFile.js';
 
 import { MY_SHOP_ONION_PATH } from '../const.js';
 
@@ -16,6 +18,7 @@ import { MY_SHOP_ONION_PATH } from '../const.js';
 
   app
     .use(onionFilter())
+    .use(walletHandlerMw())
     .use(createUser())
     .use(validateUser())
     .use(koaBody())
