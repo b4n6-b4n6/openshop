@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BROWSED_ONION_COOKIE_NAME } from '../../const.js';
 import IsValidOnionHostname from '../utils/IsValidOnionHostname.js';
 import browserErrorPage from '../pages/browserErrorPage.js';

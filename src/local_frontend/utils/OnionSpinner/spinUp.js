@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import { MY_SHOP_ONION_PATH } from '../../../const.js';

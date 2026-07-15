@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import createPool from '../createPool.js';
 import CREATE_TABLE from '../utils/createTable.js';
 

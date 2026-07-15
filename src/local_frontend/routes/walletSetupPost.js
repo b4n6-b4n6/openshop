@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 export default async (ctx) => {
   const { walletSetup } = ctx;
 
