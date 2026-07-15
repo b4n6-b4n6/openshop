@@ -5,12 +5,12 @@ export default class OnionSpinner {
   constructor() {
     this.progress = 0;
     this.onion = null;
-    this.isSpinning = false;
+    this.spinning = false;
   }
 
   spinUp() {
-    if (this.isSpinning) { return; }
-    this.isSpinning = true;
+    if (this.spinning) { return; }
+    this.spinning = true;
 
     spinUp({
       torrcPath: MY_SHOP_TORRC_PATH,

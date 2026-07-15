@@ -6,7 +6,6 @@ import browserErrorPage from '../pages/browserErrorPage.js';
 export default async (ctx) => {
   const { request } = ctx;
   const { browsed_onion_address } = request.body;
-  console.log(request.body);
 
   if (IsValidOnionHostname(browsed_onion_address)) {
     ctx.cookies.set(

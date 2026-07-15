@@ -3,15 +3,14 @@ import { koaBody } from 'koa-body';
 
 import routes from './routes/index.js';
 import onionFilter from './middlewares/onionFilter.js';
-import waitForFile from './utils/waitForFile.js';
+import waitForFile from '../utils/waitForFile.js';
 import createUser from './middlewares/createUser.js';
 import validateUser from './middlewares/validateUser.js';
 
 import { MY_SHOP_ONION_PATH } from '../const.js';
 
 (async () => {
-  console.log('Waiting for my onion...');
-  await waitForFile(`${MY_SHOP_ONION_PATH}/hostname`);
+  await waitForFile(MY_SHOP_ONION_PATH);
 
   const app = new Koa();
 

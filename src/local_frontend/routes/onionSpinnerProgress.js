@@ -3,7 +3,7 @@ import onionSpinnerProgressPage from '../pages/onionSpinnerProgressPage.js';
 export default async (ctx) => {
   const { onionSpinner } = ctx;
 
-  if (!onionSpinner.isSpinning) {
+  if (!onionSpinner.spinning) {
     onionSpinner.spinUp();
   }
 

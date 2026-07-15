@@ -9,6 +9,7 @@
     "koa-compose": "^4.1.0",
     "koa-jwt": "^4.0.4",
     "koa-session": "^7.0.2",
+    "monero-ts": "^0.11.10",
     "pg": "^8.22.0",
     "qrcode": "^1.5.4",
     "socks-proxy-agent": "^10.1.0"

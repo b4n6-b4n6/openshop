@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import { MY_SHOP_ONION_PATH } from '../../../const.js';
 
 const readMyOnionHostname = async () => (
-  (await fs.readFile(`${MY_SHOP_ONION_PATH}/hostname`, 'utf8')).trim()
+  (await fs.readFile(MY_SHOP_ONION_PATH, 'utf8')).trim()
 );
 
 const spinUp = ({
