@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Boxes } from "lucide-react";
 import { AppFrame } from "../../app/AppFrame";
@@ -9,16 +9,14 @@ import { Spinner } from "../../components/ui/Spinner";
 import { listProducts } from "../../api/products";
 
 export function Products() {
-  const { onion = "" } = useParams();
   const navigate = useNavigate();
-  const base = `/s/${onion}`;
   const { data, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: listProducts,
   });
 
   return (
-    <AppFrame title="Products" back={base}>
+    <AppFrame title="Products" back="/">
       {isLoading ? (
         <div className="flex justify-center py-16">
           <Spinner />
@@ -38,7 +36,7 @@ export function Products() {
                     fullWidth={false}
                     disabled={out}
                     className="h-9 px-3 text-[13px]"
-                    onClick={() => navigate(`${base}/products/${p.id}/purchase`)}
+                    onClick={() => navigate(`/products/${p.id}/purchase`)}
                   >
                     Purchase
                   </Button>

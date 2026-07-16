@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Boxes, MessageSquare, ReceiptText } from "lucide-react";
@@ -9,26 +8,24 @@ import { CopyButton } from "../../components/ui/CopyButton";
 import { Markdown } from "../../components/ui/Markdown";
 import { Spinner } from "../../components/ui/Spinner";
 import { truncateMiddle } from "../../lib/format";
-import { connectToShop } from "../../api/shops";
-import { useSession } from "../../app/providers/SessionProvider";
+import { getShop } from "../../api/shops";
 
 export function ViewShop() {
-  const { onion = "" } = useParams();
-  const decoded = decodeURIComponent(onion);
   const navigate = useNavigate();
-  const { browsedShop } = useSession();
 
   const { data } = useQuery({
-    queryKey: ["shop", decoded],
-    queryFn: () => connectToShop(decoded),
-    enabled: !browsedShop,
+    queryKey: ["shop", "public"],
+    queryFn: getShop,
   });
-  const shop = browsedShop ?? data;
-  const base = `/s/${onion}`;
+  const shop = data;
+  const openedThroughProxy = window.location.pathname.startsWith("/browser");
+  const leaveProxy = openedThroughProxy
+    ? () => window.location.assign("/browse")
+    : undefined;
 
   if (!shop) {
     return (
-      <AppFrame title="Shop" back="/browse">
+      <AppFrame title="Shop" onBack={leaveProxy}>
         <div className="flex justify-center py-16">
           <Spinner />
         </div>
@@ -37,7 +34,7 @@ export function ViewShop() {
   }
 
   return (
-    <AppFrame title="Shop" back="/browse">
+    <AppFrame title="Shop" onBack={leaveProxy}>
       <ShopBanner src={shop.bannerPhoto} />
       <div className="px-5">
         <div className="relative z-10 -mt-8 mb-3 w-fit">
@@ -60,21 +57,21 @@ export function ViewShop() {
         <div className="mb-6 mt-5 flex flex-col gap-2.5">
           <Button
             leftIcon={<Boxes className="size-4" />}
-            onClick={() => navigate(`${base}/products`)}
+            onClick={() => navigate("/products")}
           >
             Products
           </Button>
           <Button
             variant="secondary"
             leftIcon={<MessageSquare className="size-4" />}
-            onClick={() => navigate(`${base}/chats`)}
+            onClick={() => navigate("/chats")}
           >
             Chat
           </Button>
           <Button
             variant="secondary"
             leftIcon={<ReceiptText className="size-4" />}
-            onClick={() => navigate(`${base}/orders`)}
+            onClick={() => navigate("/orders")}
           >
             Orders
           </Button>

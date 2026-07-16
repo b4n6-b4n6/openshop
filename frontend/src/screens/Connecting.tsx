@@ -2,12 +2,10 @@ import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Spinner } from "../components/ui/Spinner";
 import { connectToShop } from "../api/shops";
-import { useSession } from "../app/providers/SessionProvider";
 
 export function Connecting() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setBrowsedShop } = useSession();
   const onion = (location.state as { onion?: string } | null)?.onion;
   const started = useRef(false);
 
@@ -21,14 +19,13 @@ export function Connecting() {
     }
 
     connectToShop(onion)
-      .then((shop) => {
-        setBrowsedShop(shop);
-        navigate(`/s/${encodeURIComponent(shop.onion)}`, { replace: true });
+      .then((path) => {
+        window.location.assign(path);
       })
       .catch(() => {
         navigate("/browse/error", { replace: true, state: { onion } });
       });
-  }, [onion, navigate, setBrowsedShop]);
+  }, [onion, navigate]);
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-5 bg-base px-8 text-center">

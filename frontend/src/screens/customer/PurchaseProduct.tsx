@@ -14,9 +14,8 @@ import { createOrder } from "../../api/orders";
 import { useCurrency } from "../../app/providers/CurrencyProvider";
 
 export function PurchaseProduct() {
-  const { onion = "", id = "" } = useParams();
+  const { id = "" } = useParams();
   const navigate = useNavigate();
-  const base = `/s/${onion}`;
   const { rates } = useCurrency();
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -27,7 +26,7 @@ export function PurchaseProduct() {
 
   if (isLoading) {
     return (
-      <AppFrame title="Purchase" back={`${base}/products`}>
+      <AppFrame title="Purchase" back="/products">
         <div className="flex justify-center py-16">
           <Spinner />
         </div>
@@ -36,7 +35,7 @@ export function PurchaseProduct() {
   }
   if (!product) {
     return (
-      <AppFrame title="Purchase" back={`${base}/products`}>
+      <AppFrame title="Purchase" back="/products">
         <p className="px-5 py-10 text-center text-[14px] text-muted">Product not found.</p>
       </AppFrame>
     );
@@ -48,13 +47,13 @@ export function PurchaseProduct() {
     if (!rates || !product || out) return;
     setPlacing(true);
     const order = await createOrder(product, qty, rates);
-    navigate(`${base}/orders/${order.id}`, { replace: true });
+    navigate(`/orders/${order.id}`, { replace: true });
   }
 
   return (
     <AppFrame
       title="Purchase"
-      back={`${base}/products`}
+      back="/products"
       bottomBar={
         <Button loading={placing} disabled={out} onClick={purchase}>
           {out ? "Out of stock" : `Purchase · ${formatFiat(product.price * qty, product.currency)}`}

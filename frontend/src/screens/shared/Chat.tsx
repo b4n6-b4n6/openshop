@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ImagePlus, Send } from "lucide-react";
 import { AppFrame } from "../../app/AppFrame";
@@ -10,15 +10,18 @@ import { Spinner } from "../../components/ui/Spinner";
 import { getMessages, sendMessage } from "../../api/chat";
 
 export function Chat() {
-  const { onion, id = "" } = useParams();
+  const { id = "" } = useParams();
+  const location = useLocation();
   const chatId = decodeURIComponent(id);
-  const me = onion ? "customer" : "owner";
-  const back = onion ? `/s/${onion}/chats` : "/shop/chats";
+  const owner = location.pathname.startsWith("/shop/");
+  const me = owner ? "owner" : "customer";
+  const back = owner ? "/shop/chats" : "/chats";
 
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["messages", chatId],
     queryFn: () => getMessages(chatId),
+    refetchInterval: 3_000,
   });
 
   const [text, setText] = useState("");

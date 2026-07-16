@@ -1,10 +1,10 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, type Location } from "react-router-dom";
+import type { ComponentType } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { SessionProvider } from "./app/providers/SessionProvider";
 import { CurrencyProvider, useCurrency } from "./app/providers/CurrencyProvider";
 import { IndicatorsProvider } from "./app/providers/IndicatorsProvider";
 import { ToastProvider } from "./app/providers/ToastProvider";
-import { AppRoutes } from "./app/routes";
 import { BlockingOverlay } from "./components/ui/BlockingOverlay";
 import { ToastViewport } from "./components/ui/ToastViewport";
 import { useReducedMotion } from "./lib/hooks";
@@ -34,7 +34,11 @@ function CurrencyGate() {
  * an ancestor would re-anchor position:fixed overlays (modals, QR, blocking
  * overlay), so we never animate translate here.
  */
-function AnimatedRoutes() {
+interface RoutesProps {
+  location?: Location;
+}
+
+function AnimatedRoutes({ RoutesComponent }: { RoutesComponent: ComponentType<RoutesProps> }) {
   const location = useLocation();
   const reduced = useReducedMotion();
   return (
@@ -48,20 +52,20 @@ function AnimatedRoutes() {
           exit={{ opacity: 0 }}
           transition={{ duration: reduced ? 0 : 0.18, ease: "easeOut" }}
         >
-          <AppRoutes location={location} />
+          <RoutesComponent location={location} />
         </motion.div>
       </AnimatePresence>
     </div>
   );
 }
 
-export default function App() {
+export default function App({ RoutesComponent }: { RoutesComponent: ComponentType<RoutesProps> }) {
   return (
     <SessionProvider>
       <CurrencyProvider>
         <IndicatorsProvider>
           <ToastProvider>
-            <AnimatedRoutes />
+            <AnimatedRoutes RoutesComponent={RoutesComponent} />
             <CurrencyGate />
             <ToastViewport />
           </ToastProvider>

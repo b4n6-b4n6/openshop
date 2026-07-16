@@ -11,9 +11,8 @@ import { formatFiat, formatXmr } from "../../lib/format";
 import { getOrder } from "../../api/orders";
 
 export function OrderScreen() {
-  const { onion = "", id = "" } = useParams();
+  const { id = "" } = useParams();
   const navigate = useNavigate();
-  const base = `/s/${onion}`;
   const { data: order, isLoading } = useQuery({
     queryKey: ["order", id],
     queryFn: () => getOrder(id),
@@ -21,7 +20,7 @@ export function OrderScreen() {
 
   if (isLoading) {
     return (
-      <AppFrame title="Order" back={`${base}/products`}>
+      <AppFrame title="Order" back="/products">
         <div className="flex justify-center py-16">
           <Spinner />
         </div>
@@ -30,7 +29,7 @@ export function OrderScreen() {
   }
   if (!order) {
     return (
-      <AppFrame title="Order" back={`${base}/products`}>
+      <AppFrame title="Order" back="/products">
         <p className="px-5 py-10 text-center text-[14px] text-muted">Order not found.</p>
       </AppFrame>
     );
@@ -41,9 +40,9 @@ export function OrderScreen() {
   return (
     <AppFrame
       title="Order"
-      back={`${base}/products`}
+      back="/products"
       bottomBar={
-        <Button variant="secondary" onClick={() => navigate(`${base}/orders`)}>
+        <Button variant="secondary" onClick={() => navigate("/orders")}>
           View my orders
         </Button>
       }

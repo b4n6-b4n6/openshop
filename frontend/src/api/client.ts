@@ -33,5 +33,26 @@ export function mockDelay(ms = 600): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-/** Toggle global mock mode (always true until the Node API is wired). */
-export const USE_MOCKS = true;
+const API_BASE = import.meta.env.MODE === "onion" ? "./api" : "/api";
+
+export async function requestJson<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const headers = new Headers(init.headers);
+  if (init.body && !headers.has("content-type")) {
+    headers.set("content-type", "application/json");
+  }
+
+  const response = await withTimeout(
+    fetch(`${API_BASE}${path.startsWith("/") ? path : `/${path}`}`, {
+      ...init,
+      headers,
+    }),
+  );
+
+  if (!response.ok) {
+    const message = await response.text();
+    const code = response.status === 404 ? "not_found" : "unknown";
+    throw new ApiError(message || `Request failed (${response.status})`, code);
+  }
+
+  return response.json() as Promise<T>;
+}

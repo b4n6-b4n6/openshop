@@ -1,18 +1,12 @@
-import { mockDelay } from "./client";
-import { nextId, store } from "./mocks/store";
+import { requestJson } from "./client";
 import type { Chat, Message } from "./types";
-import { mockChats } from "./mocks/data";
 
 export async function listChats(): Promise<Chat[]> {
-  await mockDelay(400);
-  return [...mockChats].sort((a, b) => b.lastMessageAt - a.lastMessageAt);
+  return requestJson<Chat[]>("/chats");
 }
 
 export async function getMessages(chatId: string): Promise<Message[]> {
-  await mockDelay(300);
-  return store.messages
-    .filter((m) => m.chatId === chatId)
-    .sort((a, b) => a.createdAt - b.createdAt);
+  return requestJson<Message[]>(`/chats/${encodeURIComponent(chatId)}/messages`);
 }
 
 export async function sendMessage(
@@ -20,14 +14,8 @@ export async function sendMessage(
   from: "owner" | "customer",
   payload: { type: "text"; text: string } | { type: "image"; media: string },
 ): Promise<Message> {
-  await mockDelay(250);
-  const msg: Message = {
-    id: nextId("m"),
-    chatId,
-    from,
-    createdAt: Date.now(),
-    ...payload,
-  };
-  store.messages = [...store.messages, msg];
-  return msg;
+  return requestJson<Message>(`/chats/${encodeURIComponent(chatId)}/messages`, {
+    method: "POST",
+    body: JSON.stringify({ ...payload, from }),
+  });
 }

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { MessageSquare } from "lucide-react";
 import { AppFrame } from "../../app/AppFrame";
@@ -9,10 +9,11 @@ import { formatRelative, truncateMiddle } from "../../lib/format";
 import { listChats } from "../../api/chat";
 
 export function Chats() {
-  const { onion } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
-  const base = onion ? `/s/${onion}/chats` : "/shop/chats";
-  const back = onion ? `/s/${onion}` : "/shop";
+  const owner = location.pathname.startsWith("/shop/");
+  const base = owner ? "/shop/chats" : "/chats";
+  const back = owner ? "/shop" : "/";
 
   const { data, isLoading } = useQuery({ queryKey: ["chats"], queryFn: listChats });
 

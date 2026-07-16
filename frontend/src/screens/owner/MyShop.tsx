@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import {
   Boxes,
   MessageSquare,
@@ -17,6 +18,8 @@ import { Markdown } from "../../components/ui/Markdown";
 import { BottomSheet } from "../../components/ui/BottomSheet";
 import { truncateMiddle } from "../../lib/format";
 import { useSession } from "../../app/providers/SessionProvider";
+import { getShop } from "../../api/shops";
+import { Spinner } from "../../components/ui/Spinner";
 
 function HubButton({
   icon,
@@ -42,10 +45,27 @@ export function MyShop() {
   const navigate = useNavigate();
   const { ownerShop, setOwnerShop } = useSession();
   const [closing, setClosing] = useState(false);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["shop", "owner"],
+    queryFn: getShop,
+    enabled: !ownerShop,
+  });
 
   useEffect(() => {
-    if (!ownerShop) navigate("/welcome", { replace: true });
-  }, [ownerShop, navigate]);
+    if (data) setOwnerShop(data);
+  }, [data, setOwnerShop]);
+
+  useEffect(() => {
+    if (isError) navigate("/welcome", { replace: true });
+  }, [isError, navigate]);
+
+  if (isLoading && !ownerShop) {
+    return (
+      <AppFrame title="My Shop">
+        <div className="flex justify-center py-16"><Spinner /></div>
+      </AppFrame>
+    );
+  }
 
   if (!ownerShop) return null;
 

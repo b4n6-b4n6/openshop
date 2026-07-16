@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { AppFrame } from "../../app/AppFrame";
 import { Input, TextArea } from "../../components/ui/Input";
 import { PhotoField } from "../../components/ui/PhotoField";
 import { Button } from "../../components/ui/Button";
 import { useSession } from "../../app/providers/SessionProvider";
+import { updateShop } from "../../api/shops";
 
 export function EditShop() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { ownerShop, setOwnerShop } = useSession();
   const [name, setName] = useState(ownerShop?.name ?? "");
   const [description, setDescription] = useState(ownerShop?.description ?? "");
@@ -19,8 +22,12 @@ export function EditShop() {
     return null;
   }
 
-  function save() {
-    setOwnerShop({ ...ownerShop!, name, description, profilePhoto, bannerPhoto });
+  async function save() {
+    const updated = await updateShop({
+      ...ownerShop!, name, description, profilePhoto, bannerPhoto,
+    });
+    setOwnerShop(updated);
+    await queryClient.invalidateQueries({ queryKey: ["shop"] });
     navigate(-1);
   }
 
@@ -28,7 +35,7 @@ export function EditShop() {
     <AppFrame
       title="Edit Shop"
       back
-      bottomBar={<Button onClick={save}>Update</Button>}
+      bottomBar={<Button onClick={() => void save()}>Update</Button>}
     >
       <div className="space-y-5 px-5 py-6">
         <Input

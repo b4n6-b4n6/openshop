@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ReceiptText } from "lucide-react";
 import { AppFrame } from "../../app/AppFrame";
@@ -8,11 +7,10 @@ import { Spinner } from "../../components/ui/Spinner";
 import { listOrders } from "../../api/orders";
 
 export function Orders() {
-  const { onion = "" } = useParams();
   const { data, isLoading } = useQuery({ queryKey: ["orders"], queryFn: listOrders });
 
   return (
-    <AppFrame title="Orders" back={`/s/${onion}`}>
+    <AppFrame title="Orders" back="/">
       {isLoading ? (
         <div className="flex justify-center py-16">
           <Spinner />
