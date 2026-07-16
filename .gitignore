@@ -6,3 +6,5 @@ dist/
 .bo
 .tor-my-shop
 .tor-proxy
+.env
+wallet/
