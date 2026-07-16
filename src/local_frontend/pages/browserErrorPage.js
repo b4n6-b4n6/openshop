@@ -17,7 +17,7 @@ const browserErrorPage = ({ message }) => `<!doctype html>
 <body>
   <pre>ERROR - ${message}</pre>
 
-  <form action='/browser-input'>
+  <form action='/browse'>
     <button>BACK</button>
   </form>
 </body>

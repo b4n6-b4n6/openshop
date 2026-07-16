@@ -26,7 +26,7 @@ export default (ctx) => new Promise((resolve) => {
   const browsedOnion = ctx.cookies.get(BROWSED_ONION_COOKIE_NAME);
 
   if (!browsedOnion) {
-    ctx.redirect('/browser-input');
+    ctx.redirect('/browse');
     resolve();
     return;
   }

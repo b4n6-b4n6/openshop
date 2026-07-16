@@ -49,8 +49,8 @@ test('can create a text message, mark it as received & get convo', async () => {
     text_content: 'hello', sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
   });
   await messages.markAllReceivedInConvo({
-    sender: CUSTOMER_ID, receiver: SHOP_ADDRESS
-  })
+    sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
   const convo = await messages.getConvo([SHOP_ADDRESS, CUSTOMER_ID]);
 
   expect(convo).toMatchObject([{
@@ -72,8 +72,8 @@ test('can create a text message, mark it as read & get convo', async () => {
     text_content: 'hello', sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
   });
   await messages.markAllReadInConvo({
-    sender: CUSTOMER_ID, receiver: SHOP_ADDRESS
-  })
+    sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
   const convo = await messages.getConvo([SHOP_ADDRESS, CUSTOMER_ID]);
 
   expect(convo).toMatchObject([{
@@ -98,8 +98,8 @@ test('can create a text messages, mark it as read, create another text message &
   await timers.setTimeout(25);
 
   await messages.markAllReadInConvo({
-    sender: CUSTOMER_ID, receiver: SHOP_ADDRESS
-  })
+    sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
 
   await messages.create({
     text_content: 'hi', sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
@@ -195,7 +195,7 @@ test('can create 2-way text messages, mark it as read & get convo', async () => 
   await messages.create({
     text_content: 'how can i help u today?', sender: SHOP_ADDRESS, receiver: CUSTOMER_ID,
   });
-  await messages.markAllReadInConvo({ sender: CUSTOMER_ID, receiver: SHOP_ADDRESS })
+  await messages.markAllReadInConvo({ sender: CUSTOMER_ID, receiver: SHOP_ADDRESS });
   const convo = await messages.getConvo([SHOP_ADDRESS, CUSTOMER_ID]);
 
   expect(convo).toMatchObject([{

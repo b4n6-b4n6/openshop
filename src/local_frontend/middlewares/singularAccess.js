@@ -36,7 +36,7 @@ export default () => async (ctx, next) => {
     );
   }
 
-  const key = ctx.cookies.get(KEY_COOKIE_NAME);
+  const key = isFresh ? rightKey : ctx.cookies.get(KEY_COOKIE_NAME);
   if (key !== rightKey) {
     ctx.status = 403;
     ctx.body = 'Forbidden';

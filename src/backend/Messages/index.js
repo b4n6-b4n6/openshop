@@ -34,24 +34,46 @@ class Messages {
       `
         INSERT INTO messages(image_content, text_content, sender, receiver)
         VALUES($1, $2, $3, $4)
+        RETURNING id
       `,
       [image_content, text_content, sender, receiver],
     );
 
     if (result.rowCount !== 1) { throw new Error('Messages.create rowCount !== 1'); }
+
+    return result.rows[0].id;
   }
 
   async getConvo(parties) {
     if (parties.length !== 2) { throw new Error('Messages.getConvo parties.length !== 2'); }
-    
+
     const { rows } = await this.pool.query(
       `
-        SELECT id, sender, receiver, text_content, created_at, received_at, read_at
+        SELECT id, sender, receiver, image_content, text_content,
+               created_at, received_at, read_at
         FROM messages
         WHERE (sender = $1 OR receiver = $1) AND (sender = $2 OR receiver = $2)
         ORDER BY created_at
       `,
       parties,
+    );
+
+    return rows;
+  }
+
+  async getConvos(party) {
+    const { rows } = await this.pool.query(
+      `
+        SELECT
+          CASE WHEN sender = $1 THEN receiver ELSE sender END AS id,
+          MAX(created_at) AS last_message_at,
+          BOOL_OR(receiver = $1 AND read_at IS NULL) AS unread
+        FROM messages
+        WHERE sender = $1 OR receiver = $1
+        GROUP BY CASE WHEN sender = $1 THEN receiver ELSE sender END
+        ORDER BY last_message_at DESC
+      `,
+      [party],
     );
 
     return rows;
@@ -67,7 +89,7 @@ class Messages {
   }
 
   async markAllReceivedInConvo({ sender, receiver }) {
-    const result = await this.pool.query(
+    await this.pool.query(
       `
         UPDATE messages
         SET received_at = COALESCE(received_at, now())
@@ -76,8 +98,9 @@ class Messages {
       [sender, receiver],
     );
   }
+
   async markAllReadInConvo({ sender, receiver }) {
-    const result = await this.pool.query(
+    await this.pool.query(
       `
         UPDATE messages
         SET

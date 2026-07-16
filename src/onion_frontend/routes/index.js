@@ -1,8 +1,3 @@
-import Router from '@koa/router';
-import shop from './shop.js';
+import createApiRoutes from './api.js';
 
-const router = new Router();
-router
-  .get('/', shop);
-
-export default () => router.routes();
+export default createApiRoutes;
