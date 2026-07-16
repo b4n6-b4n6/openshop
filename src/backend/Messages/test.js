@@ -185,6 +185,40 @@ test('can create 2-way text messages & get convo', async () => {
   await messages.destroy();
 });
 
+test('can create 2-way text messages, mark it as read & get convo', async () => {
+  const messages = await createMessages();
+
+  await messages.create({
+    text_content: 'hello', sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
+  await timers.setTimeout(25);
+  await messages.create({
+    text_content: 'how can i help u today?', sender: SHOP_ADDRESS, receiver: CUSTOMER_ID,
+  });
+  await messages.markAllReadInConvo({ sender: CUSTOMER_ID, receiver: SHOP_ADDRESS })
+  const convo = await messages.getConvo([SHOP_ADDRESS, CUSTOMER_ID]);
+
+  expect(convo).toMatchObject([{
+    sender: CUSTOMER_ID,
+    receiver: SHOP_ADDRESS,
+    text_content: 'hello',
+  }, {
+    sender: SHOP_ADDRESS,
+    receiver: CUSTOMER_ID,
+    text_content: 'how can i help u today?',
+  }]);
+  expect(convo[0].id).toBeTruthy();
+  expect(convo[0].created_at).toBeTruthy();
+  expect(convo[0].received_at).toBeTruthy();
+  expect(convo[0].read_at).toBeTruthy();
+  expect(convo[1].id).toBeTruthy();
+  expect(convo[1].created_at).toBeTruthy();
+  expect(convo[1].received_at).toBeFalsy();
+  expect(convo[1].read_at).toBeFalsy();
+
+  await messages.destroy();
+});
+
 test('can create an image message & get it', async () => {
   const messages = await createMessages();
 

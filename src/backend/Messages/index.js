@@ -71,7 +71,7 @@ class Messages {
       `
         UPDATE messages
         SET received_at = COALESCE(received_at, now())
-        WHERE (sender = $1 OR receiver = $1) AND (sender = $2 OR receiver = $2)
+        WHERE sender = $1 AND receiver = $2
       `,
       [sender, receiver],
     );
@@ -83,7 +83,7 @@ class Messages {
         SET
           received_at = COALESCE(received_at, now()),
           read_at = COALESCE(read_at, now())
-        WHERE (sender = $1 OR receiver = $1) AND (sender = $2 OR receiver = $2)
+        WHERE sender = $1 AND receiver = $2
       `,
       [sender, receiver],
     );
