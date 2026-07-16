@@ -31,7 +31,7 @@ export default class WalletHandler {
       const balance = await this.wallet.getBalance(0, this.depositSubaddressCounter);
       if (!balance) { break; }
 
-      this.depositSubaddressCounter++; // ???? ok, ig...
+      this.depositSubaddressCounter++; // ???? ok, ig... implement later
     }
 
     return (await this.wallet.getSubaddress(0, this.depositSubaddressCounter)).toString();

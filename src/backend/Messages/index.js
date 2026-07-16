@@ -41,15 +41,17 @@ class Messages {
     if (result.rowCount !== 1) { throw new Error('Messages.create rowCount !== 1'); }
   }
 
-  async getConvo({ shop_address, customer_id }) {
+  async getConvo(parties) {
+    if (parties.length !== 2) { throw new Error('Messages.getConvo parties.length !== 2'); }
+    
     const { rows } = await this.pool.query(
       `
-        SELECT id, sender, receiver, text_content, created_at
+        SELECT id, sender, receiver, text_content, created_at, received_at, read_at
         FROM messages
         WHERE (sender = $1 OR receiver = $1) AND (sender = $2 OR receiver = $2)
         ORDER BY created_at
       `,
-      [shop_address, customer_id],
+      parties,
     );
 
     return rows;
@@ -64,10 +66,28 @@ class Messages {
     return rows[0]?.image_content;
   }
 
-  /* ...
-  async markAllReceivedInConvo() {}
-  async markAllReadInConvo() {}
-  ... */
+  async markAllReceivedInConvo({ sender, receiver }) {
+    const result = await this.pool.query(
+      `
+        UPDATE messages
+        SET received_at = COALESCE(received_at, now())
+        WHERE (sender = $1 OR receiver = $1) AND (sender = $2 OR receiver = $2)
+      `,
+      [sender, receiver],
+    );
+  }
+  async markAllReadInConvo({ sender, receiver }) {
+    const result = await this.pool.query(
+      `
+        UPDATE messages
+        SET
+          received_at = COALESCE(received_at, now()),
+          read_at = COALESCE(read_at, now())
+        WHERE (sender = $1 OR receiver = $1) AND (sender = $2 OR receiver = $2)
+      `,
+      [sender, receiver],
+    );
+  }
 
   async destroy() {
     await this.pool.end();

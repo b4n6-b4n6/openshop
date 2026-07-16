@@ -38,7 +38,6 @@ export default (ctx) => new Promise((resolve) => {
     `http://${browsedOnion}`,
   );
 
-  // Clean headers (remove hop-by-hop)
   const headers = { ...ctx.headers };
   delete headers['proxy-authenticate'];
   delete headers['proxy-authorization'];
