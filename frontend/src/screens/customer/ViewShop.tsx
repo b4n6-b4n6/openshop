@@ -9,11 +9,12 @@ import { Markdown } from "../../components/ui/Markdown";
 import { Spinner } from "../../components/ui/Spinner";
 import { truncateMiddle } from "../../lib/format";
 import { getShop } from "../../api/shops";
+import { ErrorNotice } from "../../components/ui/ErrorNotice";
 
 export function ViewShop() {
   const navigate = useNavigate();
 
-  const { data } = useQuery({
+  const { data, isError, error, refetch } = useQuery({
     queryKey: ["shop", "public"],
     queryFn: getShop,
   });
@@ -22,6 +23,14 @@ export function ViewShop() {
   const leaveProxy = openedThroughProxy
     ? () => window.location.assign("/browse")
     : undefined;
+
+  if (isError) {
+    return (
+      <AppFrame title="Shop" onBack={leaveProxy}>
+        <ErrorNotice error={error} title="Couldn't load this shop" onRetry={() => void refetch()} />
+      </AppFrame>
+    );
+  }
 
   if (!shop) {
     return (

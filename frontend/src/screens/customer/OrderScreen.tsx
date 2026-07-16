@@ -9,11 +9,12 @@ import { Button } from "../../components/ui/Button";
 import { Spinner } from "../../components/ui/Spinner";
 import { formatFiat, formatXmr } from "../../lib/format";
 import { getOrder } from "../../api/orders";
+import { ErrorNotice } from "../../components/ui/ErrorNotice";
 
 export function OrderScreen() {
   const { id = "" } = useParams();
   const navigate = useNavigate();
-  const { data: order, isLoading } = useQuery({
+  const { data: order, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["order", id],
     queryFn: () => getOrder(id),
   });
@@ -24,6 +25,13 @@ export function OrderScreen() {
         <div className="flex justify-center py-16">
           <Spinner />
         </div>
+      </AppFrame>
+    );
+  }
+  if (isError) {
+    return (
+      <AppFrame title="Order" back="/products">
+        <ErrorNotice error={error} title="Couldn't load this order" onRetry={() => void refetch()} />
       </AppFrame>
     );
   }

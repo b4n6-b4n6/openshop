@@ -12,17 +12,21 @@ import { formatFiat } from "../../lib/format";
 import { getProduct } from "../../api/products";
 import { createOrder } from "../../api/orders";
 import { useCurrency } from "../../app/providers/CurrencyProvider";
+import { ErrorNotice } from "../../components/ui/ErrorNotice";
+import { useToast } from "../../app/providers/ToastProvider";
+import { errorMessage } from "../../lib/errors";
 
 export function PurchaseProduct() {
   const { id = "" } = useParams();
   const navigate = useNavigate();
   const { rates } = useCurrency();
-  const { data: product, isLoading } = useQuery({
+  const { data: product, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
   const [qty, setQty] = useState(1);
   const [placing, setPlacing] = useState(false);
+  const { push } = useToast();
 
   if (isLoading) {
     return (
@@ -30,6 +34,13 @@ export function PurchaseProduct() {
         <div className="flex justify-center py-16">
           <Spinner />
         </div>
+      </AppFrame>
+    );
+  }
+  if (isError) {
+    return (
+      <AppFrame title="Purchase" back="/products">
+        <ErrorNotice error={error} title="Couldn't load this product" onRetry={() => void refetch()} />
       </AppFrame>
     );
   }
@@ -46,8 +57,14 @@ export function PurchaseProduct() {
   async function purchase() {
     if (!rates || !product || out) return;
     setPlacing(true);
-    const order = await createOrder(product, qty, rates);
-    navigate(`/orders/${order.id}`, { replace: true });
+    try {
+      const order = await createOrder(product, qty, rates);
+      navigate(`/orders/${order.id}`, { replace: true });
+    } catch (purchaseError) {
+      push(errorMessage(purchaseError, "The order could not be created."), "danger");
+    } finally {
+      setPlacing(false);
+    }
   }
 
   return (

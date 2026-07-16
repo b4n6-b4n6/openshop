@@ -11,6 +11,7 @@ import createBackendMw from '../backend/middleware.js';
 
 import waitForFile from '../utils/waitForFile.js';
 import serveSpa from '../utils/serveSpa.js';
+import errorHandler from '../middlewares/errorHandler.js';
 
 import { MY_SHOP_ONION_PATH } from '../const.js';
 
@@ -22,6 +23,7 @@ import { MY_SHOP_ONION_PATH } from '../const.js';
   const app = new Koa();
 
   app
+    .use(errorHandler())
     .use(onionFilter())
     .use(backendMw)
     .use(walletHandlerMw())

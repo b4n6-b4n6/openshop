@@ -3,6 +3,7 @@ import { ImagePlus } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { Button } from "./Button";
 import { FieldLabel } from "./Field";
+import { useToast } from "../../app/providers/ToastProvider";
 
 export function PhotoField({
   label,
@@ -16,12 +17,14 @@ export function PhotoField({
   aspect?: "square" | "banner";
 }) {
   const ref = useRef<HTMLInputElement>(null);
+  const { push } = useToast();
 
   function pick(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => onChange(String(reader.result));
+    reader.onerror = () => push("The selected image could not be read.", "danger");
     reader.readAsDataURL(file);
   }
 

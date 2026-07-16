@@ -2,7 +2,7 @@
 import http from 'node:http';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 import { BROWSED_ONION_COOKIE_NAME, BROWSER_TIMEOUT } from '../../const.js';
-import browserErrorPage from '../pages/browserErrorPage.js';
+import { errorBody, PublicError } from '../../utils/publicError.js';
 
 const sanitiseCookie = (cookie, browsedOnion) => {
   const stripCookieRegExp = (
@@ -92,8 +92,20 @@ export default (ctx) => new Promise((resolve) => {
   proxyReq.on('error', (err) => {
     console.error(err);
 
-    ctx.status = 502;
-    ctx.body = browserErrorPage({ message: err.message });
+    const publicError = new PublicError(
+      err.message === 'Upstream timeout'
+        ? 'The onion shop did not respond within 30 seconds.'
+        : 'The onion shop could not be reached. It may be offline.',
+      { status: 502, code: err.message === 'Upstream timeout' ? 'timeout' : 'unreachable' },
+    );
+
+    if (targetPath.startsWith('/api/')) {
+      ctx.status = publicError.status;
+      ctx.type = 'application/json';
+      ctx.body = errorBody(publicError);
+    } else {
+      ctx.redirect(`/browse/error?message=${encodeURIComponent(publicError.message)}`);
+    }
 
     resolve();
   });

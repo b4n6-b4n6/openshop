@@ -74,13 +74,28 @@ export interface WalletInput {
   restoreHeight: string;
 }
 
-export type ApiErrorCode = "timeout" | "unreachable" | "not_found" | "unknown";
+export type ApiErrorCode =
+  | "timeout"
+  | "unreachable"
+  | "not_found"
+  | "unknown"
+  | (string & {});
 
 export class ApiError extends Error {
   code: ApiErrorCode;
-  constructor(message: string, code: ApiErrorCode = "unknown") {
+  status?: number;
+  field?: string;
+
+  constructor(
+    message: string,
+    code: ApiErrorCode = "unknown",
+    options: { status?: number; field?: string; cause?: unknown } = {},
+  ) {
     super(message);
     this.name = "ApiError";
     this.code = code;
+    this.status = options.status;
+    this.field = options.field;
+    this.cause = options.cause;
   }
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Spinner } from "../components/ui/Spinner";
 import { connectToShop } from "../api/shops";
+import { errorMessage } from "../lib/errors";
 
 export function Connecting() {
   const navigate = useNavigate();
@@ -22,8 +23,11 @@ export function Connecting() {
       .then((path) => {
         window.location.assign(path);
       })
-      .catch(() => {
-        navigate("/browse/error", { replace: true, state: { onion } });
+      .catch((error: unknown) => {
+        navigate("/browse/error", {
+          replace: true,
+          state: { onion, error: errorMessage(error) },
+        });
       });
   }, [onion, navigate]);
 

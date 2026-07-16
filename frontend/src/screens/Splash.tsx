@@ -13,7 +13,7 @@ import { useReducedMotion, useTimeout } from "../lib/hooks";
  */
 export function Splash() {
   const navigate = useNavigate();
-  const { status, ensureLoaded, retry } = useCurrency();
+  const { status, error, ensureLoaded, retry } = useCurrency();
   const [minElapsed] = useTimeout(900);
   const reduced = useReducedMotion();
 
@@ -51,7 +51,9 @@ export function Splash() {
       <div className="absolute bottom-16 flex flex-col items-center gap-3">
         {failed ? (
           <div className="w-64 space-y-3">
-            <p className="text-[13px] text-danger">Couldn&apos;t fetch currency rates.</p>
+            <p role="alert" className="text-[13px] text-danger">
+              {error || "Couldn't fetch currency rates."}
+            </p>
             <Button variant="secondary" onClick={() => void retry()}>
               Retry
             </Button>

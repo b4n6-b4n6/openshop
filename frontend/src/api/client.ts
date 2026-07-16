@@ -41,18 +41,57 @@ export async function requestJson<T>(path: string, init: RequestInit = {}): Prom
     headers.set("content-type", "application/json");
   }
 
-  const response = await withTimeout(
-    fetch(`${API_BASE}${path.startsWith("/") ? path : `/${path}`}`, {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  let response: Response;
+  let rawBody: string;
+
+  try {
+    response = await fetch(`${API_BASE}${path.startsWith("/") ? path : `/${path}`}`, {
       ...init,
       headers,
-    }),
-  );
-
-  if (!response.ok) {
-    const message = await response.text();
-    const code = response.status === 404 ? "not_found" : "unknown";
-    throw new ApiError(message || `Request failed (${response.status})`, code);
+      signal: controller.signal,
+    });
+    rawBody = await response.text();
+  } catch (error) {
+    if (controller.signal.aborted) {
+      throw new ApiError("The request timed out after 30 seconds.", "timeout", { cause: error });
+    }
+    throw new ApiError(
+      "OpenShop could not reach the server. Check the connection and try again.",
+      "unreachable",
+      { cause: error },
+    );
+  } finally {
+    clearTimeout(timeout);
   }
 
-  return response.json() as Promise<T>;
+  let body: unknown;
+  if (rawBody) {
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      body = null;
+    }
+  }
+
+  if (!response.ok) {
+    const payload = body as {
+      error?: { message?: string; code?: string; field?: string };
+    } | null;
+    const fallbackCode = response.status === 404 ? "not_found" : "unknown";
+    throw new ApiError(
+      payload?.error?.message || `The request failed (${response.status}).`,
+      payload?.error?.code || fallbackCode,
+      { status: response.status, field: payload?.error?.field },
+    );
+  }
+
+  if (!rawBody) return undefined as T;
+  if (body === null) {
+    throw new ApiError("The server returned an invalid response.", "invalid_response", {
+      status: response.status,
+    });
+  }
+  return body as T;
 }

@@ -7,10 +7,11 @@ import { Button } from "../../components/ui/Button";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { Spinner } from "../../components/ui/Spinner";
 import { listProducts } from "../../api/products";
+import { ErrorNotice } from "../../components/ui/ErrorNotice";
 
 export function Products() {
   const navigate = useNavigate();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["products"],
     queryFn: listProducts,
   });
@@ -21,6 +22,8 @@ export function Products() {
         <div className="flex justify-center py-16">
           <Spinner />
         </div>
+      ) : isError ? (
+        <ErrorNotice error={error} title="Couldn't load products" onRetry={() => void refetch()} />
       ) : !data || data.length === 0 ? (
         <EmptyState icon={<Boxes className="size-8" />} title="No products" />
       ) : (

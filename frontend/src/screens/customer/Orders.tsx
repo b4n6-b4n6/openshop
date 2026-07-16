@@ -5,9 +5,13 @@ import { OrderCard } from "../../components/ui/OrderCard";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { Spinner } from "../../components/ui/Spinner";
 import { listOrders } from "../../api/orders";
+import { ErrorNotice } from "../../components/ui/ErrorNotice";
 
 export function Orders() {
-  const { data, isLoading } = useQuery({ queryKey: ["orders"], queryFn: listOrders });
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["orders"],
+    queryFn: listOrders,
+  });
 
   return (
     <AppFrame title="Orders" back="/">
@@ -15,6 +19,8 @@ export function Orders() {
         <div className="flex justify-center py-16">
           <Spinner />
         </div>
+      ) : isError ? (
+        <ErrorNotice error={error} title="Couldn't load orders" onRetry={() => void refetch()} />
       ) : !data || data.length === 0 ? (
         <EmptyState
           icon={<ReceiptText className="size-8" />}

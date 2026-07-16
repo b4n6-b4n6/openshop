@@ -10,6 +10,7 @@ import {
 } from "react";
 import { fetchCurrencyRates } from "../../api/currency";
 import type { CurrencyRates } from "../../api/types";
+import { errorMessage } from "../../lib/errors";
 
 type Status = "idle" | "loading" | "ready" | "error";
 
@@ -18,6 +19,7 @@ const REFRESH_MS = 10 * 60 * 1000; // spec: refresh every ~10 min
 interface CurrencyValue {
   status: Status;
   rates: CurrencyRates | null;
+  error: string | null;
   /** true while the app must be hard-blocked (no valid rates / refresh failed) */
   blocking: boolean;
   ensureLoaded: () => Promise<void>;
@@ -29,6 +31,7 @@ const CurrencyContext = createContext<CurrencyValue | null>(null);
 export function CurrencyProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<Status>("idle");
   const [rates, setRates] = useState<CurrencyRates | null>(null);
+  const [lastError, setLastError] = useState<string | null>(null);
   const inflight = useRef<Promise<void> | null>(null);
 
   const load = useCallback(async () => {
@@ -38,8 +41,10 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
       try {
         const r = await fetchCurrencyRates();
         setRates(r);
+        setLastError(null);
         setStatus("ready");
-      } catch {
+      } catch (error) {
+        setLastError(errorMessage(error, "Currency rates could not be fetched."));
         setStatus("error");
       } finally {
         inflight.current = null;
@@ -70,11 +75,12 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     () => ({
       status,
       rates,
+      error: lastError,
       blocking: status === "error" || (status !== "ready" && rates === null),
       ensureLoaded,
       retry: load,
     }),
-    [status, rates, ensureLoaded, load],
+    [status, rates, lastError, ensureLoaded, load],
   );
 
   return <CurrencyContext.Provider value={value}>{children}</CurrencyContext.Provider>;

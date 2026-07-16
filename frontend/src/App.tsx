@@ -8,10 +8,11 @@ import { ToastProvider } from "./app/providers/ToastProvider";
 import { BlockingOverlay } from "./components/ui/BlockingOverlay";
 import { ToastViewport } from "./components/ui/ToastViewport";
 import { useReducedMotion } from "./lib/hooks";
+import { GlobalErrorReporter } from "./app/providers/GlobalErrorReporter";
 
 
 function CurrencyGate() {
-  const { blocking, status, retry } = useCurrency();
+  const { blocking, status, error, retry } = useCurrency();
   const { pathname } = useLocation();
   if (!blocking || pathname === "/") return null;
   const failed = status === "error";
@@ -20,7 +21,7 @@ function CurrencyGate() {
       title={failed ? "Couldn't update currency rates" : "Updating currency rates…"}
       detail={
         failed
-          ? "OpenShop won't run on stale rates. Reconnect and retry."
+          ? error || "OpenShop won't run on stale rates. Reconnect and retry."
           : "Fetching the latest Monero exchange rates…"
       }
       failed={failed}
@@ -65,6 +66,7 @@ export default function App({ RoutesComponent }: { RoutesComponent: ComponentTyp
       <CurrencyProvider>
         <IndicatorsProvider>
           <ToastProvider>
+            <GlobalErrorReporter />
             <AnimatedRoutes RoutesComponent={RoutesComponent} />
             <CurrencyGate />
             <ToastViewport />

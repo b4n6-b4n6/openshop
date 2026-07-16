@@ -6,6 +6,13 @@ export default () => {
   return async (ctx, next) => {
     ctx.onionSpinner = onionSpinner;
 
+    if (ctx.walletSetup?.completed
+      && !onionSpinner.onion
+      && !onionSpinner.spinning
+      && !onionSpinner.lastError) {
+      onionSpinner.spinUp();
+    }
+
     await next();
   };
 };

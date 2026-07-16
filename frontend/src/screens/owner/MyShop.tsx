@@ -20,6 +20,7 @@ import { truncateMiddle } from "../../lib/format";
 import { useSession } from "../../app/providers/SessionProvider";
 import { getShop } from "../../api/shops";
 import { Spinner } from "../../components/ui/Spinner";
+import { ErrorNotice } from "../../components/ui/ErrorNotice";
 
 function HubButton({
   icon,
@@ -45,7 +46,7 @@ export function MyShop() {
   const navigate = useNavigate();
   const { ownerShop, setOwnerShop } = useSession();
   const [closing, setClosing] = useState(false);
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["shop", "owner"],
     queryFn: getShop,
     enabled: !ownerShop,
@@ -55,14 +56,18 @@ export function MyShop() {
     if (data) setOwnerShop(data);
   }, [data, setOwnerShop]);
 
-  useEffect(() => {
-    if (isError) navigate("/welcome", { replace: true });
-  }, [isError, navigate]);
-
   if (isLoading && !ownerShop) {
     return (
       <AppFrame title="My Shop">
         <div className="flex justify-center py-16"><Spinner /></div>
+      </AppFrame>
+    );
+  }
+
+  if (isError && !ownerShop) {
+    return (
+      <AppFrame title="My Shop" back="/welcome">
+        <ErrorNotice error={error} title="Couldn't load your shop" onRetry={() => void refetch()} />
       </AppFrame>
     );
   }

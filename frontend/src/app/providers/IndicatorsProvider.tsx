@@ -27,14 +27,24 @@ export function IndicatorsProvider({ children }: { children: ReactNode }) {
 
   usePolling(async () => {
     setConnectivity((c) => (c === "checking" ? c : "checking"));
-    const next = await probeConnectivity();
-    setConnectivity(next);
+    try {
+      const next = await probeConnectivity();
+      setConnectivity(next);
+    } catch (error) {
+      console.error("Connectivity check failed", error);
+      setConnectivity("offline");
+    }
   }, CONNECTIVITY_POLL_MS);
 
   usePolling(
     async () => {
-      const next = await probeWalletSync();
-      setWallet(next);
+      try {
+        const next = await probeWalletSync();
+        setWallet(next);
+      } catch (error) {
+        console.error("Wallet sync check failed", error);
+        setWallet("error");
+      }
     },
     WALLET_POLL_MS,
     role === "owner",

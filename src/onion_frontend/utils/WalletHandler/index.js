@@ -5,7 +5,8 @@ import createListeners from './createListeners.js';
 
 export default class WalletHandler {
   async init() {
-    this.inited = true;
+    this.inited = false;
+    this.lastError = null;
 
     const wallet = await moneroTs.openWalletFull({
       path: MY_SHOP_WALLET_PATH,
@@ -19,6 +20,7 @@ export default class WalletHandler {
 
     this.wallet = wallet;
     this.depositSubaddressCounter = 0;
+    this.inited = true;
 
     return this;
   }

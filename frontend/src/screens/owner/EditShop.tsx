@@ -7,6 +7,8 @@ import { PhotoField } from "../../components/ui/PhotoField";
 import { Button } from "../../components/ui/Button";
 import { useSession } from "../../app/providers/SessionProvider";
 import { updateShop } from "../../api/shops";
+import { useToast } from "../../app/providers/ToastProvider";
+import { errorMessage } from "../../lib/errors";
 
 export function EditShop() {
   const navigate = useNavigate();
@@ -16,6 +18,8 @@ export function EditShop() {
   const [description, setDescription] = useState(ownerShop?.description ?? "");
   const [profilePhoto, setProfilePhoto] = useState(ownerShop?.profilePhoto);
   const [bannerPhoto, setBannerPhoto] = useState(ownerShop?.bannerPhoto);
+  const [saving, setSaving] = useState(false);
+  const { push } = useToast();
 
   if (!ownerShop) {
     navigate("/welcome", { replace: true });
@@ -23,19 +27,26 @@ export function EditShop() {
   }
 
   async function save() {
-    const updated = await updateShop({
-      ...ownerShop!, name, description, profilePhoto, bannerPhoto,
-    });
-    setOwnerShop(updated);
-    await queryClient.invalidateQueries({ queryKey: ["shop"] });
-    navigate(-1);
+    setSaving(true);
+    try {
+      const updated = await updateShop({
+        ...ownerShop!, name, description, profilePhoto, bannerPhoto,
+      });
+      setOwnerShop(updated);
+      await queryClient.invalidateQueries({ queryKey: ["shop"] });
+      navigate(-1);
+    } catch (error) {
+      push(errorMessage(error, "The shop could not be updated."), "danger");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <AppFrame
       title="Edit Shop"
       back
-      bottomBar={<Button onClick={() => void save()}>Update</Button>}
+      bottomBar={<Button loading={saving} onClick={() => void save()}>Update</Button>}
     >
       <div className="space-y-5 px-5 py-6">
         <Input

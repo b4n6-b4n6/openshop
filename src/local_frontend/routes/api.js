@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import moneroTs from 'monero-ts';
 import Router from '@koa/router';
 import {
   dataUrlToBuffer,
@@ -10,6 +11,7 @@ import {
 } from '../../backend/apiMappers.js';
 import { BROWSED_ONION_COOKIE_NAME, MY_SHOP_ONION_PATH } from '../../const.js';
 import IsValidOnionHostname from '../utils/IsValidOnionHostname.js';
+import { PublicError } from '../../utils/publicError.js';
 
 const router = new Router({ prefix: '/api' });
 
@@ -30,19 +32,47 @@ router
       wallet: {
         completed: ctx.walletSetup.completed,
         restoring: ctx.walletSetup.restoring,
-        error: ctx.walletSetup.lastErrorMessage,
+        error: ctx.walletSetup.lastError,
       },
       onion: {
         address: await readShopAddress(ctx),
         spinning: ctx.onionSpinner.spinning,
         progress: ctx.onionSpinner.progress,
+        error: ctx.onionSpinner.lastError,
       },
     };
   })
   .post('/shop/open', async (ctx) => {
-    const { primaryAddress, privateViewKey, restoreHeight } = ctx.request.body ?? {};
+    const primaryAddress = String(ctx.request.body?.primaryAddress ?? '').trim();
+    const privateViewKey = String(ctx.request.body?.privateViewKey ?? '').trim();
+    const restoreHeight = String(ctx.request.body?.restoreHeight ?? '').trim();
     if (!primaryAddress || !privateViewKey || !restoreHeight) {
-      ctx.throw(400, 'Wallet address, private view key, and restore height are required');
+      throw new PublicError(
+        'Wallet address, private view key, and restore height are required.',
+        { status: 400, code: 'missing_wallet_details' },
+      );
+    }
+    if (!/^4[1-9A-HJ-NP-Za-km-z]{94}$/.test(primaryAddress)
+      || !await moneroTs.MoneroUtils.isValidAddress(
+        primaryAddress,
+        moneroTs.MoneroNetworkType.MAINNET,
+      )) {
+      throw new PublicError(
+        'Enter a valid 95-character Monero mainnet primary address beginning with 4.',
+        { status: 400, code: 'invalid_wallet_address', field: 'primaryAddress' },
+      );
+    }
+    if (!/^[0-9a-fA-F]{64}$/.test(privateViewKey)) {
+      throw new PublicError(
+        'The private view key is invalid. Enter a 64-character hexadecimal Monero view key.',
+        { status: 400, code: 'invalid_view_key', field: 'privateViewKey' },
+      );
+    }
+    if (!/^\d+$/.test(String(restoreHeight))) {
+      throw new PublicError(
+        'Restore block height must be a non-negative whole number.',
+        { status: 400, code: 'invalid_restore_height', field: 'restoreHeight' },
+      );
     }
 
     ctx.walletSetup.restore({ primaryAddress, privateViewKey, restoreHeight })

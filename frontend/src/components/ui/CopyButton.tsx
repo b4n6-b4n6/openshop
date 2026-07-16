@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { useToast } from "../../app/providers/ToastProvider";
+import { errorMessage } from "../../lib/errors";
 
 export function CopyButton({
   value,
@@ -15,14 +17,15 @@ export function CopyButton({
   className?: string;
 }) {
   const [copied, setCopied] = useState(false);
+  const { push } = useToast();
 
   async function onCopy() {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    } catch {
-      /* clipboard unavailable */
+    } catch (error) {
+      push(errorMessage(error, "Clipboard access is unavailable. Copy the value manually."), "danger");
     }
   }
 

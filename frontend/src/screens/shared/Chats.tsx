@@ -7,6 +7,7 @@ import { EmptyState } from "../../components/ui/EmptyState";
 import { Spinner } from "../../components/ui/Spinner";
 import { formatRelative, truncateMiddle } from "../../lib/format";
 import { listChats } from "../../api/chat";
+import { ErrorNotice } from "../../components/ui/ErrorNotice";
 
 export function Chats() {
   const location = useLocation();
@@ -15,7 +16,10 @@ export function Chats() {
   const base = owner ? "/shop/chats" : "/chats";
   const back = owner ? "/shop" : "/";
 
-  const { data, isLoading } = useQuery({ queryKey: ["chats"], queryFn: listChats });
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["chats"],
+    queryFn: listChats,
+  });
 
   return (
     <AppFrame title="Chats" back={back}>
@@ -23,6 +27,8 @@ export function Chats() {
         <div className="flex justify-center py-16">
           <Spinner />
         </div>
+      ) : isError ? (
+        <ErrorNotice error={error} title="Couldn't load chats" onRetry={() => void refetch()} />
       ) : !data || data.length === 0 ? (
         <EmptyState
           icon={<MessageSquare className="size-8" />}
