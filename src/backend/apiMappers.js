@@ -36,11 +36,16 @@ export const fromProduct = (product) => ({
   available_quantity: product.quantity,
 });
 
-export const toChat = (chat) => ({
-  id: chat.id,
-  lastMessageAt: new Date(chat.last_message_at).getTime(),
-  unread: chat.unread,
-});
+export const toChat = (chat, me, myRole) => {
+  const otherRole = myRole === 'owner' ? 'customer' : 'owner';
+
+  return {
+    id: chat.id,
+    lastMessageAt: new Date(chat.last_message_at).getTime(),
+    lastMessageFrom: chat.last_message_sender === me ? myRole : otherRole,
+    unread: chat.unread,
+  };
+};
 
 export const toMessage = (message, me, myRole) => {
   const otherRole = myRole === 'owner' ? 'customer' : 'owner';

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Boxes, MessageSquare, ReceiptText } from "lucide-react";
@@ -10,15 +11,21 @@ import { Spinner } from "../../components/ui/Spinner";
 import { truncateMiddle } from "../../lib/format";
 import { getShop } from "../../api/shops";
 import { ErrorNotice } from "../../components/ui/ErrorNotice";
+import { useSession } from "../../app/providers/SessionProvider";
 
 export function ViewShop() {
   const navigate = useNavigate();
+  const { setBrowsedShop } = useSession();
 
   const { data, isError, error, refetch } = useQuery({
     queryKey: ["shop", "public"],
     queryFn: getShop,
   });
   const shop = data;
+
+  useEffect(() => {
+    if (shop) setBrowsedShop(shop);
+  }, [shop, setBrowsedShop]);
   const openedThroughProxy = window.location.pathname.startsWith("/browser");
   const leaveProxy = openedThroughProxy
     ? () => window.location.assign("/browse")

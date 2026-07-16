@@ -2,8 +2,14 @@
 import moneroTs from 'monero-ts';
 import { MONERO_RPC_URI, MY_SHOP_WALLET_PATH } from '../../../const.js';
 import createListeners from './createListeners.js';
+import { errorBody, toPublicError } from '../../../utils/publicError.js';
 
 export default class WalletHandler {
+  constructor() {
+    this.inited = false;
+    this.lastError = null;
+  }
+
   async init() {
     this.inited = false;
     this.lastError = null;
@@ -23,6 +29,22 @@ export default class WalletHandler {
     this.inited = true;
 
     return this;
+  }
+
+  async getSyncState() {
+    if (this.lastError) { return 'error'; }
+    if (!this.inited || !this.wallet) { return 'syncing'; }
+
+    try {
+      return await this.wallet.isSynced() ? 'synced' : 'syncing';
+    } catch (error) {
+      console.error(error);
+      this.lastError = errorBody(toPublicError(error, {
+        code: 'wallet_sync_failed',
+        message: 'The Monero wallet sync status could not be read.',
+      })).error;
+      return 'error';
+    }
   }
 
   async getUnusedDepositSubaddress() {

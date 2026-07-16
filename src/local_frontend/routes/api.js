@@ -15,6 +15,32 @@ import { PublicError } from '../../utils/publicError.js';
 
 const router = new Router({ prefix: '/api' });
 
+const readWalletSyncState = async (ctx) => {
+  if (ctx.walletSetup.lastError || ctx.onionSpinner.lastError) { return 'error'; }
+  if (!ctx.walletSetup.completed) { return null; }
+  if (!ctx.onionSpinner.onion) { return 'syncing'; }
+
+  try {
+    const response = await fetch('http://127.0.0.1:7007/internal/status', {
+      signal: AbortSignal.timeout(2000),
+    });
+    if (!response.ok) { return 'error'; }
+    const status = await response.json();
+    return ['synced', 'syncing', 'error'].includes(status.wallet)
+      ? status.wallet
+      : 'error';
+  } catch (error) {
+    console.error('Could not read onion wallet status', error);
+    return 'error';
+  }
+};
+
+const connectivityState = (onionSpinner) => {
+  if (onionSpinner.lastError) { return 'offline'; }
+  if (onionSpinner.spinning) { return 'checking'; }
+  return onionSpinner.onion ? 'online' : 'offline';
+};
+
 const readShopAddress = async (ctx) => {
   if (ctx.onionSpinner.onion) { return ctx.onionSpinner.onion; }
 
@@ -28,14 +54,19 @@ const readShopAddress = async (ctx) => {
 
 router
   .get('/status', async (ctx) => {
+    const address = ctx.onionSpinner.onion;
+    const connectivity = connectivityState(ctx.onionSpinner);
+
     ctx.body = {
+      connectivity,
       wallet: {
         completed: ctx.walletSetup.completed,
         restoring: ctx.walletSetup.restoring,
         error: ctx.walletSetup.lastError,
+        sync: await readWalletSyncState(ctx),
       },
       onion: {
-        address: await readShopAddress(ctx),
+        address,
         spinning: ctx.onionSpinner.spinning,
         progress: ctx.onionSpinner.progress,
         error: ctx.onionSpinner.lastError,
@@ -138,7 +169,8 @@ router
   .get('/chats', async (ctx) => {
     const address = await readShopAddress(ctx);
     if (!address) { ctx.throw(404, 'Shop is not open'); }
-    ctx.body = (await ctx.backend.messages.getConvos(address)).map(toChat);
+    ctx.body = (await ctx.backend.messages.getConvos(address))
+      .map((chat) => toChat(chat, address, 'owner'));
   })
   .get('/chats/:id/messages', async (ctx) => {
     const address = await readShopAddress(ctx);

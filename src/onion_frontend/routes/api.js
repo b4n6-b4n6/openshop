@@ -11,6 +11,9 @@ import readMyShopAddress from '../utils/readMyShopAddress.js';
 const router = new Router({ prefix: '/api' });
 
 router
+  .get('/status', async (ctx) => {
+    ctx.body = { connectivity: 'online' };
+  })
   .get('/shop', async (ctx) => {
     const address = await readMyShopAddress();
     ctx.body = toShop(await ctx.backend.shops.get(address), address);
@@ -29,9 +32,10 @@ router
     if (!customer) { ctx.throw(401, 'Customer identity is required'); }
     const chat = (await ctx.backend.messages.getConvos(customer))
       .find(({ id }) => id === address);
-    ctx.body = [chat ? toChat(chat) : {
+    ctx.body = [chat ? toChat(chat, customer, 'customer') : {
       id: address,
       lastMessageAt: Date.now(),
+      lastMessageFrom: undefined,
       unread: false,
     }];
   })

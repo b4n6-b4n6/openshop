@@ -67,6 +67,7 @@ class Messages {
         SELECT
           CASE WHEN sender = $1 THEN receiver ELSE sender END AS id,
           MAX(created_at) AS last_message_at,
+          (ARRAY_AGG(sender ORDER BY created_at DESC))[1] AS last_message_sender,
           BOOL_OR(receiver = $1 AND read_at IS NULL) AS unread
         FROM messages
         WHERE sender = $1 OR receiver = $1

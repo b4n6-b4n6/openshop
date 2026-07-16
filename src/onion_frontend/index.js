@@ -12,6 +12,7 @@ import createBackendMw from '../backend/middleware.js';
 import waitForFile from '../utils/waitForFile.js';
 import serveSpa from '../utils/serveSpa.js';
 import errorHandler from '../middlewares/errorHandler.js';
+import internalStatus from './middlewares/internalStatus.js';
 
 import { MY_SHOP_ONION_PATH } from '../const.js';
 
@@ -24,9 +25,10 @@ import { MY_SHOP_ONION_PATH } from '../const.js';
 
   app
     .use(errorHandler())
+    .use(walletHandlerMw())
+    .use(internalStatus())
     .use(onionFilter())
     .use(backendMw)
-    .use(walletHandlerMw())
     .use(validateUser())
     .use(createUser())
     .use(koaBody())

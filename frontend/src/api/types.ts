@@ -64,6 +64,7 @@ export interface Message {
 export interface Chat {
   id: string; // customer pubkey (truncated for display)
   lastMessageAt: number;
+  lastMessageFrom?: "owner" | "customer";
   unread: boolean;
 }
 

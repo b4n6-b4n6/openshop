@@ -5,7 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { probeConnectivity, probeWalletSync } from "../../api/indicators";
+import { probeRuntimeIndicators } from "../../api/indicators";
 import type { IndicatorState, WalletState } from "../../api/types";
 import { usePolling } from "../../lib/hooks";
 import { useSession } from "./SessionProvider";
@@ -18,7 +18,6 @@ interface IndicatorsValue {
 const IndicatorsContext = createContext<IndicatorsValue | null>(null);
 
 const CONNECTIVITY_POLL_MS = 8000;
-const WALLET_POLL_MS = 10000;
 
 export function IndicatorsProvider({ children }: { children: ReactNode }) {
   const { role } = useSession();
@@ -26,29 +25,16 @@ export function IndicatorsProvider({ children }: { children: ReactNode }) {
   const [wallet, setWallet] = useState<WalletState | null>(null);
 
   usePolling(async () => {
-    setConnectivity((c) => (c === "checking" ? c : "checking"));
     try {
-      const next = await probeConnectivity();
-      setConnectivity(next);
+      const next = await probeRuntimeIndicators();
+      setConnectivity(next.connectivity);
+      setWallet(role === "owner" ? next.wallet ?? "syncing" : null);
     } catch (error) {
-      console.error("Connectivity check failed", error);
+      console.error("Runtime status check failed", error);
       setConnectivity("offline");
+      setWallet(role === "owner" ? "error" : null);
     }
   }, CONNECTIVITY_POLL_MS);
-
-  usePolling(
-    async () => {
-      try {
-        const next = await probeWalletSync();
-        setWallet(next);
-      } catch (error) {
-        console.error("Wallet sync check failed", error);
-        setWallet("error");
-      }
-    },
-    WALLET_POLL_MS,
-    role === "owner",
-  );
 
   const value = useMemo<IndicatorsValue>(
     () => ({ connectivity, wallet: role === "owner" ? wallet : null }),

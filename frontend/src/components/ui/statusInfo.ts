@@ -25,13 +25,13 @@ export const connInfo: Record<IndicatorState, StatusInfo> = {
   online: {
     tone: "success",
     text: "Onion",
-    detail: "Onion service reachable over Tor.",
+    detail: "The shop onion service is online.",
     pulse: false,
   },
   offline: {
     tone: "danger",
     text: "Offline",
-    detail: "Onion unreachable. P2P shops are often offline — this is normal.",
+    detail: "The shop onion service is not reachable.",
     pulse: false,
   },
   checking: {

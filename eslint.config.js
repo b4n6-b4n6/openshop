@@ -28,11 +28,18 @@ export default [
     },
     rules: {
       'no-console': 'off',
-      'camelcase': 'off',
+      camelcase: 'off',
       'no-plusplus': 'off',
       'import/extensions': ['error', 'always', {
         ignorePackages: true,
       }],
+    },
+  },
+  {
+    files: ['eslint.config.js'],
+    rules: {
+      'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+      'no-underscore-dangle': 'off',
     },
   },
 ];

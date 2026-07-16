@@ -9,6 +9,7 @@ import { BlockingOverlay } from "./components/ui/BlockingOverlay";
 import { ToastViewport } from "./components/ui/ToastViewport";
 import { useReducedMotion } from "./lib/hooks";
 import { GlobalErrorReporter } from "./app/providers/GlobalErrorReporter";
+import { MessageNotificationProvider } from "./app/providers/MessageNotificationProvider";
 
 
 function CurrencyGate() {
@@ -66,10 +67,12 @@ export default function App({ RoutesComponent }: { RoutesComponent: ComponentTyp
       <CurrencyProvider>
         <IndicatorsProvider>
           <ToastProvider>
-            <GlobalErrorReporter />
-            <AnimatedRoutes RoutesComponent={RoutesComponent} />
-            <CurrencyGate />
-            <ToastViewport />
+            <MessageNotificationProvider>
+              <GlobalErrorReporter />
+              <AnimatedRoutes RoutesComponent={RoutesComponent} />
+              <CurrencyGate />
+              <ToastViewport />
+            </MessageNotificationProvider>
           </ToastProvider>
         </IndicatorsProvider>
       </CurrencyProvider>

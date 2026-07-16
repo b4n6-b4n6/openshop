@@ -185,6 +185,25 @@ test('can create 2-way text messages & get convo', async () => {
   await messages.destroy();
 });
 
+test('conversation summary identifies the latest sender', async () => {
+  const messages = await createMessages();
+
+  await messages.create({
+    text_content: 'hello', sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
+  await timers.setTimeout(25);
+  await messages.create({
+    text_content: 'hello back', sender: SHOP_ADDRESS, receiver: CUSTOMER_ID,
+  });
+
+  expect(await messages.getConvos(CUSTOMER_ID)).toMatchObject([{
+    id: SHOP_ADDRESS,
+    last_message_sender: SHOP_ADDRESS,
+  }]);
+
+  await messages.destroy();
+});
+
 test('can create 2-way text messages, mark it as read & get convo', async () => {
   const messages = await createMessages();
 
