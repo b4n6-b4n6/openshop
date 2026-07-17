@@ -36,7 +36,7 @@ class Products {
       `,
       [name, photo, description, price, currency, available_quantity],
     );
-    if (result.rowCount !== 1) { throw new Error('Messages.create rowCount !== 1'); }
+    if (result.rowCount !== 1) { throw new Error('Products.create rowCount !== 1'); }
 
     return result.rows[0].id;
   }
@@ -59,7 +59,7 @@ class Products {
       [id, name, photo, description, price, currency, available_quantity],
     );
 
-    if (result.rowCount !== 1) { throw new Error('Messages.create rowCount !== 1'); }
+    if (result.rowCount !== 1) { throw new Error('Products.update rowCount !== 1'); }
   }
 
   async getAll() {
