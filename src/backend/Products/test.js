@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import createProducts from './index.js';
 
-test('can get a non-existent shop', async () => {
+test('can get a non-existent product', async () => {
   const products = await createProducts();
 
   expect(await products.get(randomUUID())).toEqual(undefined);
@@ -24,14 +24,14 @@ test('can create a product', async () => {
     name: 'brownie',
     description: 'coco!',
     currency: 'usd',
-    price: '1.5',
+    price: '1.50',
     available_quantity: 25,
   });
   const cookieId = await products.create({
     name: 'cookie',
     description: 'crunchy!',
     currency: 'usd',
-    price: '1',
+    price: '1.00',
     available_quantity: 20,
   });
 
@@ -62,14 +62,14 @@ test('can update a product: name, currency, price, available_quantity', async ()
     name: 'brownie',
     description: 'coco!',
     currency: 'usd',
-    price: '1.5',
+    price: '1.50',
     available_quantity: 25,
   });
   const cookieId = await products.create({
     name: 'cookie',
     description: 'crunchy!',
     currency: 'usd',
-    price: '1',
+    price: '1.00',
     available_quantity: 20,
   });
 
@@ -78,7 +78,7 @@ test('can update a product: name, currency, price, available_quantity', async ()
     name: 'cookies',
     description: 'crunchy!!!',
     currency: 'eur',
-    price: '2',
+    price: '2.00',
     available_quantity: 10,
   });
 
@@ -110,7 +110,7 @@ test('can update a product: photo', async () => {
     photo: Buffer.from('11111111', 'hex'),
     description: 'coco!',
     currency: 'usd',
-    price: '1.5',
+    price: '1.50',
     available_quantity: 25,
   });
   const cookieId = await products.create({
@@ -118,7 +118,7 @@ test('can update a product: photo', async () => {
     photo: Buffer.from('22222222', 'hex'),
     description: 'crunchy!',
     currency: 'usd',
-    price: '1',
+    price: '1.00',
     available_quantity: 20,
   });
   const hashbrownId = await products.create({
@@ -126,7 +126,7 @@ test('can update a product: photo', async () => {
     photo: Buffer.from('33333333', 'hex'),
     description: 'creamy!',
     currency: 'usd',
-    price: '1.6',
+    price: '1.60',
     available_quantity: 100,
   });
 
@@ -136,7 +136,7 @@ test('can update a product: photo', async () => {
     photo: Buffer.from('12341234', 'hex'),
     description: 'coco!',
     currency: 'usd',
-    price: '1.5',
+    price: '1.50',
     available_quantity: 25,
   });
   await products.update({
@@ -144,7 +144,7 @@ test('can update a product: photo', async () => {
     name: 'cookie',
     description: 'crunchy!',
     currency: 'usd',
-    price: '1',
+    price: '1.00',
     available_quantity: 15,
   });
 
@@ -185,7 +185,7 @@ test('can update a product: description', async () => {
     name: 'cookie',
     description: 'crunchy!',
     currency: 'usd',
-    price: '1',
+    price: '1.00',
     available_quantity: 20,
   });
 
@@ -194,7 +194,7 @@ test('can update a product: description', async () => {
     name: 'cookie',
     description: 'extra crunchy!',
     currency: 'usd',
-    price: '1',
+    price: '1.00',
     available_quantity: 20,
   });
 
