@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import timers from 'node:timers/promises';
 import createOrders from './index.js';
 
 const CUSTOMER = '370c6cbe-8a6c-4d77-8070-bc21c32fc904';
@@ -32,8 +33,6 @@ test('can create an order', async () => {
 
   const order = await orders.get(id);
   expect(order).toMatchObject({
-    customer: CUSTOMER,
-
     product_name: 'brownie',
     product_description: 'coco!',
 
@@ -45,6 +44,122 @@ test('can create an order', async () => {
     deposit_amount: 2000000000000,
   });
   expect(order.created_at).toBeTruthy();
+
+  await orders.destroy();
+});
+
+test('can create an order and get all for shop', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_address: '83t5VPiucNi6mFjaLYTbasScLmbNfh3Q7FsRBzbknBHLAXYgQGM3JxTP3uqcvJ2bwRBuF6DGrvGAE59QW54vVCDJQs2n9b1',
+    deposit_amount: 2000000000000,
+  });
+  await timers.setTimeout(25);
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'cookie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '0.60',
+    purchase_quantity: 500,
+
+    deposit_address: '83ds5ckXTNqdM719sbpqXAZS5GbsAuuh1gfgpJPWnJa5UZwa65DU27Q521gkMvmzR32iRMwsxHciNVCYuRTdnrX8QjxX4W6',
+    deposit_amount: 5000000000000,
+  });
+
+  const allOrders = await orders.getAllForShop();
+  expect(allOrders).toMatchObject([
+    {
+      customer: CUSTOMER,
+
+      product_name: 'cookie',
+
+      purchase_currency: 'usd',
+      purchase_price: '0.60',
+      purchase_quantity: 500,
+    },
+    {
+      customer: CUSTOMER,
+
+      product_name: 'brownie',
+
+      purchase_currency: 'usd',
+      purchase_price: '1.50',
+      purchase_quantity: 200,
+    },
+  ]);
+  expect(allOrders[0].id).toBeTruthy();
+  expect(allOrders[0].created_at).toBeTruthy();
+  expect(allOrders[1].id).toBeTruthy();
+  expect(allOrders[1].created_at).toBeTruthy();
+
+  await orders.destroy();
+});
+
+test('can create an order and get all for customer', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_address: '83t5VPiucNi6mFjaLYTbasScLmbNfh3Q7FsRBzbknBHLAXYgQGM3JxTP3uqcvJ2bwRBuF6DGrvGAE59QW54vVCDJQs2n9b1',
+    deposit_amount: 2000000000000,
+  });
+  await timers.setTimeout(25);
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'cookie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '0.60',
+    purchase_quantity: 500,
+
+    deposit_address: '83ds5ckXTNqdM719sbpqXAZS5GbsAuuh1gfgpJPWnJa5UZwa65DU27Q521gkMvmzR32iRMwsxHciNVCYuRTdnrX8QjxX4W6',
+    deposit_amount: 5000000000000,
+  });
+
+  const allOrders = await orders.getAllForCustomer(CUSTOMER);
+  expect(allOrders).toMatchObject([
+    {
+      product_name: 'cookie',
+
+      purchase_currency: 'usd',
+      purchase_price: '0.60',
+      purchase_quantity: 500,
+    },
+    {
+      product_name: 'brownie',
+
+      purchase_currency: 'usd',
+      purchase_price: '1.50',
+      purchase_quantity: 200,
+    },
+  ]);
+  expect(allOrders[0].id).toBeTruthy();
+  expect(allOrders[0].created_at).toBeTruthy();
+  expect(allOrders[1].id).toBeTruthy();
+  expect(allOrders[1].created_at).toBeTruthy();
 
   await orders.destroy();
 });

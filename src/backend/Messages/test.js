@@ -4,6 +4,8 @@ import createMessages from './index.js';
 
 const SHOP_ADDRESS = '2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion';
 const CUSTOMER_ID = '370c6cbe-8a6c-4d77-8070-bc21c32fc904';
+const CUSTOMER1_ID = 'cc9cb537-8a6a-4c32-8868-8791b43f3be0';
+const CUSTOMER2_ID = 'a313f4ab-50cd-4b48-9d85-5b35183a70f4';
 
 test('can get a non-existent image message', async () => {
   const messages = await createMessages();
@@ -181,6 +183,55 @@ test('can create 2-way text messages & get convo', async () => {
   expect(convo[0].created_at).toBeTruthy();
   expect(convo[1].id).toBeTruthy();
   expect(convo[1].created_at).toBeTruthy();
+
+  await messages.destroy();
+});
+
+test('conversation summary identifies the latest sender', async () => {
+  const messages = await createMessages();
+
+  await messages.create({
+    text_content: 'hello', sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
+  await timers.setTimeout(25);
+  await messages.create({
+    text_content: 'hello back', sender: SHOP_ADDRESS, receiver: CUSTOMER_ID,
+  });
+
+  const convos = await messages.getConvos(CUSTOMER_ID);
+  expect(convos).toMatchObject([{
+    id: SHOP_ADDRESS,
+    last_message_sender: SHOP_ADDRESS,
+    unread: true,
+  }]);
+  expect(convos[0].last_message_at).toBeTruthy()
+
+  await messages.destroy();
+});
+
+test('many conversations summary identifies the latest sender', async () => {
+  const messages = await createMessages();
+
+  await messages.create({
+    text_content: 'hello', sender: CUSTOMER1_ID, receiver: SHOP_ADDRESS,
+  });
+  await timers.setTimeout(25);
+  await messages.create({
+    text_content: 'hellooo', sender: CUSTOMER2_ID, receiver: SHOP_ADDRESS,
+  });
+
+  expect(await messages.getConvos(SHOP_ADDRESS)).toMatchObject([
+    {
+      id: CUSTOMER2_ID,
+      last_message_sender: CUSTOMER2_ID,
+      unread: true,
+    },
+    {
+      id: CUSTOMER1_ID,
+      last_message_sender: CUSTOMER1_ID,
+      unread: true,
+    },
+  ]);
 
   await messages.destroy();
 });

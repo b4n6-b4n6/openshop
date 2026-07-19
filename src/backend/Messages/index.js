@@ -57,6 +57,25 @@ class Messages {
     return rows;
   }
 
+  async getConvos(party) {
+    const { rows } = await this.pool.query(
+      `
+        SELECT
+          CASE WHEN sender = $1 THEN receiver ELSE sender END AS id,
+          MAX(created_at) AS last_message_at,
+          (ARRAY_AGG(sender ORDER BY created_at DESC))[1] AS last_message_sender,
+          BOOL_OR(read_at IS NULL) FILTER (WHERE receiver = $1) AS unread
+        FROM messages
+        WHERE sender = $1 OR receiver = $1
+        GROUP BY CASE WHEN sender = $1 THEN receiver ELSE sender END
+        ORDER BY last_message_at DESC
+      `,
+      [party],
+    );
+
+    return rows;
+  }
+
   async getImageContent(id) {
     const { rows } = await this.pool.query(
       'SELECT image_content FROM messages WHERE id = $1',

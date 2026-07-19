@@ -1,6 +1,11 @@
 import createPool from '../createPool.js';
 import CREATE_TABLE from '../utils/createTable.js';
 
+const mapDepositAmountToNumber = (order) => ({
+  ...order,
+  deposit_amount: Number(order.deposit_amount),
+});
+
 class Orders {
   async init(pool) {
     this.pool = pool ?? createPool();
@@ -72,11 +77,11 @@ class Orders {
           purchase_price, purchase_currency, purchase_quantity,
           created_at, detected_deposit_at, confirmed_deposit_at
         FROM orders
-        ORDER BY created_at
+        ORDER BY created_at DESC
       `,
     );
 
-    return rows;
+    return rows.map(mapDepositAmountToNumber);
   }
 
   async getAllForCustomer(customer) {
@@ -89,12 +94,12 @@ class Orders {
           created_at, detected_deposit_at, confirmed_deposit_at
         FROM orders
         WHERE customer = $1
-        ORDER BY created_at
+        ORDER BY created_at DESC
       `,
       [customer],
     );
 
-    return rows;
+    return rows.map(mapDepositAmountToNumber);
   }
 
   async get(id) {
@@ -111,7 +116,8 @@ class Orders {
       [id],
     );
 
-    return rows[0];
+    const result = rows[0];
+    return result && mapDepositAmountToNumber(result);
   }
 
   async markDepositDetected({ deposit_address, deposit_amount }) {
