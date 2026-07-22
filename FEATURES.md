@@ -35,5 +35,5 @@ Order status has 3 states
   * incoming payment transaction detected
   * incoming payment transaction confirmed
 
-Image upload implementation (banner photo / profile photo / product photo   )
+Image upload implementation (shop banner photo / shop profile photo / product photo)
   * resize to a predefined size based on the HTML container width/height
