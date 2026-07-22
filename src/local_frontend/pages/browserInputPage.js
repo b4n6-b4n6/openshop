@@ -1,6 +1,6 @@
 import head from './head.js';
 
-const browserInputPage = () => `<!doctype html>
+const browserInputPage = ({ defaultOnionHostname }) => `<!doctype html>
 <html>
 <head>
   ${head()}
@@ -21,6 +21,7 @@ const browserInputPage = () => `<!doctype html>
       name='browsed_onion_address'
       type='text'
       placeholder='SHOP ADDRESS'
+      value=${defaultOnionHostname}
       required
     /> <br />
 
