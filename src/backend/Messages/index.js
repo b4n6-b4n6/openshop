@@ -43,7 +43,7 @@ class Messages {
 
   async getConvo(parties) {
     if (parties.length !== 2) { throw new Error('Messages.getConvo parties.length !== 2'); }
-    
+
     const { rows } = await this.pool.query(
       `
         SELECT id, sender, receiver, text_content, created_at, received_at, read_at
@@ -86,7 +86,7 @@ class Messages {
   }
 
   async markAllReceivedInConvo({ sender, receiver }) {
-    const result = await this.pool.query(
+    await this.pool.query(
       `
         UPDATE messages
         SET received_at = COALESCE(received_at, now())
@@ -95,8 +95,9 @@ class Messages {
       [sender, receiver],
     );
   }
+
   async markAllReadInConvo({ sender, receiver }) {
-    const result = await this.pool.query(
+    await this.pool.query(
       `
         UPDATE messages
         SET

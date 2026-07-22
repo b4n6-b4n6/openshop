@@ -15,6 +15,7 @@ export const BROWSED_ONION_COOKIE_NAME = 'browsed_onion';
 export const JWT_COOKIE_NAME = 'jwt';
 
 export const BROWSER_TIMEOUT = 30 * 1000;
+export const SELF_TEST_TIMEOUT = 12.5 * 1000;
 export const FETCH_FIAT_PRICE_TIMEOUT = 20 * 1000;
 export const FETCH_FIAT_PRICE_REMEMBER_FOR = 1000 * 60 * 5;
 

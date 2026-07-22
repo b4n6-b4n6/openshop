@@ -5,6 +5,7 @@ import onionFilter from './middlewares/onionFilter.js';
 import walletHandlerMw from './middlewares/walletHandlerMw.js';
 import createUser from './middlewares/createUser.js';
 import validateUser from './middlewares/validateUser.js';
+import preRoutes from './routes/pre.js';
 import routes from './routes/index.js';
 
 import waitForFile from '../utils/waitForFile.js';
@@ -17,6 +18,7 @@ import { MY_SHOP_ONION_PATH } from '../const.js';
   const app = new Koa();
 
   app
+    .use(preRoutes())
     .use(onionFilter())
     .use(walletHandlerMw())
     .use(createUser())

@@ -9,10 +9,20 @@ const myShopPage = ({ address }) => `<!doctype html>
     button {
       font-size: 250%;
     }
+    
+    [src="/self-test"] {
+      width: 1em;
+      height: 1em;
+      border: 0;
+    }
   </style>
 </head>
 <body>
   <pre>${address}</pre>
+
+  <iframe
+    src="/self-test">
+  </iframe>
 
   <form action='/'>
     <button>CLOSE SHOP</button>

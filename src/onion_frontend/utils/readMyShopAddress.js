@@ -1,7 +1,4 @@
-import fs from 'node:fs/promises';
-import { MY_SHOP_ONION_PATH } from '../../const.js';
 import createSingleCached from './createSingleCached.js';
+import readMyOnionHostname from '../../utils/readMyOnionHostname.js';
 
-export default createSingleCached(async () => (
-  (await fs.readFile(MY_SHOP_ONION_PATH, 'utf8')).trim()
-));
+export default createSingleCached(readMyOnionHostname);
