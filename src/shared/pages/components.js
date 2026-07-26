@@ -43,6 +43,40 @@ export const shopBanner = (src) => `<div class="relative h-36 w-full overflow-hi
     : `<div class="flex h-full items-center justify-center text-faint">${icon('image', 'size-7')}</div>`}
 </div>`;
 
+export const qrView = ({
+  qr,
+  caption = '',
+  fileName = 'openshop-qr.png',
+  size = 150,
+  basePath = '',
+}) => {
+  const logo = pathFor(basePath, '/static/images/logo-orange.svg');
+  const artwork = (modal = false) => {
+    const artworkSize = modal ? 240 : Number(size);
+    return `<span class="qr-art" style="--qr-size:${artworkSize}px">
+      <img data-qr-image src="${escapeAttribute(qr)}" alt="" width="${artworkSize}" height="${artworkSize}">
+      <span class="qr-watermark"><img data-qr-logo src="${escapeAttribute(logo)}" alt="OpenShop"></span>
+    </span>`;
+  };
+
+  return `<div data-qr-view data-file-name="${escapeAttribute(fileName)}">
+    <button type="button" data-qr-open class="qr-trigger" aria-label="Enlarge QR code">
+      ${artwork()}
+    </button>
+    <div data-qr-modal class="qr-modal" role="dialog" aria-modal="true" aria-label="QR code" hidden>
+      <button type="button" data-qr-close class="qr-modal-close" aria-label="Close QR code">×</button>
+      <div class="qr-modal-panel">
+        <div class="qr-large">${artwork(true)}</div>
+        ${caption ? `<p class="qr-caption">${escapeHtml(caption)}</p>` : ''}
+        <p data-qr-save-error role="alert" class="hidden text-[12px] text-danger"></p>
+        <button type="button" data-qr-save class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 text-[15px] font-semibold text-on-accent hover:bg-accent-hover active:bg-accent-press">
+          ${icon('download', 'size-4')}Save image
+        </button>
+      </div>
+    </div>
+  </div>`;
+};
+
 export const hubLink = ({
   href,
   label,

@@ -13,6 +13,7 @@ import {
   hubLink,
   photoInput,
   productCard,
+  qrView,
   richEditor,
   richText,
   selectCurrency,
@@ -154,7 +155,7 @@ export const ownerShopPage = ({
   hasUnread = false,
 }) => page({
   title: 'My Shop',
-  scripts: ['sound.js', 'owner-notifications.js'],
+  scripts: ['sound.js', 'owner-notifications.js', 'qr.js'],
   body: appFrame({
     title: 'My Shop',
     content: `${shopBanner(shop?.banner_photo?.toString('utf8'))}
@@ -165,7 +166,12 @@ export const ownerShopPage = ({
             <h2 class="truncate text-xl font-bold text-text">${escapeHtml(shop?.name || 'My Shop')}</h2>
             <p class="mt-1 truncate font-mono text-[12px] text-muted" title="${escapeAttribute(onion)}">${escapeHtml(truncateMiddle(onion))}</p>
           </div>
-          ${qr ? `<img src="${escapeAttribute(qr)}" alt="Shop onion QR code" width="64" height="64" class="shrink-0 rounded-lg bg-white p-1">` : ''}
+          ${qr ? qrView({
+    qr,
+    caption: onion,
+    fileName: 'openshop-shop-qr.png',
+    size: 64,
+  }) : ''}
         </div>
         ${shop?.description
     ? `<div class="mt-3">${richText(shop.description)}</div>`

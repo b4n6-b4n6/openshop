@@ -13,6 +13,7 @@ import {
   orderCard,
   orderStatus,
   productCard,
+  qrView,
   richText,
   shopBanner,
   thumb,
@@ -169,6 +170,7 @@ export const orderPage = ({
   return document({
     title: 'Order',
     basePath,
+    scripts: ['qr.js'],
     refresh: order.confirmed_deposit_at ? undefined : '10',
     body: appFrame({
       title: 'Order',
@@ -184,7 +186,13 @@ export const orderPage = ({
             <p class="font-mono text-3xl font-bold text-text">${escapeHtml(amount)}</p>
             <p class="mt-0.5 text-[13px] text-muted">XMR</p>
           </div>
-          <img src="${escapeAttribute(qr)}" alt="Monero payment QR code" width="168" height="168" class="rounded-xl bg-white p-2">
+          ${qrView({
+    qr,
+    caption: order.deposit_address,
+    fileName: 'openshop-payment-qr.png',
+    size: 168,
+    basePath,
+  })}
           <div class="w-full">
             <p class="mb-1 text-[12px] font-semibold uppercase tracking-wide text-muted">Pay to this address</p>
             <p class="break-all rounded-xl border border-border bg-surface-2 p-3 text-left font-mono text-[12px] text-text">${escapeHtml(order.deposit_address)}</p>

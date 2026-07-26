@@ -215,7 +215,12 @@ router
     html(ctx, ownerShopPage({
       onion,
       shop: await ctx.backend.shops.get(onion),
-      qr: await QRCode.toDataURL(onion, { margin: 1, width: 72 }),
+      qr: await QRCode.toDataURL(onion, {
+        margin: 1,
+        width: 240,
+        errorCorrectionLevel: 'H',
+        color: { dark: '#0f1115', light: '#ffffff' },
+      }),
       hasUnread: chats.some(({ unread }) => unread),
     }));
   })

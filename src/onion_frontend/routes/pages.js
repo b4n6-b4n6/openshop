@@ -151,7 +151,12 @@ router
     const amount = Number(order.deposit_amount) / 1e12;
     const qr = await QRCode.toDataURL(
       `monero:${order.deposit_address}?tx_amount=${amount.toFixed(12)}`,
-      { margin: 1, width: 184 },
+      {
+        margin: 1,
+        width: 240,
+        errorCorrectionLevel: 'H',
+        color: { dark: '#0f1115', light: '#ffffff' },
+      },
     );
     html(ctx, orderPage({
       order,

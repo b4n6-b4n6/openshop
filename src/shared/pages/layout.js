@@ -1,6 +1,6 @@
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 
-const ASSET_VERSION = '20260726-2';
+const ASSET_VERSION = '20260726-4';
 
 export const icon = (name, classes = 'size-5') => {
   const paths = {
@@ -8,6 +8,7 @@ export const icon = (name, classes = 'size-5') => {
     boxes: '<path d="M2.97 12.92 12 17.94l9.03-5.02"/><path d="m7 4.27 10 5.46"/><path d="M12 22V12"/><path d="m21.03 7.08-9.03 5.03-9.03-5.03L12 2.06z"/>',
     bold: '<path d="M6 4h8a4 4 0 0 1 0 8H6z"/><path d="M6 12h9a4 4 0 0 1 0 8H6z"/>',
     chevronRight: '<path d="m9 18 6-6-6-6"/>',
+    download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
     image: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
     italic: '<line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/>',
     message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>',
