@@ -12,6 +12,7 @@ import {
 import { BROWSED_ONION_COOKIE_NAME, MY_SHOP_ONION_PATH } from '../../const.js';
 import IsValidOnionHostname from '../utils/IsValidOnionHostname.js';
 import { PublicError } from '../../utils/publicError.js';
+import { isSafeDataImage } from '../../shared/utils/uploads.js';
 
 const router = new Router({ prefix: '/api' });
 
@@ -183,6 +184,18 @@ router
     if (!address) { ctx.throw(404, 'Shop is not open'); }
     const { text, media } = ctx.request.body ?? {};
     if (!text && !media) { ctx.throw(400, 'Message content is required'); }
+    if (text && String(text).length > 5000) {
+      throw new PublicError('Messages cannot be longer than 5,000 characters.', {
+        status: 400,
+        code: 'message_too_long',
+      });
+    }
+    if (media && !isSafeDataImage(media)) {
+      throw new PublicError('The message image is invalid or larger than 2 MB.', {
+        status: 415,
+        code: 'invalid_image',
+      });
+    }
 
     await ctx.backend.messages.create({
       sender: address,

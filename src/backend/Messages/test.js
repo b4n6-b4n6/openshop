@@ -204,7 +204,7 @@ test('conversation summary identifies the latest sender', async () => {
     last_message_sender: SHOP_ADDRESS,
     unread: true,
   }]);
-  expect(convos[0].last_message_at).toBeTruthy()
+  expect(convos[0].last_message_at).toBeTruthy();
 
   await messages.destroy();
 });
@@ -232,6 +232,38 @@ test('many conversations summary identifies the latest sender', async () => {
       unread: true,
     },
   ]);
+
+  await messages.destroy();
+});
+
+test('notification state reports the latest incoming message and unread chats', async () => {
+  const messages = await createMessages();
+
+  const firstId = await messages.create({
+    text_content: 'first', sender: CUSTOMER1_ID, receiver: SHOP_ADDRESS,
+  });
+  await timers.setTimeout(25);
+  const latestId = await messages.create({
+    text_content: 'latest', sender: CUSTOMER2_ID, receiver: SHOP_ADDRESS,
+  });
+  await messages.create({
+    text_content: 'owner reply', sender: SHOP_ADDRESS, receiver: CUSTOMER2_ID,
+  });
+
+  expect(await messages.getNotificationState(SHOP_ADDRESS)).toEqual({
+    latestIncomingId: latestId,
+    unreadChatIds: [CUSTOMER2_ID, CUSTOMER1_ID].sort(),
+  });
+
+  await messages.markAllReadInConvo({
+    sender: CUSTOMER1_ID,
+    receiver: SHOP_ADDRESS,
+  });
+  expect(await messages.getNotificationState(SHOP_ADDRESS)).toEqual({
+    latestIncomingId: latestId,
+    unreadChatIds: [CUSTOMER2_ID],
+  });
+  expect(firstId).not.toEqual(latestId);
 
   await messages.destroy();
 });

@@ -9,7 +9,7 @@ export default () => {
     const browsedOnion = ctx.cookies.get(BROWSED_ONION_COOKIE_NAME);
 
     if (lastBrowsedOnion !== browsedOnion) {
-      await fs.writeFile(BROWSED_ONION_FILE_NAME, browsedOnion);
+      await fs.writeFile(BROWSED_ONION_FILE_NAME, browsedOnion ?? '');
       lastBrowsedOnion = browsedOnion;
     }
 

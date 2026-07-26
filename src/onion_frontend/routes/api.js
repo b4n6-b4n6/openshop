@@ -7,6 +7,8 @@ import {
   toShop,
 } from '../../backend/apiMappers.js';
 import readMyShopAddress from '../utils/readMyShopAddress.js';
+import { PublicError } from '../../utils/publicError.js';
+import { isSafeDataImage } from '../../shared/utils/uploads.js';
 
 const router = new Router({ prefix: '/api' });
 
@@ -52,6 +54,18 @@ router
     if (!customer) { ctx.throw(401, 'Customer identity is required'); }
     const { text, media } = ctx.request.body ?? {};
     if (!text && !media) { ctx.throw(400, 'Message content is required'); }
+    if (text && String(text).length > 5000) {
+      throw new PublicError('Messages cannot be longer than 5,000 characters.', {
+        status: 400,
+        code: 'message_too_long',
+      });
+    }
+    if (media && !isSafeDataImage(media)) {
+      throw new PublicError('The message image is invalid or larger than 2 MB.', {
+        status: 415,
+        code: 'invalid_image',
+      });
+    }
 
     await ctx.backend.messages.create({
       sender: customer,

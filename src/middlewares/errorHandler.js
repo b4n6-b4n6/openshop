@@ -1,11 +1,20 @@
 import { errorBody, toPublicError } from '../utils/publicError.js';
+import {
+  appFrame,
+  document,
+  errorNotice,
+} from '../shared/pages/layout.js';
 
 export default () => async (ctx, next) => {
   try {
     await next();
 
-    if (ctx.status === 404 && ctx.path.startsWith('/api/')) {
-      ctx.throw(404, 'API route not found', { code: 'not_found' });
+    if (ctx.status === 404 && !ctx.body) {
+      ctx.throw(
+        404,
+        ctx.path.startsWith('/api/') ? 'API route not found' : 'Page not found',
+        { code: 'not_found' },
+      );
     }
   } catch (error) {
     const publicError = toPublicError(error);
@@ -18,7 +27,21 @@ export default () => async (ctx, next) => {
       );
     }
     ctx.status = publicError.status;
-    ctx.type = 'application/json';
-    ctx.body = errorBody(publicError);
+    const wantsJson = ctx.path.startsWith('/api/')
+      || ctx.get('accept').includes('application/json');
+    if (wantsJson) {
+      ctx.type = 'application/json';
+      ctx.body = errorBody(publicError);
+    } else {
+      ctx.type = 'text/html; charset=utf-8';
+      ctx.body = document({
+        title: 'Error',
+        body: appFrame({
+          title: 'Error',
+          back: '/',
+          content: errorNotice(publicError.message),
+        }),
+      });
+    }
   }
 };

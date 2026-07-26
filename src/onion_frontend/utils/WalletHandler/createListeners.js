@@ -4,6 +4,11 @@ import depositListener from './depositListener.js';
 
 export default () => (
   new class extends moneroTs.MoneroWalletListener {
+    constructor() {
+      super();
+      this.lastLoggedSyncPercent = -5;
+    }
+
     async onOutputReceived(output) {
       const tx = output.getTx();
 
@@ -26,8 +31,11 @@ export default () => (
       });
     }
 
-    async onSyncProgress(height, startHeight, endHeight, percentDone, message) {
-      console.log('onSyncProgress', height, startHeight, endHeight, percentDone, message);
+    async onSyncProgress(height, startHeight, endHeight, percentDone) {
+      const percent = Math.floor(percentDone * 100);
+      if (percent < this.lastLoggedSyncPercent + 5 && percent !== 100) { return; }
+      this.lastLoggedSyncPercent = percent;
+      console.log(`Wallet sync ${percent}% (${height}/${endHeight}, start ${startHeight})`);
     }
   }()
 );

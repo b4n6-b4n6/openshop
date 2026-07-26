@@ -58,6 +58,7 @@ export default class WalletHandler {
       this.depositSubaddressCounter++; // ???? ok, ig... implement later
     }
 
-    return (await this.wallet.getSubaddress(0, this.depositSubaddressCounter)).toString();
+    const subaddress = await this.wallet.getSubaddress(0, this.depositSubaddressCounter);
+    return subaddress.getAddress();
   }
 }

@@ -75,6 +75,7 @@ class Orders {
           id, customer,
           product_name, product_photo,
           purchase_price, purchase_currency, purchase_quantity,
+          deposit_amount, deposit_txid,
           created_at, detected_deposit_at, confirmed_deposit_at
         FROM orders
         ORDER BY created_at DESC
@@ -91,6 +92,7 @@ class Orders {
           id, 
           product_name, product_photo, 
           purchase_price, purchase_currency, purchase_quantity, 
+          deposit_amount, deposit_txid,
           created_at, detected_deposit_at, confirmed_deposit_at
         FROM orders
         WHERE customer = $1
@@ -106,6 +108,7 @@ class Orders {
     const { rows } = await this.pool.query(
       `
         SELECT
+          id, customer,
           product_name, product_photo, product_description, 
           purchase_price, purchase_currency, purchase_quantity, 
           deposit_address, deposit_amount, deposit_txid, 

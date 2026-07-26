@@ -1,6 +1,5 @@
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
-import { fileURLToPath } from 'node:url';
 
 import onionFilter from './middlewares/onionFilter.js';
 import walletHandlerMw from './middlewares/walletHandlerMw.js';
@@ -10,31 +9,43 @@ import routes from './routes/index.js';
 import createBackendMw from '../backend/middleware.js';
 
 import waitForFile from '../utils/waitForFile.js';
-import serveSpa from '../utils/serveSpa.js';
 import errorHandler from '../middlewares/errorHandler.js';
 import internalStatus from './middlewares/internalStatus.js';
+import staticFiles from '../shared/middlewares/staticFiles.js';
+import chromeDevtoolsProbe from '../shared/middlewares/chromeDevtoolsProbe.js';
 
 import { MY_SHOP_ONION_PATH } from '../const.js';
 
 (async () => {
   await waitForFile(MY_SHOP_ONION_PATH);
   const backendMw = await createBackendMw();
-  const frontendPath = fileURLToPath(new URL('../../frontend/dist/onion/', import.meta.url));
+  const port = Number(process.env.ONION_PORT ?? 7007);
+  const bodyParser = koaBody({
+    multipart: true,
+    formLimit: '15mb',
+    formidable: {
+      allowEmptyFiles: true,
+      maxFileSize: 2 * 1024 * 1024,
+      maxFiles: 2,
+      minFileSize: 0,
+    },
+  });
 
   const app = new Koa();
 
   app
     .use(errorHandler())
+    .use(chromeDevtoolsProbe())
     .use(walletHandlerMw())
     .use(internalStatus())
     .use(onionFilter())
+    .use(staticFiles())
     .use(backendMw)
     .use(validateUser())
     .use(createUser())
-    .use(koaBody())
+    .use(bodyParser)
     .use(routes())
-    .use(serveSpa(frontendPath))
-    .listen(7007, () => {
-      console.log('Started!');
+    .listen(port, () => {
+      console.log(`Started onion frontend on http://127.0.0.1:${port}`);
     });
 })();

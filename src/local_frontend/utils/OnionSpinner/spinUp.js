@@ -48,7 +48,17 @@ const spinUp = async ({
   };
 
   p.stdout.on('data', (buffer) => { outConsume(buffer.toString()); });
-  p.on('close', (code) => {
+  p.on('close', async (code) => {
+    if (outData.includes('another Tor process is running with the same data directory')) {
+      try {
+        onBootstrapped(await readMyOnionHostname());
+        return;
+      } catch (error) {
+        onError(error);
+        return;
+      }
+    }
+
     console.error(outData);
     onError(new Error(`tor closed with status code of ${code}`));
   });
