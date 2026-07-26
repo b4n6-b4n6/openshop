@@ -9,25 +9,27 @@ import {
 const client = new CoinGeckoClient({
   timeout: FETCH_FIAT_PRICE_TIMEOUT,
 });
+
+export const extractMoneroPrices = (response) => {
+  const prices = response?.monero ?? response?.data?.monero;
+  return prices && typeof prices === 'object' ? prices : null;
+};
+
 const fetchFiatPrice = async () => {
-  const response = await client.simplePrice({
-    ids: 'monero',
-    vs_currencies: CURRENCIES,
-  });
-
-  if (!response.success) {
-    console.error(response.data);
+  try {
+    const response = await client.simplePrice({
+      ids: 'monero',
+      vs_currencies: CURRENCIES,
+    });
+    const result = extractMoneroPrices(response);
+    if (!result) {
+      console.error('CoinGecko returned no Monero prices', response);
+    }
+    return result;
+  } catch (error) {
+    console.error('Could not fetch the current Monero exchange rate', error);
     return null;
   }
-
-  const result = response.data?.monero;
-
-  if (!result) {
-    console.error(result);
-    return null;
-  }
-
-  return result;
 };
 
 export default createDebounced(fetchFiatPrice, FETCH_FIAT_PRICE_REMEMBER_FOR);
