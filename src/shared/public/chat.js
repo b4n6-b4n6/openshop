@@ -1,0 +1,109 @@
+/* global DOMParser, document, window */
+(() => {
+  const form = document.querySelector('[data-chat-form]');
+  if (!form) return;
+
+  const fileInput = form.querySelector('[data-chat-file]');
+  const attachment = form.querySelector('[data-chat-attachment]');
+  const attachmentName = form.querySelector('[data-chat-attachment-name]');
+  const attachmentPreview = form.querySelector('[data-chat-attachment-preview]');
+  const removeAttachment = form.querySelector('[data-chat-attachment-remove]');
+  const sendButton = form.querySelector('[data-chat-send]');
+  const errorNotice = form.querySelector('[data-chat-error]');
+  const messageInput = form.elements.text;
+  const messagesFrame = form.querySelector('iframe[title="Messages"]');
+  let previewUrl;
+
+  function showError(message) {
+    errorNotice.textContent = message;
+    errorNotice.classList.remove('hidden');
+  }
+
+  function clearError() {
+    errorNotice.textContent = '';
+    errorNotice.classList.add('hidden');
+  }
+
+  function clearAttachment() {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    previewUrl = undefined;
+    fileInput.value = '';
+    attachmentPreview.removeAttribute('src');
+    attachmentName.textContent = '';
+    attachment.classList.add('hidden');
+    attachment.classList.remove('flex');
+  }
+
+  fileInput.addEventListener('change', () => {
+    clearError();
+    const [file] = fileInput.files;
+    if (!file) {
+      clearAttachment();
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      clearAttachment();
+      showError('The selected image is larger than 2 MB.');
+      return;
+    }
+    previewUrl = URL.createObjectURL(file);
+    attachmentPreview.src = previewUrl;
+    attachmentName.textContent = file.name || 'Image selected';
+    attachment.classList.remove('hidden');
+    attachment.classList.add('flex');
+  });
+
+  removeAttachment.addEventListener('click', clearAttachment);
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    clearError();
+    if (!messageInput.value.trim() && !fileInput.files.length) {
+      showError('Write a message or choose an image.');
+      return;
+    }
+
+    sendButton.disabled = true;
+    sendButton.textContent = '…';
+    try {
+      await window.primeMessageTing?.();
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        cache: 'no-store',
+        headers: {
+          Accept: 'text/html',
+          'X-OpenShop-Async': '1',
+        },
+        signal: AbortSignal.timeout(30_000),
+      });
+      const result = new DOMParser().parseFromString(
+        await response.text(),
+        'text/html',
+      );
+      if (!response.ok) {
+        throw new Error(
+          result.querySelector('[data-send-error]')?.textContent?.trim()
+          ?? `Message send returned ${response.status}`,
+        );
+      }
+      if (!result.querySelector('[data-message-sent]')) {
+        throw new Error('Message send returned an invalid response');
+      }
+
+      messageInput.value = '';
+      clearAttachment();
+      messagesFrame?.contentWindow?.postMessage({
+        type: 'openshop:refresh-messages',
+        stickToBottom: true,
+      }, window.location.origin);
+    } catch (error) {
+      console.error('Could not send chat message', error);
+      showError(error.message || 'The message could not be sent. Try again.');
+    } finally {
+      sendButton.disabled = false;
+      sendButton.textContent = '➤';
+      messageInput.focus();
+    }
+  });
+})();

@@ -18,6 +18,13 @@ export const toPublicError = (error, fallback = {}) => {
 
   const rawMessage = messageOf(error);
 
+  if (error?.httpCode === 413 || error?.code === 1009) {
+    return new PublicError(
+      'The uploaded image is too large. Choose an image no larger than 2 MB.',
+      { status: 413, code: 'image_too_large' },
+    );
+  }
+
   if (/secret view key/i.test(rawMessage)) {
     return new PublicError(
       'The private view key is invalid. Enter a 64-character hexadecimal Monero view key.',

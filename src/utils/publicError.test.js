@@ -21,6 +21,16 @@ test('does not expose unexpected internal error messages', () => {
   expect(error.message).not.toContain('database-secret');
 });
 
+test('maps multipart size failures to a visible upload error', () => {
+  const error = toPublicError({ httpCode: 413, message: 'formidable details' });
+
+  expect(error).toMatchObject({
+    status: 413,
+    code: 'image_too_large',
+  });
+  expect(error.message).toContain('2 MB');
+});
+
 test('serializes public errors using the API error contract', () => {
   const error = new PublicError('Bad input', {
     status: 400,
