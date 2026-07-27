@@ -12,11 +12,6 @@ Pressing "BROWSE SHOP" would yield a screen where is displayed
   * "ENTER" (button)
   * "BACK" (button)
 
-**BROWSE SHOP CONNECTING SCREEN**  
-Pressing "ENTER" would yield a screen where is displayed
-  * "CONNECTING" (text)
-  * loading indicator
-
 **SHOP MONERO WALLET INPUT SCREEN**  
 Pressing "OPEN NEW SHOP" would yield a screen where is displayed
   * "MONERO WALLET PRIMARY ADDRESS" (text input)
