@@ -2,7 +2,7 @@
 import fs from 'node:fs/promises';
 import checkAccess from './checkAccess.js';
 
-const createDebounced = (onData) => {
+const createDebouncedCallback = (onData) => {
   let lastData;
   return (data) => {
     if (lastData === undefined || lastData !== data) {
@@ -13,7 +13,7 @@ const createDebounced = (onData) => {
 };
 
 const ipcTrack = async (path, onData) => {
-  const debouncedOnData = createDebounced(onData);
+  const debouncedOnData = createDebouncedCallback(onData);
 
   const readAndReact = async () => {
     const data = (await fs.readFile(path)).toString();
@@ -51,7 +51,12 @@ const ipcWrite = async (path, data) => {
   await fs.writeFile(path, data);
 };
 
+const ipcRead = async (path, data) => (
+  (await fs.readFile(path, data)).toString()
+);
+
 export {
   ipcTrack,
   ipcWrite,
+  ipcRead,
 };

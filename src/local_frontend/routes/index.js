@@ -8,6 +8,7 @@ import walletSetupPost from './walletSetupPost.js';
 import onionSpinnerProgress from './onionSpinnerProgress.js';
 import myShop from './myShop.js';
 import selfTest from './selfTest.js';
+import syncStatus from './syncStatus.js';
 
 const router = new Router();
 router
@@ -19,6 +20,7 @@ router
   .get('/onion-spinner', onionSpinnerProgress)
   .all('/browser{/*browsePath}', browser)
   .get('/my-shop', myShop)
-  .get('/self-test', selfTest);
+  .get('/self-test', selfTest)
+  .get('/sync-status', syncStatus);
 
 export default () => router.routes();

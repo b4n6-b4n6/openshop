@@ -13,7 +13,13 @@ const myShopPage = ({ address }) => `<!doctype html>
     [src="/self-test"] {
       width: 1em;
       height: 1em;
-      border: 0;
+      border: 1px solid black;
+    }
+
+    [src="/sync-status"] {
+      width: 6em;
+      height: 1em;
+      border: 1px solid black;
     }
   </style>
 </head>
@@ -23,6 +29,14 @@ const myShopPage = ({ address }) => `<!doctype html>
   <iframe
     src="/self-test">
   </iframe>
+
+  <br>
+
+  <iframe
+    src="/sync-status">
+  </iframe>
+
+  <br>
 
   <form action='/'>
     <button>CLOSE SHOP</button>
