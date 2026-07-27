@@ -1,18 +1,13 @@
 import { spawn } from 'node:child_process';
-import readMyOnionHostname from '../../../utils/readMyOnionHostname.js';
 
 const spinUp = ({
   torrcPath,
-  onBootstrapped,
   onBootstrapping,
   onError,
 }) => {
   const p = spawn('tor', ['-f', torrcPath]);
 
-  let outData = '';
   const outConsume = (lines) => {
-    outData += lines;
-
     lines
       .split('\n')
       .filter((v) => !!v)
@@ -28,20 +23,16 @@ const spinUp = ({
 
           const percent = Number(log_parts[1]);
           onBootstrapping(percent);
-
-          if (percent === 100) {
-            readMyOnionHostname().then((oh) => {
-              onBootstrapped(oh);
-            });
-          }
         }
       });
   };
 
-  p.stdout.on('data', (buffer) => { outConsume(buffer.toString()); });
+  p.stdout.on('data', (buffer) => {
+    outConsume(buffer.toString());
+    process.stdout.write(buffer);
+  });
+  p.stderr.pipe(process.stderr);
   p.on('close', (code) => {
-    console.error(outData);
-
     p.emit('error', new Error(`tor closed with status code of ${code}`));
   });
   p.on('error', (error) => { onError(error); });

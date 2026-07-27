@@ -10,22 +10,24 @@ import routes from './routes/index.js';
 
 import waitForFile from '../utils/waitForFile.js';
 
-import { MY_SHOP_ONION_PATH } from '../const.js';
+import { MY_SHOP_ONION_PATH, MY_SHOP_WALLET_PATH } from '../const.js';
+import createMyOnion from './middlewares/myOnion.js';
 
-(async () => {
-  await waitForFile(MY_SHOP_ONION_PATH);
+await waitForFile(MY_SHOP_ONION_PATH);
+await waitForFile(MY_SHOP_WALLET_PATH);
+const myOnion = await createMyOnion();
 
-  const app = new Koa();
+const app = new Koa();
 
-  app
-    .use(preRoutes())
-    .use(onionFilter())
-    .use(walletHandlerMw())
-    .use(createUser())
-    .use(validateUser())
-    .use(koaBody())
-    .use(routes())
-    .listen(7007, () => {
-      console.log('Started!');
-    });
-})();
+app
+  .use(preRoutes())
+  .use(myOnion)
+  .use(onionFilter())
+  .use(walletHandlerMw())
+  .use(createUser())
+  .use(validateUser())
+  .use(koaBody())
+  .use(routes())
+  .listen(7007, () => {
+    console.log('Started!');
+  });

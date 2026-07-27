@@ -1,39 +1,21 @@
-/* eslint-disable no-await-in-loop */
-import moneroTs from 'monero-ts';
-import { MONERO_RPC_URI, MY_SHOP_WALLET_PATH } from '../../../const.js';
-import createListeners from './createListeners.js';
+import { MY_SHOP_WALLET_SYNC_STATUS_IPC } from '../../../const.js';
+import { ipcTrack } from '../../../utils/ipc.js';
 
 export default class WalletHandler {
-  async init() {
-    this.inited = true;
+  constructor() {
+    this.height = null;
+    this.percent = 0;
 
-    const wallet = await moneroTs.openWalletFull({
-      path: MY_SHOP_WALLET_PATH,
-      password: '',
-      networkType: moneroTs.MoneroNetworkType.MAINNET,
-      server: { uri: MONERO_RPC_URI },
-    });
+    ipcTrack(
+      MY_SHOP_WALLET_SYNC_STATUS_IPC,
+      (data) => {
+        if (!data) { return; }
 
-    await wallet.addListener(createListeners());
-    await wallet.startSyncing();
+        const [height, percent] = data.split(' ').map(Number);
 
-    this.wallet = wallet;
-    this.depositSubaddressCounter = 0;
-
-    return this;
-  }
-
-  async getUnusedDepositSubaddress() {
-    const synced = await this.wallet.isSynced();
-    if (!synced) { throw new Error('wallet is not synced'); }
-
-    for (;;) {
-      const balance = await this.wallet.getBalance(0, this.depositSubaddressCounter);
-      if (!balance) { break; }
-
-      this.depositSubaddressCounter++; // ???? ok, ig... implement later
-    }
-
-    return (await this.wallet.getSubaddress(0, this.depositSubaddressCounter)).toString();
+        this.height = height;
+        this.percent = percent;
+      },
+    );
   }
 }

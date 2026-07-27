@@ -1,5 +1,9 @@
-import { MY_SHOP_TORRC_PATH } from '../../../const.js';
-import spinUp from './spinUp.js';
+import {
+  MY_SHOP_ONION_LAUNCH_IPC,
+  MY_SHOP_ONION_PROGRESS_IPC,
+} from '../../../const.js';
+import { ipcTrack, ipcWrite } from '../../../utils/ipc.js';
+import readMyOnionHostname from '../../../utils/readMyOnionHostname.js';
 
 export default class OnionSpinner {
   constructor() {
@@ -12,17 +16,17 @@ export default class OnionSpinner {
     if (this.spinning) { return; }
     this.spinning = true;
 
-    spinUp({
-      torrcPath: MY_SHOP_TORRC_PATH,
-      onBootstrapping: (progress) => {
-        this.progress = progress;
-      },
-      onBootstrapped: (onion) => {
-        this.onion = onion;
-      },
-      onError: (error) => {
-        throw error;
-      },
+    ipcTrack(MY_SHOP_ONION_PROGRESS_IPC, async (progress) => {
+      if (!progress) { return; }
+
+      const p = Number(progress);
+
+      if (p === 100) {
+        this.onion = await readMyOnionHostname();
+      }
+
+      this.progress = p;
     });
+    ipcWrite(MY_SHOP_ONION_LAUNCH_IPC, '1');
   }
 }

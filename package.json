@@ -19,11 +19,12 @@
     "onion-frontend-dev": "NODE_ENV=development nodemon src/onion_frontend",
     "local-frontend": "node src/local_frontend",
     "local-frontend-dev": "NODE_ENV=development nodemon src/local_frontend",
+    "my-shop-onion-launcher": "node src/my_shop_onion",
+    "wallet-launcher": "node src/wallet",
+    "tor-proxy": "tor -f torrc/proxy",
     "lint": "yarn eslint src",
     "lint-config": "yarn eslint eslint.config.js",
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js src",
-    "tor-proxy": "tor -f torrc/proxy",
-    "tor-my-shop-onion": "tor -f torrc/my_shop"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js src"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

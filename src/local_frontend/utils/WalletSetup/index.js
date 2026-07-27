@@ -18,7 +18,7 @@ class WalletSetup {
     try {
       const wallet = await moneroTs.createWalletFull({
         path: MY_SHOP_WALLET_PATH,
-        password: '',
+        password: 'password',
         networkType: moneroTs.MoneroNetworkType.MAINNET,
         primaryAddress,
         privateViewKey,

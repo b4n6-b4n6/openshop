@@ -19,4 +19,9 @@ export const SELF_TEST_TIMEOUT = 12.5 * 1000;
 export const FETCH_FIAT_PRICE_TIMEOUT = 20 * 1000;
 export const FETCH_FIAT_PRICE_REMEMBER_FOR = 1000 * 60 * 5;
 
-export const MONERO_RPC_URI = 'https://xmr-node.cakewallet.com:18081';
+export const MONERO_RPC_URI = 'https://xmr.vvv.systems';
+export const MONERO_RPC_PASSWORD = '94971a4ae9db945f900339861545b697';
+
+export const MY_SHOP_ONION_LAUNCH_IPC = '.ipc/my_shop_onion_launch';
+export const MY_SHOP_ONION_PROGRESS_IPC = '.ipc/my_shop_onion_progress';
+export const MY_SHOP_WALLET_SYNC_STATUS_IPC = '.ipc/my_shop_wallet_sync_status_ipc';
