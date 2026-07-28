@@ -15,7 +15,7 @@ class Messages {
 
           image_content BYTEA,
           text_content TEXT,
-          check ((image_content is null) != (text_content is null)),
+          CHECK ((image_content is null) != (text_content is null)),
 
           created_at TIMESTAMP NOT NULL DEFAULT now(),
           received_at TIMESTAMP,

@@ -30,6 +30,7 @@ class Orders {
 
           created_at TIMESTAMP NOT NULL DEFAULT now(),
           detected_deposit_at TIMESTAMP,
+          CHECK (created_at - detected_deposit_at <= INTERVAL '24 hours'),
           confirmed_deposit_at TIMESTAMP
         )
       `,
