@@ -1,12 +1,8 @@
 import head from './head.js';
-import bufferToDataURI from '../../utils/bufferToDataURI.js';
 
 const editShopPage = ({
-  address,
   name,
   description,
-  profile_photo,
-  banner_photo,
 }) => `<!doctype html>
 <html>
 <head>

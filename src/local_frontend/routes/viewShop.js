@@ -13,8 +13,8 @@ export default async (ctx) => {
       description: '',
       profile_photo: null,
       banner_photo: null,
-    }
-    await shops.update(shop)
+    };
+    await shops.update(shop);
   }
 
   ctx.body = viewShopPage(shop);

@@ -81,39 +81,49 @@ const viewShopPage = ({
   <form action='/shop/settings'><button>EDIT SHOP NAME</button></form>
   <form action='/shop/settings'><button>EDIT SHOP DESCRIPTION</button></form>
 
-  <form action='/upload-profile-photo'>
-    <button>CHANGE PROFILE PHOTO</button>
+  <form action='/shop/settings/profile-photo' method='POST' enctype='multipart/form-data'>
+    <button type='button'>CHANGE PROFILE PHOTO</button>
 
     <input name='photo' type='file' />
   </form>
   <script>
-    const form = document.querySelector('[action="/upload-profile-photo"]')
+    const form = document.querySelector('[action="/shop/settings/profile-photo"]')
     const fileInput = form.querySelector('input[type=file]')
     const changeButton = form.querySelector('button')
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault()
+    fileInput.addEventListener('change', (event) => {
+      const files = event.target.files
+
+      if (files.length) {
+        changeButton.disabled = true;
+        form.submit();
+      }
     })
     changeButton.addEventListener('click', (event) => {
       fileInput.click()
     })
   </script>
 
-  <form action='/upload-banner-photo'>
-    <button>CHANGE BANNER PHOTO</button>
+  <form action='/shop/settings/banner-photo' method='POST' enctype='multipart/form-data'>
+    <button type='button'>CHANGE BANNER PHOTO</button>
 
     <input name='photo' type='file' />
   </form>
   <script>
-    const form = document.querySelector('[action="/upload-banner-photo"]')
+    const form = document.querySelector('[action="/shop/settings/banner-photo"]')
     const fileInput = form.querySelector('input[type=file]')
     const changeButton = form.querySelector('button')
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault()
+    fileInput.addEventListener('change', (event) => {
+      const files = event.target.files
+
+      if (files.length) { form.submit(); }
     })
     changeButton.addEventListener('click', (event) => {
-      fileInput.click()
+      if (files.length) {
+        changeButton.disabled = true;
+        form.submit();
+      }
     })
   </script>
 

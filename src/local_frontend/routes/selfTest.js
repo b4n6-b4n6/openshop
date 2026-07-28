@@ -6,7 +6,7 @@ import selfTestResult from '../pages/selfTestResult.js';
 
 const socksAgent = new SocksProxyAgent(
   'socks5h://127.0.0.1:39050',
-  { timeout: SELF_TEST_TIMEOUT }
+  { timeout: SELF_TEST_TIMEOUT },
 );
 
 export default (ctx) => new Promise((resolve) => {

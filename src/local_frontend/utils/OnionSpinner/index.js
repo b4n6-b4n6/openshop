@@ -3,7 +3,6 @@ import {
   MY_SHOP_ONION_PROGRESS_IPC,
 } from '../../../const.js';
 import { ipcTrack, ipcWrite, ipcRead } from '../../../utils/ipc.js';
-import isDev from '../../../utils/isDev.js';
 import readMyOnionHostname from '../../../utils/readMyOnionHostname.js';
 
 export default class OnionSpinner {

@@ -1,18 +1,18 @@
 # Screens
 ## Initial screens
 
-**INITIAL SCREEN**  
+**INITIAL SCREEN✅**  
 Opening app would yield a screen with 2 options
   * "OPEN NEW SHOP" (button)
   * "BROWSE SHOP" (button)
 
-**BROWSE SHOP INPUT SCREEN**  
+**BROWSE SHOP INPUT SCREEN✅**  
 Pressing "BROWSE SHOP" would yield a screen where is displayed
   * "SHOP ADDRESS" (text input)
   * "ENTER" (button)
   * "BACK" (button)
 
-**SHOP MONERO WALLET INPUT SCREEN**  
+**SHOP MONERO WALLET INPUT SCREEN✅**  
 Pressing "OPEN NEW SHOP" would yield a screen where is displayed
   * "MONERO WALLET PRIMARY ADDRESS" (text input)
   * "MONERO WALLET PRIVATE VIEW KEY" (text input)
@@ -20,12 +20,12 @@ Pressing "OPEN NEW SHOP" would yield a screen where is displayed
   * "CREATE" (button)
   * "BACK" (button)
 
-**SHOP OPENING SCREEN**  
+**SHOP OPENING SCREEN✅**  
 Pressing "CREATE" would yield a screen where is displayed
   * "SPINNING UP ONION" (text)
   * loading indicator
 
-**BROWSE SHOP ERROR SCREEN**  
+**BROWSE SHOP ERROR SCREEN✅**  
 Pressing "ENTER" would potentially yield (after loading) an error screen where is displayed
   * "ERROR" (text)
   * "BACK" (button)

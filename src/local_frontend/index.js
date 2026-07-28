@@ -1,7 +1,7 @@
 import Koa from 'koa';
-import { koaBody } from 'koa-body';
 import routes from './routes/index.js';
 
+import body from './middlewares/body.js';
 import createWalletSetupMw from './middlewares/walletSetupMw.js';
 import createBackendMw from './middlewares/backendMw.js';
 
@@ -19,7 +19,7 @@ app
   .use(onionSpinner())
   .use(backendMw)
   .use(walletSetupMw)
-  .use(koaBody())
+  .use(body())
   .use(exportBrowsedOnion())
   .use(routes())
   .listen(7001, () => {

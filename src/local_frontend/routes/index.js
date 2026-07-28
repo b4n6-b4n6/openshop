@@ -1,14 +1,18 @@
 import Router from '@koa/router';
 import root from './root.js';
-import browser from './browser.js';
+
 import browserInput from './browserInput.js';
 import browserInputPost from './browserInputPost.js';
 import walletSetupProgress from './walletSetupProgress.js';
 import walletSetupPost from './walletSetupPost.js';
 import onionSpinnerProgress from './onionSpinnerProgress.js';
+import browser from './browser.js';
+
 import viewShop from './viewShop.js';
 import editShop from './editShop.js';
 import editShopPost from './editShopPost.js';
+import editShopProfilePhoto from './editShopBannerPhoto.js';
+
 import selfTest from './selfTest.js';
 import syncStatus from './syncStatus.js';
 
@@ -24,6 +28,8 @@ router
   .get('/shop', viewShop)
   .get('/shop/settings', editShop)
   .post('/shop/settings', editShopPost)
+  .post('/shop/settings/profile-photo', editShopProfilePhoto)
+  .post('/shop/settings/banner-photo', editShopProfilePhoto)
   .get('/self-test', selfTest)
   .get('/sync-status', syncStatus);
 

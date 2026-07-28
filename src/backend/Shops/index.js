@@ -31,8 +31,8 @@ class Shops {
         ON shop.address = updated_shop.address
         WHEN MATCHED THEN
           UPDATE SET
-            name = updated_shop.name,
-            description = updated_shop.description,
+            name = COALESCE(updated_shop.name, shop.name),
+            description = COALESCE(updated_shop.description, shop.description),
             profile_photo = COALESCE(updated_shop.profile_photo, shop.profile_photo),
             banner_photo = COALESCE(updated_shop.banner_photo, shop.banner_photo)
         WHEN NOT MATCHED THEN
