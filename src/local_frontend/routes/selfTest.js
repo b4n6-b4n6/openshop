@@ -4,7 +4,10 @@ import { SocksProxyAgent } from 'socks-proxy-agent';
 import { SELF_TEST_TIMEOUT } from '../../const.js';
 import selfTestResult from '../pages/selfTestResult.js';
 
-const socksAgent = new SocksProxyAgent('socks5h://127.0.0.1:39050');
+const socksAgent = new SocksProxyAgent(
+  'socks5h://127.0.0.1:39050',
+  { timeout: SELF_TEST_TIMEOUT }
+);
 
 export default (ctx) => new Promise((resolve) => {
   const onionHostname = 't4lhshlyxaaedovji2vx6ylyfvfpvbvq3poaajub5pyyull4f6ui6jyd.onion';
@@ -41,7 +44,6 @@ export default (ctx) => new Promise((resolve) => {
     path: targetUrl.pathname + targetUrl.search,
     method: 'GET',
     agent: socksAgent,
-    timeout: SELF_TEST_TIMEOUT,
     headers,
   };
 

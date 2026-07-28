@@ -63,7 +63,7 @@ const browserInputPage = ({ defaultOnionHostname }) => `<!doctype html>
       });
       
       if (res.ok) {
-        window.location.href = "/browser/";
+        window.location.href = '/browser/';
       } else {
         alert('invalid address format')
         resetForm()

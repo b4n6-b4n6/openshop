@@ -16,8 +16,7 @@ const ipcTrack = async (path, onData) => {
   const debouncedOnData = createDebouncedCallback(onData);
 
   const readAndReact = async () => {
-    const data = (await fs.readFile(path)).toString();
-    debouncedOnData(data);
+    debouncedOnData((await fs.readFile(path)).toString());
   };
 
   if (!(await checkAccess(path))) {

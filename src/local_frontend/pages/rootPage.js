@@ -12,10 +12,10 @@ const rootPage = () => `<!doctype html>
   </style>
 </head>
 <body>
-  <form action="/wallet-setup">
+  <form action='/wallet-setup'>
     <button>OPEN NEW SHOP</button>
   </form>
-  <form action="/browser-input">
+  <form action='/browser-input'>
     <button>BROWSE SHOP</button>
   </form>
 </body>

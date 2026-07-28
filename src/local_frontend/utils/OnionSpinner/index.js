@@ -2,7 +2,7 @@ import {
   MY_SHOP_ONION_LAUNCH_IPC,
   MY_SHOP_ONION_PROGRESS_IPC,
 } from '../../../const.js';
-import { ipcTrack, ipcWrite } from '../../../utils/ipc.js';
+import { ipcTrack, ipcWrite, ipcRead } from '../../../utils/ipc.js';
 import isDev from '../../../utils/isDev.js';
 import readMyOnionHostname from '../../../utils/readMyOnionHostname.js';
 
@@ -13,17 +13,12 @@ export default class OnionSpinner {
     this.spinning = false;
 
     (async () => {
-      if (!isDev) { return; }
+      if (Number(await ipcRead(MY_SHOP_ONION_LAUNCH_IPC)) !== 1) { return; }
+      if (Number(await ipcRead(MY_SHOP_ONION_PROGRESS_IPC)) !== 100) { return; }
 
-      try {
-        const onion = await readMyOnionHostname();
-        this.onion = onion;
-        this.progress = 100;
-      } catch (err) {
-        if (err.code === 'ENOENT') { return; }
-
-        throw err;
-      }
+      this.onion = await readMyOnionHostname();
+      this.progress = 100;
+      this.spinning = true;
     })();
   }
 

@@ -21,7 +21,10 @@ const sanitiseSetCookie = (setCookie, browsedOnion) => (
   `${browsedOnion}.${setCookie}`
 );
 
-const socksAgent = new SocksProxyAgent('socks5h://127.0.0.1:39050');
+const socksAgent = new SocksProxyAgent(
+  'socks5h://127.0.0.1:39050',
+  { timeout: BROWSER_TIMEOUT }
+);
 export default (ctx) => new Promise((resolve) => {
   const browsedOnion = ctx.cookies.get(BROWSED_ONION_COOKIE_NAME);
 

@@ -54,7 +54,11 @@ class Shops {
 
   async get(address) {
     const { rows } = await this.pool.query(
-      'SELECT * FROM shops WHERE address = $1',
+      `
+        SELECT address, name, description, profile_photo, banner_photo
+        FROM shops
+        WHERE address = $1
+      `,
       [address],
     );
 
