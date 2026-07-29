@@ -51,7 +51,7 @@ Pressing "OPEN NEW SHOP" would (after loading) yield a screen where is displayed
   * 
   * "CLOSE SHOP" (button)
 
-**EDIT MY SHOP SCREEN**  
+**EDIT MY SHOP SCREEN✅**  
 Pressing "EDIT SHOP NAME" or "EDIT SHOP DESCRIPTION" would yield a screen where is displayed
   * "SHOP NAME" (text input)
   * "SHOP DESCRIPTION" (rich text input)
