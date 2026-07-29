@@ -3,6 +3,7 @@ run
 - `yarn local-frontend-dev`
 - `yarn wallet-launcher`
 - `yarn my-shop-onion-launcher`
+- `yarn tor-proxy`
 
 also needs to be configured!
 - postgres

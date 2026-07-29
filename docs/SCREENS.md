@@ -32,7 +32,7 @@ Pressing "ENTER" would potentially yield (after loading) an error screen where i
 
 ## Shop owner screens
 
-**VIEW MY SHOP SCREEN**  
+**VIEW MY SHOP SCREEN✅**  
 Pressing "OPEN NEW SHOP" would (after loading) yield a screen where is displayed
   * shop onion address (text)
   * qr code (tappable icon)
@@ -106,7 +106,7 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
 
 ## Shop customer screens
 
-**VIEW SHOP SCREEN**  
+**VIEW SHOP SCREEN✅**  
 Pressing "ENTER" would potentially yield (after loading) a successfully loaded screen where is displayed
   * shop onion address (text)
   * shop profile photo (image)

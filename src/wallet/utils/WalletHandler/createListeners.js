@@ -33,7 +33,9 @@ export default () => (
     async onSyncProgress(height, startHeight, endHeight, percentDone, message) {
       const percent = Math.floor(percentDone * 100);
       const status = `${height} ${percent}`;
-      console.log(`${height}/${percent}% (${message})`);
+      console.log(
+        `${(new Date()).toISOString()} ${height}/${percent}% (${message})`,
+      );
 
       ipcWrite(MY_SHOP_WALLET_SYNC_STATUS_IPC, status);
     }

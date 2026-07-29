@@ -43,6 +43,10 @@ const viewShopPage = ({
     img {
       border: 1px dotted black;
     }
+    
+    .enlarged {
+      transform: scale(1200%);
+    }
   </style>
 </head>
 <body>
@@ -61,10 +65,14 @@ const viewShopPage = ({
   <input name='address' type='text' readonly value='${address}'/>
   <br>
 
-  <button>▣</button>
+  <button class='qr-button'>▣</button>
   <br>
   <script>
-
+    document
+      .querySelector('.qr-button')
+      .addEventListener('click', (event) => {
+        event.target.classList.toggle('enlarged')
+      })
   </script>
 
   <img alt='profile photo' src="${profile_photo && bufferToDataURI('unknown', profile_photo)}">
@@ -81,27 +89,33 @@ const viewShopPage = ({
   <form action='/shop/settings'><button>EDIT SHOP NAME</button></form>
   <form action='/shop/settings'><button>EDIT SHOP DESCRIPTION</button></form>
 
+  <script>
+    implementImageUpload = (selectorQuery) => {
+      const form = document.querySelector(selectorQuery)
+      const fileInput = form.querySelector('input[type=file]')
+      const changeButton = form.querySelector('button')
+
+      fileInput.addEventListener('change', (event) => {
+        const files = event.target.files
+
+        if (files.length) {
+          changeButton.disabled = true
+          form.submit()
+        }
+      })
+      changeButton.addEventListener('click', (event) => {
+        fileInput.click()
+      })
+    };
+  </script>
+
   <form action='/shop/settings/profile-photo' method='POST' enctype='multipart/form-data'>
     <button type='button'>CHANGE PROFILE PHOTO</button>
 
     <input name='photo' type='file' />
   </form>
   <script>
-    const form = document.querySelector('[action="/shop/settings/profile-photo"]')
-    const fileInput = form.querySelector('input[type=file]')
-    const changeButton = form.querySelector('button')
-
-    fileInput.addEventListener('change', (event) => {
-      const files = event.target.files
-
-      if (files.length) {
-        changeButton.disabled = true;
-        form.submit();
-      }
-    })
-    changeButton.addEventListener('click', (event) => {
-      fileInput.click()
-    })
+    implementImageUpload('[action="/shop/settings/profile-photo"]')
   </script>
 
   <form action='/shop/settings/banner-photo' method='POST' enctype='multipart/form-data'>
@@ -110,21 +124,7 @@ const viewShopPage = ({
     <input name='photo' type='file' />
   </form>
   <script>
-    const form = document.querySelector('[action="/shop/settings/banner-photo"]')
-    const fileInput = form.querySelector('input[type=file]')
-    const changeButton = form.querySelector('button')
-
-    fileInput.addEventListener('change', (event) => {
-      const files = event.target.files
-
-      if (files.length) { form.submit(); }
-    })
-    changeButton.addEventListener('click', (event) => {
-      if (files.length) {
-        changeButton.disabled = true;
-        form.submit();
-      }
-    })
+    implementImageUpload('[action="/shop/settings/banner-photo"]')
   </script>
 
   <form action='/products'><button>VIEW MY PRODUCTS</button></form>

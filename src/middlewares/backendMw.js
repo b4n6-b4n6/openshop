@@ -1,6 +1,6 @@
-import createShops from '../../backend/Shops/index.js';
-import createMessages from '../../backend/Messages/index.js';
-import createPool from '../../backend/createPool.js';
+import createShops from '../backend/Shops/index.js';
+import createMessages from '../backend/Messages/index.js';
+import createPool from '../backend/createPool.js';
 
 export default async () => {
   const pool = createPool();

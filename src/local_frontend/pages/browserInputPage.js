@@ -52,7 +52,7 @@ const browserInputPage = ({ defaultOnionHostname }) => `<!doctype html>
     }
 
     form.addEventListener('submit', async (event) => {
-      const body = new URLSearchParams(new FormData(form));
+      const body = new URLSearchParams(new FormData(form))
 
       event.preventDefault()
 
@@ -60,10 +60,10 @@ const browserInputPage = ({ defaultOnionHostname }) => `<!doctype html>
       const res = await fetch('/browser-input', {
         method: 'POST',
         body,
-      });
+      })
       
       if (res.ok) {
-        window.location.href = '/browser/';
+        window.location.href = '/browser/'
       } else {
         alert('invalid address format')
         resetForm()
