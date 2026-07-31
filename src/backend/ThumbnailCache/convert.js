@@ -3,8 +3,6 @@ import { spawn } from 'node:child_process';
 import getStream, { getStreamAsBuffer } from 'get-stream';
 import detectContentType from 'detect-content-type';
 
-const CONVERT_WIDTH = '100';
-
 const promisifyClose = (cp) => new Promise((resolve) => {
   cp.on('close', resolve);
 });

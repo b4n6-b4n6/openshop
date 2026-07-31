@@ -5,6 +5,8 @@ test('empty cache', async () => {
   const thumbnailCache = new ThumbnailCache();
 
   expect(await thumbnailCache.get(randomUUID())).toBeFalsy();
+
+  thumbnailCache.destroy();
 });
 
 test('non-empty cache', async () => {
@@ -15,6 +17,8 @@ test('non-empty cache', async () => {
 
   await thumbnailCache.set(key, value);
   expect(await thumbnailCache.get(key)).toEqual(value);
+
+  thumbnailCache.destroy();
 });
 
 test('emptied cache', async () => {
@@ -26,4 +30,6 @@ test('emptied cache', async () => {
   await thumbnailCache.set(key, value);
   await thumbnailCache.clear(key);
   expect(await thumbnailCache.get(key)).toBeFalsy();
+
+  thumbnailCache.destroy();
 });
