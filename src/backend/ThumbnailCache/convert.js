@@ -9,11 +9,11 @@ const promisifyClose = (cp) => new Promise((resolve) => {
   cp.on('close', resolve);
 });
 
-const convert = async (imageData) => {
+const convert = async (imageData, maxDimension) => {
   const imageFormat = detectContentType(imageData).replace(/^image\//, '');
   const cp = spawn(
     'convert',
-    `- -resize ${CONVERT_WIDTH}x ${imageFormat}:-`.split(' '),
+    `- -resize ${maxDimension}x${maxDimension}> ${imageFormat}:-`.split(' '),
   );
   cp.stdin.end(imageData);
 
