@@ -1,4 +1,5 @@
 import head from './head.js';
+import indicators from './indicators.js';
 
 const editShopPage = ({
   name,
@@ -13,24 +14,14 @@ const editShopPage = ({
       font-size: 150%;
     }
 
-    [src='/self-test'] {
-      width: 1em;
-      height: 1em;
-      border: 1px solid black;
-    }
-
-    [src='/sync-status'] {
-      width: 6em;
-      height: 1em;
-      border: 1px solid black;
-    }
-
     input[type='file'] {
       display: none;
     }
   </style>
 </head>
 <body>
+  ${indicators()}
+
   <form action='/shop/settings' method='post'>
     <input
       type='text'

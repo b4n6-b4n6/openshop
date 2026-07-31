@@ -18,19 +18,19 @@ const walletSetupPage = () => `<!doctype html>
       type='text'
       placeholder='XMR PRIMARY ADDRESS'
       required
-    /> <br />
+   ><br>
     <input
       name='private_view_key'
       type='text'
       placeholder='XMR SECRET VIEW KEY'
       required
-    /> <br />
+   ><br>
     <input
       name='restore_height'
       type='text'
       placeholder='XMR RESTORE BLOCK HEIGHT'
       required
-    /> <br />
+   ><br>
 
     <button>CREATE</button>
   </form>

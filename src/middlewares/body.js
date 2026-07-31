@@ -16,8 +16,11 @@ export default () => compose([
         file.bufferPromise = getStreamAsBuffer(stream).then((buffer) => {
           file.buffer = buffer;
         });
+
         return stream;
       },
+      allowEmptyFiles: true,
+      minFileSize: 0,
     },
   }),
   async (ctx, next) => {
@@ -40,6 +43,7 @@ export default () => compose([
         files[k] = v.filter((file) => file.size);
       });
     }
+
     await next();
   },
 ]);

@@ -16,6 +16,7 @@ class Products {
 
           price NUMERIC(5, 2) NOT NULL,
           currency TEXT NOT NULL,
+          CHECK (currency <> ''),
 
           available_quantity integer NOT NULL
         )

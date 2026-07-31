@@ -1,5 +1,6 @@
 import head from './head.js';
 import bufferToDataURI from '../../utils/bufferToDataURI.js';
+import { IMG_SRC_PLACEHOLDER } from '../../const.js';
 
 const shopPage = ({
   enableBackButton,
@@ -35,7 +36,12 @@ const shopPage = ({
   </style>
 </head>
 <body>
-  <input name='address' type='text' readonly value='${address}'/>
+  <input
+    name='address'
+    type='text'
+    readonly
+    value='${address}'
+  >
   <br>
 
   <button class='qr-button'>▣</button>
@@ -48,13 +54,24 @@ const shopPage = ({
       })
   </script>
 
-  <img alt='profile photo' src="${profile_photo && bufferToDataURI('unknown', profile_photo)}">
+  <img
+    alt='profile photo'
+    src="${profile_photo ? bufferToDataURI('unknown', profile_photo) : IMG_SRC_PLACEHOLDER}"
+  >
   <br>
 
-  <img alt='banner photo' src="${banner_photo && bufferToDataURI('unknown', banner_photo)}">
+  <img
+    alt='banner photo'
+    src="${banner_photo ? bufferToDataURI('unknown', banner_photo) : IMG_SRC_PLACEHOLDER}"
+  >
   <br>
 
-  <input type='text' readonly placeholder='Shop name' value='${name}'>
+  <input
+    type='text'
+    readonly
+    placeholder='Shop name'
+    value='${name}'
+  >
   <br>
 
   <textarea readonly placeholder='Shop description'>${description}</textarea>

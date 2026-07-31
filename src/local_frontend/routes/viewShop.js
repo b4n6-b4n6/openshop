@@ -16,6 +16,7 @@ export default async (ctx) => {
     };
     await shops.update(shop);
   }
+  console.log(shop);
 
   ctx.body = viewShopPage(shop);
 };

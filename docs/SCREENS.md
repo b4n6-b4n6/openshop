@@ -28,7 +28,7 @@ Pressing "CREATE" would yield a screen where is displayed
 **BROWSE SHOP ERROR SCREEN✅**  
 Pressing "ENTER" would potentially yield (after loading) an error screen where is displayed
   * "ERROR" (text)
-  * "BACK" (button)
+  * "BACK" (button)tested 
 
 ## Shop owner screens
 
@@ -45,6 +45,7 @@ Pressing "OPEN NEW SHOP" would (after loading) yield a screen where is displayed
   * "EDIT SHOP DESCRIPTION" (button)
   * "CHANGE PROFILE PHOTO" (button)
   * "CHANGE BANNER PHOTO" (button)
+  * "ADD NEW PRODUCT" (button)
   * "VIEW MY PRODUCTS" (button)
   * "VIEW MY CHATS" (button)
   * "VIEW MY ORDERS" (button)
@@ -59,7 +60,7 @@ Pressing "EDIT SHOP NAME" or "EDIT SHOP DESCRIPTION" would yield a screen where 
   * "UPDATE" (button)
   * "BACK" (button)
 
-**ADD MY PRODUCT SCREEN**  
+**ADD MY PRODUCT SCREEN✅**  
 Pressing "ADD NEW PRODUCT" would yield a screen where is displayed
   * "NAME" (text input)
   * "DESCRIPTION" (rich text input)
@@ -84,7 +85,7 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
   * 
   * "BACK" (button)
 
-**EDIT MY PRODUCT SCREEN**  
+**EDIT MY PRODUCT SCREEN✅**  
   * "NAME" (text input)
   * "DESCRIPTION" (rich text input)
   * product photo (image)

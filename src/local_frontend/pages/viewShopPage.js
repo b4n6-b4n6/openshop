@@ -1,5 +1,7 @@
-import head from './head.js';
+import { IMG_SRC_PLACEHOLDER } from '../../const.js';
 import bufferToDataURI from '../../utils/bufferToDataURI.js';
+import head from './head.js';
+import indicators from './indicators.js';
 
 const viewShopPage = ({
   address,
@@ -15,18 +17,6 @@ const viewShopPage = ({
   <style>
     button {
       font-size: 150%;
-    }
-
-    [src='/self-test'] {
-      width: 1em;
-      height: 1em;
-      border: 1px solid black;
-    }
-
-    [src='/sync-status'] {
-      width: 6em;
-      height: 1em;
-      border: 1px solid black;
     }
 
     input[type='file'] {
@@ -50,19 +40,9 @@ const viewShopPage = ({
   </style>
 </head>
 <body>
-  <iframe
-    src="/self-test">
-  </iframe>
+  ${indicators()}
 
-  <br>
-
-  <iframe
-    src="/sync-status">
-  </iframe>
-
-  <br>
-
-  <input name='address' type='text' readonly value='${address}'/>
+  <input name='address' type='text' readonly value='${address}'>
   <br>
 
   <button class='qr-button'>▣</button>
@@ -75,10 +55,10 @@ const viewShopPage = ({
       })
   </script>
 
-  <img alt='profile photo' src="${profile_photo && bufferToDataURI('unknown', profile_photo)}">
+  <img alt='profile photo' src="${profile_photo ? bufferToDataURI('unknown', profile_photo) : IMG_SRC_PLACEHOLDER}">
   <br>
 
-  <img alt='banner photo' src="${banner_photo && bufferToDataURI('unknown', banner_photo)}">
+  <img alt='banner photo' src="${banner_photo ? bufferToDataURI('unknown', banner_photo) : IMG_SRC_PLACEHOLDER}">
   <br>
 
   <input type='text' readonly placeholder='Shop name' value='${name}'>
@@ -112,7 +92,7 @@ const viewShopPage = ({
   <form action='/shop/settings/profile-photo' method='POST' enctype='multipart/form-data'>
     <button type='button'>CHANGE PROFILE PHOTO</button>
 
-    <input name='photo' type='file' />
+    <input name='photo' type='file'>
   </form>
   <script>
     implementImageUpload('[action="/shop/settings/profile-photo"]')
@@ -121,15 +101,16 @@ const viewShopPage = ({
   <form action='/shop/settings/banner-photo' method='POST' enctype='multipart/form-data'>
     <button type='button'>CHANGE BANNER PHOTO</button>
 
-    <input name='photo' type='file' />
+    <input name='photo' type='file'>
   </form>
   <script>
     implementImageUpload('[action="/shop/settings/banner-photo"]')
   </script>
 
-  <form action='/products'><button>VIEW MY PRODUCTS</button></form>
-  <form action='/chats'><button>VIEW MY CHATS</button></form>
-  <form action='/orders'><button>VIEW MY ORDERS</button></form>
+  <form action='/shop/products/new'><button>ADD NEW PRODUCT</button></form>
+  <form action='/shop/products'><button>VIEW MY PRODUCTS</button></form>
+  <form action='/shop/chats'><button>VIEW MY CHATS</button></form>
+  <form action='/shop/orders'><button>VIEW MY ORDERS</button></form>
 
   <hr>
 

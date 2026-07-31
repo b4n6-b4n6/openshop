@@ -23,7 +23,7 @@ const browserInputPage = ({ defaultOnionHostname }) => `<!doctype html>
       placeholder='SHOP ADDRESS'
       value=${defaultOnionHostname}
       required
-    /> <br />
+    > <br>
 
     <button>BROWSE SHOP</button>
 
