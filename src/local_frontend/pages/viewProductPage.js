@@ -89,14 +89,12 @@ const viewProductPage = ({
     <select name='currency'>
       <option value="">CURRENCY</option>
 
-      ${(
-    CURRENCIES.map((aCurrency) => (
-      `<option
-        value=${aCurrency}
-        ${aCurrency === currency ? 'selected' : ''}
-      >${aCurrency.toUpperCase()}</option>`
-    )).join('\n')
-  )}
+  ${CURRENCIES.map((aCurrency) => (
+    `<option
+      value=${aCurrency}
+      ${aCurrency === currency ? 'selected' : ''}
+    >${aCurrency.toUpperCase()}</option>`
+  )).join('\n')}
     </select><br>
 
     <input
@@ -128,7 +126,7 @@ const viewProductPage = ({
   </script>
   <hr>
 
-  <form action='/shop'><button>BACK</button></form>
+  <form action='/shop/products'><button>BACK</button></form>
 </body>
 </html>`;
 

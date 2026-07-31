@@ -30,6 +30,7 @@ export default async (ctx) => {
       )
     );
   }
+
   if (shop.banner_photo) {
     shop.banner_photo = (
       await thumbnailCache.genThumb(

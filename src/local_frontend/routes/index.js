@@ -14,6 +14,7 @@ import editShopPost from './editShopPost.js';
 import editShopProfilePhoto from './editShopProfilePhoto.js';
 import editShopBannerPhoto from './editShopBannerPhoto.js';
 
+import viewProducts from './viewProducts.js';
 import newProduct from './newProduct.js';
 import newProductPost from './newProductPost.js';
 import viewProduct from './viewProduct.js';
@@ -39,6 +40,7 @@ router
   .post('/shop/settings/profile-photo', editShopProfilePhoto)
   .post('/shop/settings/banner-photo', editShopBannerPhoto)
 
+  .get('/shop/products', viewProducts)
   .get('/shop/products/new', newProduct)
   .post('/shop/products/new', newProductPost)
   .get('/shop/products/:id', viewProduct)
