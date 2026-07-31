@@ -27,3 +27,5 @@ export const MY_SHOP_ONION_PROGRESS_IPC = '.ipc/my_shop_onion_progress';
 export const MY_SHOP_WALLET_SYNC_STATUS_IPC = '.ipc/my_shop_wallet_sync_status_ipc';
 
 export const IMG_SRC_PLACEHOLDER = '/no-img';
+export const MY_SHOP_PROFILE_PHOTO_MAX_DIMENSION = 120;
+export const MY_SHOP_BANNER_PHOTO_MAX_DIMENSION = 360;

@@ -22,12 +22,12 @@ class ThumbnailCache {
     await this.redis.del(KEY(key));
   }
 
-  async getThumbnail(key, value, maxDimension) {
-    const cached = await this.get(KEY(key));
+  async genThumb(key, value, maxDimension) {
+    const cached = await this.get(key);
     if (cached) { return cached; }
 
     const thumbnail = await convert(value, maxDimension);
-    await this.set(KEY(key), thumbnail);
+    await this.set(key, thumbnail);
 
     return thumbnail;
   }
