@@ -16,6 +16,7 @@ import createBackendMw from '../middlewares/backendMw.js';
 import createMyOnion from './middlewares/myOnion.js';
 
 import preRoutes from './routes/pre.js';
+import browserPathRedirect from './middlewares/browserPathRedirect.js';
 import routes from './routes/index.js';
 
 await waitForFile(MY_SHOP_ONION_PATH);
@@ -35,6 +36,7 @@ app
   .use(preRoutes())
   .use(createUser())
   .use(validateUser())
+  .use(browserPathRedirect())
   .use(routes())
   .listen(7007, () => {
     console.log('Started!');

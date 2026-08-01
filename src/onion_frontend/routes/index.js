@@ -3,6 +3,6 @@ import shop from './shop.js';
 
 const router = new Router();
 router
-  .get('/', shop);
+  .get('/browser/', shop);
 
 export default () => router.routes();

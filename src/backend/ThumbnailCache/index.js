@@ -1,7 +1,8 @@
 import Redis from 'ioredis';
 import convert from './convert.js';
+import isTest from '../../utils/isTest.js';
 
-const TTL = 60 * 60 * 24 * 7;
+const TTL = isTest ? 15 : 60 * 60 * 24 * 7;
 const KEY = (key) => `thumbnail_cache:${key}`;
 
 class ThumbnailCache {

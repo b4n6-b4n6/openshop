@@ -1,6 +1,7 @@
 import { BROWSED_ONION_COOKIE_NAME } from '../../const.js';
 import IsValidOnionHostname from '../utils/IsValidOnionHostname.js';
 import trimOnionHostname from '../utils/trimOnionHostname.js';
+import browserErrorPage from '../pages/browserErrorPage.js';
 
 export default async (ctx) => {
   const { request } = ctx;
@@ -13,8 +14,8 @@ export default async (ctx) => {
       { expires: new Date('9999-12-31T23:59:59.999Z') },
     );
 
-    ctx.status = 200;
+    ctx.redirect('/browser/');
   } else {
-    ctx.status = 500;
+    ctx.body = browserErrorPage({ message: '' });
   }
 };

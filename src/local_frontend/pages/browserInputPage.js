@@ -29,47 +29,23 @@ const browserInputPage = ({ defaultOnionHostname }) => `<!doctype html>
 
     <h2 class='loading-indicator'>LOADING</h2>
   </form>
-
-  <form action='/'>
-    <button>BACK</button>
-  </form>
-
   <script>
     const form = document.querySelector('form')
     const submitButton = document.querySelector('button')
     const textInput = document.querySelector('[type=text]')
 
-    const resetForm = () => {
-      submitButton.disabled = false
-      textInput.disabled = false
-      form.classList.remove('submitting')
-    }
-
-    const lockForm = () => {
-      submitButton.disabled = true
-      textInput.disabled = true
-      form.classList.add('submitting')
-    }
-
     form.addEventListener('submit', async (event) => {
-      const body = new URLSearchParams(new FormData(form))
-
-      event.preventDefault()
-
-      lockForm()
-      const res = await fetch('/browser-input', {
-        method: 'POST',
-        body,
-      })
-      
-      if (res.ok) {
-        window.location.href = '/browser/'
-      } else {
-        alert('invalid address format')
-        resetForm()
-      }
+      submitButton.disabled = true
+      textInput.readOnly = true
+      form.classList.add('submitting')
+      form.submit();
     })
   </script>
+
+  <form action='/'>
+    <button>BACK</button>
+  </form>
+
 </body>
 </html>`;
 

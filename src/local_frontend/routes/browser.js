@@ -34,7 +34,7 @@ export default (ctx) => new Promise((resolve) => {
     return;
   }
 
-  const browsePath = ctx.params.browsePath || '';
+  const browsePath = ctx.path || '';
   const targetPath = browsePath.startsWith('/') ? browsePath : `/${browsePath}`;
   const targetUrl = new URL(
     targetPath + (ctx.querystring ? `?${ctx.querystring}` : ''),
