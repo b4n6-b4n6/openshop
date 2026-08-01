@@ -1,44 +1,44 @@
-import head from './head.js';
+import {
+  appFrame,
+  button,
+  document,
+  errorNotice,
+  field,
+} from '../../shared/pages/layout.js';
 
-const walletSetupPage = () => `<!doctype html>
-<html>
-<head>
-  ${head()}
-
-  <style>
-    button, input {
-      font-size: 250%;
-    }
-  </style>
-</head>
-<body>
-  <form action='/wallet-setup' method='post'>
-    <input
-      name='primary_address'
-      type='text'
-      placeholder='XMR PRIMARY ADDRESS'
-      required
-   ><br>
-    <input
-      name='private_view_key'
-      type='text'
-      placeholder='XMR SECRET VIEW KEY'
-      required
-   ><br>
-    <input
-      name='restore_height'
-      type='text'
-      placeholder='XMR RESTORE BLOCK HEIGHT'
-      required
-   ><br>
-
-    <button>CREATE</button>
-  </form>
-
-  <form action='/'>
-    <button>BACK</button>
-  </form>
-</body>
-</html>`;
+const walletSetupPage = ({ error = '' } = {}) => document({
+  title: 'Open New Shop',
+  body: `<form action="/wallet-setup" method="post" class="contents">
+    ${appFrame({
+    title: 'Open New Shop',
+    back: '/',
+    content: `<div class="space-y-5 px-5 py-6">
+        ${error ? errorNotice(error, 'Could not open shop') : ''}
+        <p class="text-[14px] text-muted">Import a <span class="text-text">view-only</span> Monero wallet. Your spend key never leaves your device.</p>
+        ${field({
+    label: 'Monero wallet primary address',
+    name: 'primary_address',
+    placeholder: '4…',
+    mono: true,
+    attributes: 'type="text" required autocapitalize="none" autocomplete="off" spellcheck="false"',
+  })}
+        ${field({
+    label: 'Private view key',
+    name: 'private_view_key',
+    placeholder: 'secret view key',
+    mono: true,
+    attributes: 'type="text" required autocapitalize="none" autocomplete="off" spellcheck="false"',
+  })}
+        ${field({
+    label: 'Restore block height',
+    name: 'restore_height',
+    placeholder: 'e.g. 3155600',
+    attributes: 'type="text" required inputmode="numeric" pattern="[0-9]+"',
+  })}
+      </div>`,
+    bottom: button({ label: 'Create', type: 'submit' }),
+  })}
+  </form>`,
+});
 
 export default walletSetupPage;

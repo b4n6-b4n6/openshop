@@ -1,52 +1,45 @@
-import head from './head.js';
+import {
+  appFrame,
+  button,
+  document,
+  field,
+  icon,
+} from '../../shared/pages/layout.js';
 
-const browserInputPage = ({ defaultOnionHostname }) => `<!doctype html>
-<html>
-<head>
-  ${head()}
-
-  <style>
-    button, input {
-      font-size: 250%;
-    }
-    
-    form:not(.submitting) .loading-indicator {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-  <form action='/browser-input' method='post'>
-    <input
-      name='browsed_onion_address'
-      type='text'
-      placeholder='SHOP ADDRESS'
-      value=${defaultOnionHostname}
-      required
-    > <br>
-
-    <button>BROWSE SHOP</button>
-
-    <h2 class='loading-indicator'>LOADING</h2>
-  </form>
-  <script>
-    const form = document.querySelector('form')
-    const submitButton = document.querySelector('button')
-    const textInput = document.querySelector('[type=text]')
-
-    form.addEventListener('submit', async (event) => {
-      submitButton.disabled = true
-      textInput.readOnly = true
-      form.classList.add('submitting')
-      form.submit();
-    })
-  </script>
-
-  <form action='/'>
-    <button>BACK</button>
-  </form>
-
-</body>
-</html>`;
+const browserInputPage = ({ defaultOnionHostname }) => document({
+  title: 'Browse Shop',
+  scripts: ['browse.js'],
+  body: `<form action="/browser-input" method="post" class="contents" data-browse-form>
+    ${appFrame({
+    title: 'Browse Shop',
+    back: '/',
+    content: `<div data-browse-fields class="space-y-5 px-5 py-6">
+        <p class="text-[14px] text-muted">Paste the shop&apos;s onion address to connect over Tor, or scan its QR code.</p>
+        ${field({
+    label: 'Shop address',
+    name: 'browsed_onion_address',
+    value: defaultOnionHostname,
+    placeholder: 'xxxxxxxx…onion',
+    mono: true,
+    attributes: 'type="text" autofocus required autocapitalize="none" autocomplete="off" spellcheck="false"',
+  })}
+        ${button({
+    label: 'Scan QR code',
+    variant: 'secondary',
+    buttonIcon: icon('qr', 'size-4'),
+    attributes: 'data-scan-qr',
+  })}
+        <input data-qr-file type="file" accept="image/*" capture="environment" class="hidden">
+        <p data-qr-error role="alert" class="hidden text-[13px] text-danger"></p>
+      </div>
+      <div class="browse-loading h-full flex-col items-center justify-center px-6 pb-16 text-center">
+        <div class="mb-5 size-12 animate-spin rounded-full border-[3px] border-border-strong border-t-accent"></div>
+        <h2 class="text-lg font-bold tracking-wide text-text">CONNECTING</h2>
+        <p class="mt-2 max-w-[260px] text-[13px] text-muted">Reaching the shop through Tor…</p>
+      </div>`,
+    bottom: button({ label: 'Enter', type: 'submit' }),
+  })}
+  </form>`,
+});
 
 export default browserInputPage;
