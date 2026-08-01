@@ -13,6 +13,7 @@ import walletHandlerMw from './middlewares/walletHandlerMw.js';
 import createUser from './middlewares/createUser.js';
 import validateUser from './middlewares/validateUser.js';
 import createBackendMw from '../middlewares/backendMw.js';
+import thumbnailCacheMw from '../middlewares/thumbnailCacheMw.js';
 import createMyOnion from './middlewares/myOnion.js';
 
 import preRoutes from './routes/pre.js';
@@ -30,6 +31,7 @@ const app = new Koa();
 app
   .use(body())
   .use(backendMw)
+  .use(thumbnailCacheMw())
   .use(myOnion)
   .use(walletHandlerMw())
   .use(onionFilter())
