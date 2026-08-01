@@ -1,7 +1,7 @@
 import {
   MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION,
 } from '../../const.js';
-import viewProductsPage from '../pages/viewProductsPage.js';
+import productsPage from '../pages/productsPage.js';
 
 export default async (ctx) => {
   const { backend, thumbnailCache } = ctx;
@@ -24,5 +24,5 @@ export default async (ctx) => {
     )
   );
 
-  ctx.body = viewProductsPage({ allProducts });
+  ctx.body = productsPage({ allProducts });
 };

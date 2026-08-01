@@ -14,10 +14,10 @@ export const JWT_SECRET = (
 export const BROWSED_ONION_COOKIE_NAME = 'browsed_onion';
 export const JWT_COOKIE_NAME = 'jwt';
 
-export const BROWSER_TIMEOUT = 30 * 1000;
-export const SELF_TEST_TIMEOUT = 12.5 * 1000;
+export const BROWSER_TIMEOUT = 24 * 1000;
+export const SELF_TEST_TIMEOUT = 12 * 1000;
 export const FETCH_FIAT_PRICE_TIMEOUT = 20 * 1000;
-export const FETCH_FIAT_PRICE_REMEMBER_FOR = 1000 * 60 * 5;
+export const FETCH_FIAT_PRICE_REMEMBER_FOR = 5 * 60 * 1000;
 
 export const MONERO_RPC_URI = 'https://xmr.vvv.systems';
 export const MONERO_RPC_PASSWORD = '94971a4ae9db945f900339861545b697';

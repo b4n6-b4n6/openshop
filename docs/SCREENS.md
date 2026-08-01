@@ -73,14 +73,16 @@ Pressing "ADD NEW PRODUCT" would yield a screen where is displayed
   * "ADD" (button)
   * "BACK" (button)
 
-**VIEW MY PRODUCTS SCREEN**  
+**VIEW MY PRODUCTS SCREEN✅**  
 Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
   * products (list) where each item is displayed
     * product name (text)
     * product photo (image)
     * price (number)
     * currency (text)
+    * "AVAILABLE QUANTITY" (text)
     * available quantity (number)
+    * 
     * "EDIT" (button)
   * 
   * "BACK" (button)
@@ -120,14 +122,13 @@ Pressing "ENTER" would potentially yield (after loading) a successfully loaded s
   * "ORDERS" (button)
   * "BACK" (button)
 
-**VIEW PRODUCTS SCREEN**  
+**VIEW PRODUCTS SCREEN✅**  
 Pressing "PRODUCTS" would yield a screen where is displayed
   * products (list) where each item is displayed
     * product name (text)
     * product photo (image)
     * price (number)
     * currency (text)
-    * 
     * "AVAILABLE QUANTITY" (text)
     * available quantity (number)
     * 
