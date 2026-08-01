@@ -11,7 +11,7 @@ export default () => async (ctx, next) => {
     );
 
     console.log('New user created...');
-    ctx.redirect(checkOpenShopBrowser(ctx) ? '/browser/' : '/');
+    ctx.redirect('/browser/');
   } else {
     await next();
   }
