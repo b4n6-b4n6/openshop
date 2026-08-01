@@ -1,0 +1,57 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+}
+
+form.contents {
+  display: contents;
+}
+
+.welcome-logo {
+  filter: drop-shadow(0 0 24px rgb(255 102 0 / 45%));
+  height: var(--logo-size, auto);
+  width: var(--logo-size, auto);
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page-enter {
+  animation: page-enter 150ms ease-out both;
+}
+
+.browse-loading {
+  display: none;
+}
+
+[data-browse-form].submitting [data-browse-fields] {
+  display: none;
+}
+
+[data-browse-form].submitting .browse-loading {
+  display: flex;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}

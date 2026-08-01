@@ -9,6 +9,6 @@ export default async (ctx) => {
   } else if (walletSetup.completed) {
     ctx.redirect('/onion-spinner');
   } else {
-    ctx.body = walletSetupPage();
+    ctx.body = walletSetupPage({ error: walletSetup.lastErrorMessage });
   }
 };
