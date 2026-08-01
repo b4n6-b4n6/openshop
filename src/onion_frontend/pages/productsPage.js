@@ -19,7 +19,7 @@ const productsPage = ({
   ${allProducts.map(({
     id, name, photo, price, currency, available_quantity,
   }) => (
-    `<form action='/browser/shop/products/${id}' method='GET'>
+    `<form action='/browser/products/${id}' method='GET'>
   <input
     type='text'
     readonly

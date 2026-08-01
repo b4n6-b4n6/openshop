@@ -49,12 +49,4 @@ router
   .get('/self-test', selfTest)
   .get('/sync-status', syncStatus);
 
-/*
-
-  .post('/shop/products/new', )
-
-  .get('/shop/products/:id/edit', )
-  .post('/shop/products/:id/edit', )
-*/
-
 export default () => router.routes();

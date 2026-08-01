@@ -136,7 +136,7 @@ Pressing "PRODUCTS" would yield a screen where is displayed
   * 
   * "BACK" (button)
 
-**PURCHASE PRODUCT SCREEN**  
+**PURCHASE PRODUCT SCREEN✅**  
 Pressing "PURCHASE" would yield a screen where is displayed
   * product name (text)
   * product photo (image)
