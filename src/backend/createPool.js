@@ -1,5 +1,5 @@
 import Pg from 'pg';
-import isTest from '../utils/isTest';
+import isTest from '../utils/isTest.js';
 
 const { Pool } = Pg;
 
