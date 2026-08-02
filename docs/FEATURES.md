@@ -15,8 +15,11 @@
     * update order status confirmed_incoming_tx_at
     * reduce quantity in owner shop
 
-<code style='color: cyan;'>[Core]</code> Image upload implementation (shop banner photo / shop profile photo / product photo) 
+<code style='color: cyan;'>[Core]</code> Image upload implementation (shop banner photo / shop profile photo / product photo) ✅
   * resize to a predefined size based on the HTML container width/height
+
+<code style='color: cyan;'>[Core]</code> Pagination
+  * no
 
 <code style='color: cyan;'>[Core]</code> Notifications
   * Chat messages implementation
@@ -38,7 +41,7 @@
 
 <code style='color: cyan;'>[UI_Behaviour]</code> UX loading indicators
   * Image upload containing forms
-  * Browser input screen form
+  * Browser input screen form✅
 
 <code style='color: cyan;'>[UI_Behaviour]</code>[WIP] 2 indicators on shown owner screen on
   * onion/internet connectivity indicator (this will check in the background in short intervals whether we can contact our own onion and display green or red icon depending on result)
