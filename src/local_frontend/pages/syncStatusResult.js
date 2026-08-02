@@ -1,7 +1,7 @@
 import head from './head.js';
 import refresher from './refresher.js';
 
-const syncStatusResult = ({ height = 0, percent = '0' } = {}) => `<!doctype html>
+const syncStatusResult = ({ height, percent } = {}) => `<!doctype html>
 <html>
 <head>
   ${head()}
@@ -23,7 +23,10 @@ const syncStatusResult = ({ height = 0, percent = '0' } = {}) => `<!doctype html
 
 </head>
 <body>
-  <span>${height}/${percent}%</span>
+  ${height
+    ? `<span title='Current height is ${height}'>${percent === 100 ? 'Synchronized' : 'Synchronizing'}</span>`
+    : ''
+}
 </body>
 </html>`;
 
