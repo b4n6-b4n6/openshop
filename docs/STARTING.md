@@ -7,3 +7,5 @@ run
 
 also needs to be configured!
 - postgres
+- redis
+- imagemagick `convert` binariy
