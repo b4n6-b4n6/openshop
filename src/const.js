@@ -19,7 +19,7 @@ export const SELF_TEST_TIMEOUT = 12 * 1000;
 export const FETCH_FIAT_PRICE_TIMEOUT = 20 * 1000;
 export const FETCH_FIAT_PRICE_REMEMBER_FOR = 5 * 60 * 1000;
 
-export const MONERO_RPC_URI = 'https://xmr.vvv.systems';
+export const MONERO_RPC_URI = 'https://corny.cc';
 export const MONERO_RPC_PASSWORD = '94971a4ae9db945f900339861545b697';
 
 export const MY_SHOP_ONION_LAUNCH_IPC = '.ipc/my_shop_onion_launch';
