@@ -51,7 +51,7 @@ const ipcWrite = async (path, data) => {
 };
 
 const ipcRead = async (path, data) => (
-  (await fs.readFile(path, data)).toString()
+  (await checkAccess(path)) ? (await fs.readFile(path, data)).toString() : ''
 );
 
 export {
