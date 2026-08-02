@@ -16,6 +16,6 @@ export default async (ctx) => {
 
     ctx.redirect('/browser/');
   } else {
-    ctx.body = browserErrorPage({ message: '' });
+    ctx.body = browserErrorPage({ message: 'INVALID FORMAT' });
   }
 };

@@ -2,11 +2,15 @@ import Router from '@koa/router';
 import shop from './shop.js';
 import products from './products.js';
 import product from './product.js';
+import convo from './convo.js';
+import convoPost from './convoPost.js';
 
 const router = new Router();
 router
   .get('/browser/', shop)
   .get('/browser/products', products)
-  .get('/browser/products/:id', product);
+  .get('/browser/products/:id', product)
+  .get('/browser/convo', convo)
+  .post('/browser/convo', convoPost);
 
 export default () => router.routes();

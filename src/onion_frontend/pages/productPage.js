@@ -1,4 +1,4 @@
-import { CURRENCIES, IMG_SRC_PLACEHOLDER } from '../../const.js';
+import { IMG_SRC_PLACEHOLDER } from '../../const.js';
 import bufferToDataURI from '../../utils/bufferToDataURI.js';
 import head from './head.js';
 

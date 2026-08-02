@@ -7,9 +7,7 @@ import { koaBody } from 'koa-body';
 
 export default () => compose([
   koaBody({
-    multipart: true,
     formidable: {
-      maxFileSize: 20 * 1024 * 1024,
       fileWriteStreamHandler: (file) => {
         const stream = new PassThrough();
 
@@ -19,9 +17,11 @@ export default () => compose([
 
         return stream;
       },
+      maxFileSize: 20 * 1024 * 1024,
       allowEmptyFiles: true,
       minFileSize: 0,
     },
+    multipart: true,
   }),
   async (ctx, next) => {
     const { files } = ctx.request;

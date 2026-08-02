@@ -109,7 +109,7 @@ const viewShopPage = ({
 
   <form action='/shop/products/new'><button>ADD NEW PRODUCT</button></form>
   <form action='/shop/products'><button>VIEW MY PRODUCTS</button></form>
-  <form action='/shop/chats'><button>VIEW MY CHATS</button></form>
+  <form action='/shop/convos'><button>VIEW MY CHATS</button></form>
   <form action='/shop/orders'><button>VIEW MY ORDERS</button></form>
 
   <hr>
