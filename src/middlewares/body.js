@@ -1,7 +1,6 @@
-/* eslint-disable import/no-unresolved */
 /* eslint-disable no-param-reassign */
 import { PassThrough } from 'node:stream';
-import { getStreamAsBuffer } from 'get-stream';
+import consumers from 'node:stream/consumers';
 import compose from 'koa-compose';
 import { koaBody } from 'koa-body';
 
@@ -11,7 +10,7 @@ export default () => compose([
       fileWriteStreamHandler: (file) => {
         const stream = new PassThrough();
 
-        file.bufferPromise = getStreamAsBuffer(stream).then((buffer) => {
+        file.bufferPromise = consumers.buffer(stream).then((buffer) => {
           file.buffer = buffer;
         });
 

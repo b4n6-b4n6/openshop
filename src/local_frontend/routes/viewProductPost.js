@@ -1,3 +1,5 @@
+import assertImage from '../utils/assertImage.js';
+
 export default async (ctx) => {
   const {
     request, backend, params, thumbnailCache,
@@ -13,6 +15,8 @@ export default async (ctx) => {
     currency,
     available_quantity,
   } = request.body;
+
+  if (photo) { await assertImage(photo); }
 
   await products.update({
     id,
