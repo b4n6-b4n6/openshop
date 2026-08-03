@@ -23,6 +23,7 @@ import viewProductPost from './viewProductPost.js';
 import viewConvos from './viewConvos.js';
 import viewConvo from './viewConvo.js';
 import viewConvoPost from './viewConvoPost.js';
+import downloadImage from './downloadImage.js';
 
 import selfTest from './selfTest.js';
 import syncStatus from './syncStatus.js';
@@ -53,6 +54,7 @@ router
   .get('/shop/convos', viewConvos)
   .get('/shop/convos/:id', viewConvo)
   .post('/shop/convos/:id', viewConvoPost)
+  .get('/shop/convos/images/:id', downloadImage)
 
   .get('/self-test', selfTest)
   .get('/sync-status', syncStatus);

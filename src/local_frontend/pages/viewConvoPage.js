@@ -2,6 +2,7 @@ import head from './head.js';
 import formatDate from '../../utils/formatDate.js';
 import refresher from './refresher.js';
 import formatUserId from '../../utils/formatUserId.js';
+import indicators from './indicators.js';
 
 const viewConvoPage = ({
   allMessages,
@@ -41,6 +42,8 @@ const viewConvoPage = ({
   </style>
 </head>
 <body>
+  ${indicators()}
+
   <input readOnly value='${formatUserId(userId)}' />
   <ul>
     ${allMessages.map(({
