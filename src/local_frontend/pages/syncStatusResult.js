@@ -24,7 +24,7 @@ const syncStatusResult = ({ height, percent } = {}) => `<!doctype html>
 </head>
 <body>
   ${height
-    ? `<span title='Current height is ${height}'>${percent === 100 ? 'Synchronized' : 'Synchronizing'}</span>`
+    ? `<span title='Current height is ${height}'>${percent === '100' ? 'Synchronized' : 'Synchronizing'}</span>`
     : ''
 }
 </body>
