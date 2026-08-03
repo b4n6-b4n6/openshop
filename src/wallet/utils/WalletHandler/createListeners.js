@@ -11,7 +11,7 @@ export default () => (
     async onOutputReceived(output) {
       const tx = output.getTx();
 
-      const amount = output.getAmount();
+      const amount = Number(output.getAmount());
       const subaddressIndex = tx.getSubaddressIndex();
       const isConfirmed = tx.getIsConfirmed();
       const isLocked = tx.getIsLocked();

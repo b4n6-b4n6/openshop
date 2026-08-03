@@ -8,5 +8,5 @@ export default async (imageData) => {
 
   if (
     !fileType || !WHITELIST.includes(fileType.ext)
-  ) { throw new Error('bad image data'); }
+  ) { throw new Error('bad file type'); }
 };

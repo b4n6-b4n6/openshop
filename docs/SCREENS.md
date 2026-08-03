@@ -20,8 +20,13 @@ Pressing "OPEN NEW SHOP" would yield a screen where is displayed
   * "CREATE" (button)
   * "BACK" (button)
 
-**SHOP OPENING SCREEN✅**  
+**SHOP CREATING WALLET SCREEN✅**  
 Pressing "CREATE" would yield a screen where is displayed
+  * "SPINNING UP ONION" (text)
+  * loading indicator
+
+**SHOP SPINNING UP ONION SCREEN✅**  
+when wallet creation is finished, it would yield a screen where is displayed
   * "SPINNING UP ONION" (text)
   * loading indicator
 
@@ -99,7 +104,7 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
   * "UPDATE" (button)
   * "BACK" (button)
 
-**CHATS SCREEN**
+**CHATS SCREEN✅**
   * chats (list) where each item is displayed
     * customer uuid (text)
     * last message datetime (text)
@@ -163,7 +168,7 @@ Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
   * deposit invoice qr code (image)
   * deposit address (text)
   * 
-  * deposit amount in btc (number)
+  * deposit amount in xmr (number)
   * "XMR" (text)
   * 
   * deposit amount in currency (number)
@@ -176,6 +181,7 @@ Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
     * "INCOMING TRANSACTION CONFIRMED" (text)
   * txid (text)
   * 
+  * "CREATED AT" (text)
   * creation datetime (text)
   * 
   * "BACK" (button)

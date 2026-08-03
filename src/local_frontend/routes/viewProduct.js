@@ -5,6 +5,9 @@ export default async (ctx) => {
   const { products } = backend;
   const { id } = params;
 
+  const product = await products.get(id);
+  if (!product) { throw new Error('no product'); }
+
   const {
     name,
     photo,
@@ -12,7 +15,7 @@ export default async (ctx) => {
     price,
     currency,
     available_quantity,
-  } = await products.get(id);
+  } = product;
 
   ctx.body = viewProductPage({
     id,

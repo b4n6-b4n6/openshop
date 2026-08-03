@@ -29,7 +29,10 @@
 <br><br><br>
 
 <code style='color: cyan;'>[UI_Behaviour]</code> QR Code enlargement implementation
-  * tapping the QR code icon should display (fullscreen) the QR (onion URL) and tapping one more time will close it
+  * tapping the QR code icon should display (fullscreen) the QR and tapping one more time will close it
+  * implment in 2 locations
+    * shop page - for onion address
+    * order page - for xmr invoice
 
 <code style='color: cyan;'>[UI_Behaviour]</code> Chat image message implementation
   * Do not display the image nor a thumbnail. Only offer to download it.

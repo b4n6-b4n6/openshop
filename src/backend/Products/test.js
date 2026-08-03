@@ -55,6 +55,34 @@ test('can create a product', async () => {
   await products.destroy();
 });
 
+test('cannot create a product with negative price', async () => {
+  const products = await createProducts();
+
+  await expect(products.create({
+    name: 'brownie',
+    description: 'coco!',
+    currency: 'usd',
+    price: '-1.50',
+    available_quantity: 25,
+  })).rejects.toThrow('new row for relation "products" violates check constraint "products_price_check"');
+
+  await products.destroy();
+});
+
+test('cannot create a product with zero price', async () => {
+  const products = await createProducts();
+
+  await expect(products.create({
+    name: 'brownie',
+    description: 'coco!',
+    currency: 'usd',
+    price: '0',
+    available_quantity: 25,
+  })).rejects.toThrow('new row for relation "products" violates check constraint "products_price_check"');
+
+  await products.destroy();
+});
+
 test('can update a product: name, currency, price, available_quantity', async () => {
   const products = await createProducts();
 

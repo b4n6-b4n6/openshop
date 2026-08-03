@@ -30,7 +30,6 @@ class Orders {
 
           created_at TIMESTAMP NOT NULL DEFAULT now(),
           detected_deposit_at TIMESTAMP,
-          CHECK (created_at - detected_deposit_at <= INTERVAL '24 hours'),
           confirmed_deposit_at TIMESTAMP
         )
       `,
@@ -155,14 +154,14 @@ class Orders {
     return result.rowCount !== 1;
   }
 
-  async setDepositTxid({ deposit_amount, txid }) {
+  async setDepositTxid({ deposit_amount, deposit_txid }) {
     const result = await this.pool.query(
       `
         UPDATE orders
         SET deposit_txid = $2
         WHERE deposit_amount = $1 AND deposit_txid IS NULL
       `,
-      [deposit_amount, txid],
+      [deposit_amount, deposit_txid],
     );
 
     if (result.rowCount !== 1) { throw new Error('Orders.setDepositTxid rowCount !== 1'); }
