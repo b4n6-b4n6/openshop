@@ -8,4 +8,6 @@ run
 also needs to be configured!
 - postgres
 - redis
-- imagemagick `convert` binariy
+- imagemagick `convert` binary
+
+open localhost:7001
