@@ -15,6 +15,7 @@ class Products {
           description TEXT NOT NULL,
 
           price NUMERIC(5, 2) NOT NULL,
+          CHECK (price > 0),
           currency TEXT NOT NULL,
           CHECK (currency <> ''),
 

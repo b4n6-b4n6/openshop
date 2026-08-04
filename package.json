@@ -3,7 +3,8 @@
   "dependencies": {
     "@koa/router": "^15.6.0",
     "coingecko-api-v3": "^0.0.31",
-    "detect-content-type": "^1.2.0",
+    "date-fns": "^4.4.0",
+    "file-type": "^22.0.1",
     "get-stream": "^9.0.1",
     "ioredis": "^5.11.1",
     "jsonwebtoken": "^9.0.3",

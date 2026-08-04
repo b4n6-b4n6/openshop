@@ -6,6 +6,8 @@ const mapDepositAmountToNumber = (order) => ({
   deposit_amount: Number(order.deposit_amount),
 });
 
+const map = (order) => mapDepositAmountToNumber(order);
+
 class Orders {
   async init(pool) {
     this.pool = pool ?? createPool();
@@ -20,19 +22,28 @@ class Orders {
           product_photo BYTEA,
           product_description TEXT NOT NULL,
 
-          purchase_price NUMERIC(5, 2) NOT NULL,
+          purchase_price NUMERIC(8, 2) NOT NULL,
+          CHECK (purchase_price > 0),
           purchase_currency TEXT NOT NULL,
+          CHECK (purchase_currency <> ''),
           purchase_quantity integer NOT NULL,
+          CHECK (purchase_quantity > 0),
 
-          deposit_address TEXT UNIQUE NOT NULL,
           deposit_amount bigint NOT NULL,
           deposit_txid TEXT,
 
           created_at TIMESTAMP NOT NULL DEFAULT now(),
           detected_deposit_at TIMESTAMP,
-          CHECK (created_at - detected_deposit_at <= INTERVAL '24 hours'),
           confirmed_deposit_at TIMESTAMP
         )
+      `,
+    );
+    await this.pool.query(
+      `
+        CREATE UNIQUE INDEX
+        IF NOT EXISTS orders_deposit_amount_idx
+        ON orders (deposit_amount)
+        WHERE deposit_txid IS NULL
       `,
     );
 
@@ -43,7 +54,7 @@ class Orders {
     customer,
     product_name, product_photo, product_description,
     purchase_price, purchase_currency, purchase_quantity,
-    deposit_address, deposit_amount,
+    deposit_amount,
   }) {
     const result = await this.pool.query(
       `
@@ -51,16 +62,16 @@ class Orders {
           customer, 
           product_name, product_photo, product_description,
           purchase_price, purchase_currency, purchase_quantity,
-          deposit_address, deposit_amount
+          deposit_amount
         )
-        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING id
       `,
       [
         customer,
         product_name, product_photo, product_description,
         purchase_price, purchase_currency, purchase_quantity,
-        deposit_address, deposit_amount,
+        deposit_amount,
       ],
     );
 
@@ -82,7 +93,7 @@ class Orders {
       `,
     );
 
-    return rows.map(mapDepositAmountToNumber);
+    return rows.map(map);
   }
 
   async getAllForCustomer(customer) {
@@ -100,7 +111,7 @@ class Orders {
       [customer],
     );
 
-    return rows.map(mapDepositAmountToNumber);
+    return rows.map(map);
   }
 
   async get(id) {
@@ -109,7 +120,7 @@ class Orders {
         SELECT
           product_name, product_photo, product_description, 
           purchase_price, purchase_currency, purchase_quantity, 
-          deposit_address, deposit_amount, deposit_txid, 
+          deposit_amount, deposit_txid, 
           created_at, detected_deposit_at, confirmed_deposit_at 
         FROM orders
         WHERE id = $1
@@ -118,46 +129,46 @@ class Orders {
     );
 
     const result = rows[0];
-    return result && mapDepositAmountToNumber(result);
+    return result && map(result);
   }
 
-  async markDepositDetected({ deposit_address, deposit_amount }) {
+  async markDepositDetected({ deposit_amount }) {
     const result = await this.pool.query(
       `
         UPDATE orders
         SET detected_deposit_at = now()
-        WHERE deposit_address = $1 AND deposit_amount = $2 AND detected_deposit_at IS NULL
+        WHERE deposit_amount = $1 AND detected_deposit_at IS NULL
       `,
-      [deposit_address, deposit_amount],
+      [deposit_amount],
     );
 
     return result.rowCount !== 1;
   }
 
-  async markDepositConfirmed({ deposit_address, deposit_amount }) {
+  async markDepositConfirmed({ deposit_amount }) {
     const result = await this.pool.query(
       `
         UPDATE orders
         SET confirmed_deposit_at = now()
-        WHERE deposit_address = $1 AND deposit_amount = $2 AND confirmed_deposit_at IS NULL
+        WHERE AND deposit_amount = $1 AND confirmed_deposit_at IS NULL
       `,
-      [deposit_address, deposit_amount],
+      [deposit_amount],
     );
 
     return result.rowCount !== 1;
   }
 
-  async setDepositTxid({ deposit_address, deposit_amount, txid }) {
+  async setDepositTxid({ deposit_amount, deposit_txid }) {
     const result = await this.pool.query(
       `
         UPDATE orders
-        SET deposit_txid = $3
-        WHERE deposit_address = $1 AND deposit_amount = $2 AND deposit_txid IS NULL
+        SET deposit_txid = $2
+        WHERE deposit_amount = $1 AND deposit_txid IS NULL
       `,
-      [deposit_address, deposit_amount, txid],
+      [deposit_amount, deposit_txid],
     );
 
-    if (result.rowCount !== 1) { throw new Error('Orders.setDepositTxid rowCount !== 1'); }
+    return result.rowCount !== 1;
   }
 
   async destroy() {

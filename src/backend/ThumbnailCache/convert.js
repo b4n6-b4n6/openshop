@@ -1,14 +1,15 @@
 /* eslint-disable import/no-unresolved */
 import { spawn } from 'node:child_process';
-import getStream, { getStreamAsBuffer } from 'get-stream';
-import detectContentType from 'detect-content-type';
+import consumers from 'node:stream/consumers';
+import { fileTypeFromBuffer } from 'file-type';
 
 const promisifyClose = (cp) => new Promise((resolve) => {
   cp.on('close', resolve);
 });
 
 const convert = async (imageData, maxDimension) => {
-  const imageFormat = detectContentType(imageData).replace(/^image\//, '');
+  const fileType = await fileTypeFromBuffer(imageData);
+  const imageFormat = fileType.ext;
   const cp = spawn(
     'convert',
     `- -resize ${maxDimension}x${maxDimension}> ${imageFormat}:-`.split(' '),
@@ -16,15 +17,13 @@ const convert = async (imageData, maxDimension) => {
   cp.stdin.end(imageData);
 
   const [out, err, code] = await Promise.all([
-    getStreamAsBuffer(cp.stdout),
-    getStream(cp.stderr),
+    consumers.buffer(cp.stdout),
+    consumers.text(cp.stderr),
     promisifyClose(cp),
   ]);
 
   if (code !== 0) {
-    throw new Error(
-      `convert failed with ${code} and '${err.replace(/\n$/, '')}'`,
-    );
+    throw new Error(`convert failed with ${code} and '${err.replace(/\n$/, '')}'`);
   }
 
   return out;

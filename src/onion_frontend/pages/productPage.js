@@ -1,8 +1,8 @@
-import { CURRENCIES, IMG_SRC_PLACEHOLDER } from '../../const.js';
+import { IMG_SRC_PLACEHOLDER } from '../../const.js';
 import bufferToDataURI from '../../utils/bufferToDataURI.js';
 import head from './head.js';
 
-const viewProductPage = ({
+const productPage = ({
   id,
   name,
   photo,
@@ -22,7 +22,7 @@ const viewProductPage = ({
   </style>
 </head>
 <body>
-  <form action='/shop/products/${id}' method='POST'>
+  <form action='/browser/products/${id}' method='POST'>
     <input
       type='text'
       readOnly
@@ -68,6 +68,7 @@ const viewProductPage = ({
     <label>
       PURCHASE QUANTITY: 
       <input
+        name='purchase_quantity'
         type='number'
         min='1'
         max='${available_quantity}'
@@ -83,4 +84,4 @@ const viewProductPage = ({
 </body>
 </html>`;
 
-export default viewProductPage;
+export default productPage;

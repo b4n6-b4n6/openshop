@@ -1,5 +1,4 @@
 import createUserClaim from '../utils/createUserClaim.js';
-import checkOpenShopBrowser from '../utils/checkOpenShopBrowser.js';
 import { JWT_COOKIE_NAME } from '../../const.js';
 
 export default () => async (ctx, next) => {

@@ -6,13 +6,13 @@ import { ipcWrite } from '../../../utils/ipc.js';
 
 await ipcWrite(MY_SHOP_WALLET_SYNC_STATUS_IPC, '');
 
-export default () => (
+export default ({ orders }) => (
   new class extends moneroTs.MoneroWalletListener {
     async onOutputReceived(output) {
       const tx = output.getTx();
 
-      const amount = output.getAmount();
-      const subaddressIndex = tx.getSubaddressIndex();
+      const amount = Number(output.getAmount());
+      const subaddressIndex = output.getSubaddressIndex();
       const isConfirmed = tx.getIsConfirmed();
       const isLocked = tx.getIsLocked();
       const txid = tx.getHash();
@@ -27,15 +27,14 @@ export default () => (
         txid,
         isIncoming,
         isOutgoing,
+        orders,
       });
     }
 
     async onSyncProgress(height, startHeight, endHeight, percentDone, message) {
       const percent = Math.floor(percentDone * 100);
       const status = `${height} ${percent}`;
-      console.log(
-        `${(new Date()).toISOString()} ${height}/${percent}% (${message})`,
-      );
+      console.log(`${(new Date()).toISOString()}`, `${height}/${percent}%`, `(${message})`);
 
       ipcWrite(MY_SHOP_WALLET_SYNC_STATUS_IPC, status);
     }

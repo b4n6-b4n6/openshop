@@ -28,7 +28,7 @@ const backendMw = await createBackendMw();
 
 const app = new Koa();
 
-app
+const server = app
   .use(body())
   .use(backendMw)
   .use(thumbnailCacheMw())
@@ -36,10 +36,12 @@ app
   .use(walletHandlerMw())
   .use(onionFilter())
   .use(preRoutes())
+  .use(browserPathRedirect())
   .use(createUser())
   .use(validateUser())
-  .use(browserPathRedirect())
   .use(routes())
   .listen(7007, () => {
     console.log('Started!');
   });
+
+server.keepAliveTimeout = 0;

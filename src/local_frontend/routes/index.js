@@ -20,6 +20,11 @@ import newProductPost from './newProductPost.js';
 import viewProduct from './viewProduct.js';
 import viewProductPost from './viewProductPost.js';
 
+import viewConvos from './viewConvos.js';
+import viewConvo from './viewConvo.js';
+import viewConvoPost from './viewConvoPost.js';
+import downloadImage from '../../routes/downloadImage.js';
+
 import selfTest from './selfTest.js';
 import syncStatus from './syncStatus.js';
 
@@ -45,6 +50,11 @@ router
   .post('/shop/products/new', newProductPost)
   .get('/shop/products/:id', viewProduct)
   .post('/shop/products/:id', viewProductPost)
+
+  .get('/shop/convos', viewConvos)
+  .get('/shop/convos/:id', viewConvo)
+  .post('/shop/convos/:id', viewConvoPost)
+  .get('/shop/convos/images/:id', downloadImage)
 
   .get('/self-test', selfTest)
   .get('/sync-status', syncStatus);

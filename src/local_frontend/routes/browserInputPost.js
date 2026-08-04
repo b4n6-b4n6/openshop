@@ -17,8 +17,6 @@ export default async (ctx) => {
     ctx.redirect('/browser/');
   } else {
     ctx.status = 400;
-    ctx.body = browserErrorPage({
-      message: 'Enter a valid v3 onion address ending in .onion.',
-    });
+    ctx.body = browserErrorPage({ message: 'INVALID FORMAT' });
   }
 };

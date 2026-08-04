@@ -76,9 +76,9 @@ const shopPage = ({
 
   <textarea readonly placeholder='Shop description'>${description}</textarea>
 
-  <form action='./products'><button>PRODUCTS</button></form>
-  <form action='./chats'><button>CHAT</button></form>
-  <form action='./orders'><button>ORDERS</button></form>
+  <form action='/browser/products'><button>PRODUCTS</button></form>
+  <form action='/browser/convo'><button>CHAT</button></form>
+  <form action='/browser/orders'><button>ORDERS</button></form>
 
   <hr>
 

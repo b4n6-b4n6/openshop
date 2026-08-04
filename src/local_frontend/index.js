@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import routes from './routes/index.js';
 
-import body from '../middlewares/body.js';
+import adaptedBody from './middlewares/adaptedBody.js';
 import createBackendMw from '../middlewares/backendMw.js';
 import createWalletSetupMw from './middlewares/walletSetupMw.js';
 import thumbnailCacheMw from '../middlewares/thumbnailCacheMw.js';
@@ -15,8 +15,8 @@ const backendMw = await createBackendMw();
 
 const app = new Koa();
 
-app
-  .use(body())
+const server = app
+  .use(adaptedBody())
   .use(backendMw)
   .use(thumbnailCacheMw())
   .use(onionSpinner())
@@ -28,3 +28,5 @@ app
   .listen(7001, () => {
     console.log('Started!');
   });
+
+server.keepAliveTimeout = 0;

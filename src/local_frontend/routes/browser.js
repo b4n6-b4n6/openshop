@@ -17,14 +17,38 @@ const sanitiseCookie = (cookie, browsedOnion) => {
       .join('; ')
   );
 };
+
 const sanitiseSetCookie = (setCookie, browsedOnion) => (
   `${browsedOnion}.${setCookie}`
 );
 
-const socksAgent = new SocksProxyAgent(
+const purgeHeaders = (oldHeaders) => {
+  const headers = { ...oldHeaders };
+
+  delete headers['proxy-authenticate'];
+  delete headers['proxy-authorization'];
+  delete headers['transfer-encoding'];
+  delete headers['keep-alive'];
+  delete headers.host;
+  delete headers.connection;
+  delete headers.te;
+  delete headers.trailer;
+  delete headers.upgrade;
+
+  return headers;
+};
+
+const sanitiseHeaders = (headers, browsedOnion) => (
+  headers.cookie
+    ? { cookie: sanitiseCookie(headers.cookie, browsedOnion) }
+    : {}
+);
+
+const socksAgent = new SocksProxyAgent( // this likely needs to rotate / TODO
   'socks5h://127.0.0.1:39050',
   { timeout: BROWSER_TIMEOUT },
 );
+
 export default (ctx) => new Promise((resolve) => {
   const browsedOnion = ctx.cookies.get(BROWSED_ONION_COOKIE_NAME);
 
@@ -41,24 +65,12 @@ export default (ctx) => new Promise((resolve) => {
     `http://${browsedOnion}`,
   );
 
-  const headers = { ...ctx.headers };
-  delete headers['proxy-authenticate'];
-  delete headers['proxy-authorization'];
-  delete headers['transfer-encoding'];
-  delete headers['keep-alive'];
-  delete headers.host;
-  delete headers.connection;
-  delete headers.te;
-  delete headers.trailer;
-  delete headers.upgrade;
-
-  if (headers.cookie) {
-    headers.cookie = sanitiseCookie(headers.cookie, browsedOnion);
-  }
-
-  headers['user-agent'] = 'OpenShop/0.0.0';
-
-  headers.host = targetUrl.host;
+  const headers = {
+    ...purgeHeaders(ctx.headers),
+    ...sanitiseHeaders(ctx.headers, browsedOnion),
+    'user-agent': 'OpenShop/0.0.0',
+    host: targetUrl.host,
+  };
 
   const options = {
     hostname: targetUrl.hostname,
@@ -66,7 +78,6 @@ export default (ctx) => new Promise((resolve) => {
     path: targetUrl.pathname + targetUrl.search,
     method: ctx.method,
     agent: socksAgent,
-    timeout: BROWSER_TIMEOUT,
     headers,
   };
 

@@ -1,5 +1,6 @@
 import { MY_SHOP_WALLET_SYNC_STATUS_IPC } from '../../../const.js';
 import { ipcTrack } from '../../../utils/ipc.js';
+import readMyWalletAddress from '../readMyWalletAddress.js';
 
 export default class WalletHandler {
   constructor() {
@@ -8,13 +9,15 @@ export default class WalletHandler {
 
     ipcTrack(
       MY_SHOP_WALLET_SYNC_STATUS_IPC,
-      (data) => {
+      async (data) => {
         if (!data) { return; }
 
         const [height, percent] = data.split(' ').map(Number);
 
         this.height = height;
         this.percent = percent;
+
+        if (percent === 100 && !this.address) { this.address = await readMyWalletAddress(); }
       },
     );
   }

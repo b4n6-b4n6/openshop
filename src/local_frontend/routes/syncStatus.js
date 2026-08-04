@@ -10,6 +10,6 @@ export default async (ctx) => {
     return;
   }
 
-  const [height, percent] = data.split(' ');
+  const [height, percent] = data.split(' ').map(Number);
   ctx.body = syncStatusResult({ height, percent });
 };

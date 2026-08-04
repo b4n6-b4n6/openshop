@@ -30,7 +30,7 @@ export default class OnionSpinner {
 
       const p = Number(progress);
 
-      if (p === 100) {
+      if (p === 100 && !this.onion) {
         this.onion = await readMyOnionHostname();
       }
 

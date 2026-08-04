@@ -78,7 +78,7 @@ const newProductPage = () => `<!doctype html>
     </script>
 
     <select name='currency'>
-      <option>CURRENCY</option>
+      <option value=''>CURRENCY</option>
 
       ${(
     CURRENCIES.map((currency) => (
