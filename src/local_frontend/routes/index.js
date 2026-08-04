@@ -20,6 +20,9 @@ import newProductPost from './newProductPost.js';
 import viewProduct from './viewProduct.js';
 import viewProductPost from './viewProductPost.js';
 
+import viewOrder from './viewOrder.js';
+import viewOrders from './viewOrders.js';
+
 import viewConvos from './viewConvos.js';
 import viewConvo from './viewConvo.js';
 import viewConvoPost from './viewConvoPost.js';
@@ -50,6 +53,9 @@ router
   .post('/shop/products/new', newProductPost)
   .get('/shop/products/:id', viewProduct)
   .post('/shop/products/:id', viewProductPost)
+
+  .get('/shop/orders/:id', viewOrder)
+  .get('/shop/orders', viewOrders)
 
   .get('/shop/convos', viewConvos)
   .get('/shop/convos/:id', viewConvo)

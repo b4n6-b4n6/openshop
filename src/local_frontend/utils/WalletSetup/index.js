@@ -1,6 +1,7 @@
 import moneroTs from 'monero-ts';
 import { MY_SHOP_WALLET_PATH } from '../../../const.js';
 import checkAccess from '../../../utils/checkAccess.js';
+import readMyWalletAddress from '../../../utils/readMyWalletAddress.js';
 
 class WalletSetup {
   async init() {
@@ -29,6 +30,7 @@ class WalletSetup {
 
       this.completed = true;
       this.lastErrorMessage = null;
+      this.address = await readMyWalletAddress();
     } catch (err) {
       console.error(err);
 

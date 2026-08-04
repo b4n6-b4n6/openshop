@@ -1,6 +1,6 @@
 import { MY_SHOP_WALLET_SYNC_STATUS_IPC } from '../../../const.js';
 import { ipcTrack } from '../../../utils/ipc.js';
-import readMyWalletAddress from '../readMyWalletAddress.js';
+import readMyWalletAddress from '../../../utils/readMyWalletAddress.js';
 
 export default class WalletHandler {
   constructor() {
