@@ -44,7 +44,7 @@ const sanitiseHeaders = (headers, browsedOnion) => (
     : {}
 );
 
-const socksAgent = new SocksProxyAgent(// ???? ok, ig... implement later
+const socksAgent = new SocksProxyAgent( // this likely needs to rotate / TODO
   'socks5h://127.0.0.1:39050',
   { timeout: BROWSER_TIMEOUT },
 );

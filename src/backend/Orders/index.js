@@ -6,6 +6,8 @@ const mapDepositAmountToNumber = (order) => ({
   deposit_amount: Number(order.deposit_amount),
 });
 
+const map = (order) => mapDepositAmountToNumber(order);
+
 class Orders {
   async init(pool) {
     this.pool = pool ?? createPool();
@@ -21,9 +23,11 @@ class Orders {
           product_description TEXT NOT NULL,
 
           purchase_price NUMERIC(8, 2) NOT NULL,
+          CHECK (purchase_price > 0),
           purchase_currency TEXT NOT NULL,
           CHECK (purchase_currency <> ''),
           purchase_quantity integer NOT NULL,
+          CHECK (purchase_quantity > 0),
 
           deposit_amount bigint NOT NULL,
           deposit_txid TEXT,
@@ -89,7 +93,7 @@ class Orders {
       `,
     );
 
-    return rows.map(mapDepositAmountToNumber);
+    return rows.map(map);
   }
 
   async getAllForCustomer(customer) {
@@ -107,7 +111,7 @@ class Orders {
       [customer],
     );
 
-    return rows.map(mapDepositAmountToNumber);
+    return rows.map(map);
   }
 
   async get(id) {
@@ -125,7 +129,7 @@ class Orders {
     );
 
     const result = rows[0];
-    return result && mapDepositAmountToNumber(result);
+    return result && map(result);
   }
 
   async markDepositDetected({ deposit_amount }) {
@@ -164,7 +168,7 @@ class Orders {
       [deposit_amount, deposit_txid],
     );
 
-    if (result.rowCount !== 1) { throw new Error('Orders.setDepositTxid rowCount !== 1'); }
+    return result.rowCount !== 1;
   }
 
   async destroy() {

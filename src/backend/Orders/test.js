@@ -46,6 +46,44 @@ test('can create an order', async () => {
   await orders.destroy();
 });
 
+test('cannot create an order with negative price', async () => {
+  const orders = await createOrders();
+
+  await expect(orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '-1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  })).rejects.toThrow('new row for relation "orders" violates check constraint "orders_purchase_price_check"');
+
+  await orders.destroy();
+});
+
+test('cannot create an order with negative quantity', async () => {
+  const orders = await createOrders();
+
+  await expect(orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: -200,
+
+    deposit_amount: 2000000000000,
+  })).rejects.toThrow('new row for relation "orders" violates check constraint "orders_purchase_quantity_check"');
+
+  await orders.destroy();
+});
+
 test('errors on 2 orders with identical deposit amount', async () => {
   const orders = await createOrders();
 

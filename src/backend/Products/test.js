@@ -83,6 +83,20 @@ test('cannot create a product with zero price', async () => {
   await products.destroy();
 });
 
+test('cannot create a product with no currency', async () => {
+  const products = await createProducts();
+
+  await expect(products.create({
+    name: 'brownie',
+    description: 'coco!',
+    currency: '',
+    price: '1.50',
+    available_quantity: 25,
+  })).rejects.toThrow('new row for relation "products" violates check constraint "products_currency_check"');
+
+  await products.destroy();
+});
+
 test('can update a product: name, currency, price, available_quantity', async () => {
   const products = await createProducts();
 

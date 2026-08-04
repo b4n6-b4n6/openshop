@@ -1,3 +1,4 @@
+/* eslint-disable preserve-caught-error */
 import { CoinGeckoClient } from 'coingecko-api-v3';
 import {
   CURRENCIES,
@@ -9,7 +10,7 @@ const client = new CoinGeckoClient({
   timeout: FETCH_FIAT_PRICE_TIMEOUT,
 });
 
-const createDebounced = (func, rememberFor) => {
+const createDebounced = (func, rememberFor) => { //  TODO
   let lastResult;
   let lastCheckTime;
 
