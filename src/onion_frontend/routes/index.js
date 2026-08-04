@@ -6,6 +6,8 @@ import productPost from './productPost.js';
 import convo from './convo.js';
 import convoPost from './convoPost.js';
 import order from './order.js';
+import orders from './orders.js';
+import downloadImage from '../../routes/downloadImage.js';
 
 const router = new Router();
 router
@@ -13,8 +15,10 @@ router
   .get('/browser/products', products)
   .get('/browser/products/:id', product)
   .post('/browser/products/:id', productPost)
+  .get('/browser/orders', orders)
   .get('/browser/orders/:id', order)
   .get('/browser/convo', convo)
-  .post('/browser/convo', convoPost);
+  .post('/browser/convo', convoPost)
+  .get('/browser/convo/images/:id', downloadImage);
 
 export default () => router.routes();

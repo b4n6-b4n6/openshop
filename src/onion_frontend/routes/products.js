@@ -8,8 +8,8 @@ export default async (ctx) => {
   const { products } = backend;
 
   const allProducts = (
-    await Promise.all(
-      (await products.getAll()).map(async (product) => ({ // ???? ok, ig... implement later
+    await Promise.all( // ???? quering photo from database is excessive here / TODO
+      (await products.getAll()).map(async (product) => ({
         ...product,
         photo: (
           product.photo

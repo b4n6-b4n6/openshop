@@ -23,7 +23,7 @@ import viewProductPost from './viewProductPost.js';
 import viewConvos from './viewConvos.js';
 import viewConvo from './viewConvo.js';
 import viewConvoPost from './viewConvoPost.js';
-import downloadImage from './downloadImage.js';
+import downloadImage from '../../routes/downloadImage.js';
 
 import selfTest from './selfTest.js';
 import syncStatus from './syncStatus.js';
