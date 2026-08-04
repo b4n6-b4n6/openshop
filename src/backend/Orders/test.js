@@ -46,6 +46,30 @@ test('can create an order', async () => {
   await orders.destroy();
 });
 
+test('can create an order and mark deposit as detected', async () => {
+  const orders = await createOrders();
+
+  const id = await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  await orders.markDepositDetected({
+    deposit_amount: 2000000000000,
+  });
+
+  const order = await orders.get(id);
+  expect(order.detected_deposit_at).toBeTruthy();
+
+  await orders.destroy();
+});
 test('cannot create an order with negative price', async () => {
   const orders = await createOrders();
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 import formatDate from '../../utils/formatDate.js';
 import bufferToDataURI from '../../utils/bufferToDataURI.js';
 import formatPiconero from '../../utils/formatPiconero.js';
@@ -72,9 +73,10 @@ const orderPage = ({
 
   <h2>
   ${(
-    (confirmed_deposit_at && 'INCOMING TRANSACTION CONFIRMED')
-        || (detected_deposit_at && 'INCOMING TRANSACTION DETECTED')
-        || 'WAITING FOR INCOMING TRANSACTION'
+    false
+    || (confirmed_deposit_at && 'INCOMING TRANSACTION CONFIRMED')
+    || (detected_deposit_at && 'INCOMING TRANSACTION DETECTED')
+    || 'WAITING FOR INCOMING TRANSACTION'
   )}
   </h2>
   ${(

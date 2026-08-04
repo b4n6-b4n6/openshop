@@ -1,30 +1,61 @@
+/* eslint-disable no-mixed-operators */
+/* eslint-disable no-constant-binary-expression */
 import formatPiconero from '../../../utils/formatPiconero.js';
 
-export default ({
+const deriveTxState = ({ isConfirmed, isLocked }) => (
+  false
+  || (isConfirmed === true && isLocked === true) && 'DETECTED'
+  || (isConfirmed === false && isLocked === true) && 'CONFIRMED'
+  || (isConfirmed === true && isLocked === false) && 'UNLOCKED'
+);
+
+const act = ({
+  orders, amount, isConfirmed, isLocked,
+}) => {
+  const txState = deriveTxState({ isConfirmed, isLocked });
+
+  if (txState === 'DETECTED' || txState === 'CONFIRMED') {
+    return orders.markDepositDetected({ deposit_amount: amount });
+  } if (txState === 'UNLOCKED') {
+    return orders.markDepositDetected({ deposit_amount: amount });
+  }
+
+  throw new Error('undefined branch');
+};
+
+const log = (message, { isConfirmed, isLocked, txid }) => {
+  console.log(
+    `${(new Date()).toISOString()}`,
+    message,
+    `(isConfirmed=${isConfirmed}, isLocked=${isLocked}, txid=${txid})`,
+  );
+};
+
+export default async ({
   amount,
   subaddressIndex,
   isConfirmed,
   isLocked,
   txid,
   isOutgoing,
+  orders,
 }) => {
-  const log = (...args) => {
-    console.log(
-      ...args,
-      `(isConfirmed=${isConfirmed}, isLocked=${isLocked}, txid=${txid})`,
-    );
-  };
+  const logParams = { isConfirmed, isLocked, txid };
 
-  if (isOutgoing) {
-    log('Is outgoing');
-    return;
-  }
+  if (isOutgoing) { log('Tx is outgoing', logParams); return; }
+  if (subaddressIndex !== 0) { log('Tx has bad subadress', logParams); return; }
 
-  log(`Incoming ${formatPiconero(amount)} XMR at subaddress ${subaddressIndex}`);
+  const acted = await act({
+    amount, isConfirmed, isLocked, orders,
+  });
+  if (acted) {
+    log(`Tx with ${formatPiconero(amount)} XMR processed`, logParams);
 
-  if (isConfirmed === false && isLocked === true) {
-    // ... implement "INCOMING TRANSACTION DETECTED"
-  } else if (isConfirmed === true && isLocked === false) {
-    // ... implement "INCOMING TRANSACTION CONFIRMED"
+    await orders.setDepositTxid({
+      deposit_amount: amount,
+      deposit_txid: txid,
+    });
+  } else {
+    log(`Tx with ${formatPiconero(amount)} XMR not processed`, logParams);
   }
 };

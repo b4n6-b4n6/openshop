@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
 
 export default () => (
-  crypto.randomInt(1000000)
+  crypto.randomInt(1e6)
 );

@@ -23,9 +23,7 @@ const convert = async (imageData, maxDimension) => {
   ]);
 
   if (code !== 0) {
-    throw new Error(
-      `convert failed with ${code} and '${err.replace(/\n$/, '')}'`,
-    );
+    throw new Error(`convert failed with ${code} and '${err.replace(/\n$/, '')}'`);
   }
 
   return out;
