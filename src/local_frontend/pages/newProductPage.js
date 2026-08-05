@@ -1,121 +1,54 @@
-import { CURRENCIES, IMG_SRC_PLACEHOLDER } from '../../const.js';
-import head from './head.js';
+import {
+  photoField,
+  richEditor,
+  selectCurrency,
+} from '../../shared/pages/components.js';
+import {
+  appFrame,
+  button,
+  document,
+  field,
+  icon,
+} from '../../shared/pages/layout.js';
 import indicators from './indicators.js';
 
-const newProductPage = () => `<!doctype html>
-<html>
-<head>
-  ${head()}
-
-  <style>
-    input[type='file'] {
-      display: none
-    }
-  </style>
-</head>
-<body>
-  ${indicators()}
-
-  <form action='/shop/products/new' method='POST' enctype='multipart/form-data'>
-    <input
-      type='text'
-      name='name'
-      placeholder='Product name'
-      value=''
-    >
-    <br>
-
-    <textarea
-      name='description'
-      placeholder='Product description'
-    ></textarea>
-    <br>
-
-    <img
-      class='change-product-photo-preview'
-      alt='product photo'
-      src="${IMG_SRC_PLACEHOLDER}"
-    >
-    <br>
-
-    <button
-      class='change-product-photo-button'
-      type='button'
-    >CHANGE PRODUCT PHOTO</button>
-    <input
-      class='change-product-photo-file-input'
-      name='photo'
-      type='file'
-    >
-    <br>
-
-    <script>
-      (() => {
-        const previewImg = document.querySelector('.change-product-photo-preview')
-        const fileInput = document.querySelector('.change-product-photo-file-input')
-        const changeButton = document.querySelector('.change-product-photo-button')
-
-        fileInput.addEventListener('change', (event) => {
-          const files = event.target.files
-
-          if (files.length) {
-            const file = files[0]
-            const reader = new FileReader()
-
-            reader.addEventListener("load", () => {
-              previewImg.src = reader.result
-            })
-
-            if (file) {
-              reader.readAsDataURL(file)
-            }
-          }
-        })
-        changeButton.addEventListener('click', (event) => {
-          fileInput.click()
-        })
-      })()
-    </script>
-
-    <select name='currency'>
-      <option value=''>CURRENCY</option>
-
-      ${(
-    CURRENCIES.map((currency) => (
-      `<option value=${currency}>${currency.toUpperCase()}</option>`
-    )).join('\n')
-  )}
-    </select><br>
-
-    <input
-      type='number'
-      name='price'
-      placeholder='Price'
-      step='0.01'
-      min='0'
-    ><br>
-
-    <input
-      type='number'
-      name='available_quantity'
-      placeholder='Available quantity'
-      min='0'
-    ><br>
-
-    <button type='submit'>ADD</button>
-  </form>
-  <script>
-    document
-      .querySelector('form button[type="submit"]')
-      .addEventListener('click', (event) => {
-        event.target.disabled = true
-        document.querySelector('[action="/shop/products/new"]').submit()
-      })
-  </script>
-  <hr>
-
-  <form action='/shop'><button>BACK</button></form>
-</body>
-</html>`;
+const newProductPage = () => document({
+  title: 'Add Product',
+  scripts: ['editor.js', 'owner.js'],
+  body: appFrame({
+    title: 'Add Product',
+    back: '/shop/products',
+    status: indicators(),
+    content: `<form id="product-form" action="/shop/products/new" method="post" enctype="multipart/form-data" data-disable-on-submit class="space-y-5 px-5 py-6">
+      ${field({
+    label: 'Name',
+    name: 'name',
+    placeholder: 'Product name',
+    attributes: 'required',
+  })}
+      ${richEditor({ label: 'Description' })}
+      ${photoField({ label: 'Product photo' })}
+      ${selectCurrency()}
+      ${field({
+    label: 'Price',
+    name: 'price',
+    placeholder: '0.00',
+    attributes: 'type="number" inputmode="decimal" step="0.01" min="0" required',
+  })}
+      ${field({
+    label: 'Available quantity',
+    name: 'available_quantity',
+    value: '1',
+    attributes: 'type="number" inputmode="numeric" min="0" required',
+  })}
+    </form>`,
+    bottom: button({
+      label: 'Add product',
+      type: 'submit',
+      buttonIcon: icon('plus', 'size-4'),
+      attributes: 'form="product-form"',
+    }),
+  }),
+});
 
 export default newProductPage;

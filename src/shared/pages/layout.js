@@ -1,11 +1,24 @@
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 
-const ASSET_VERSION = '20260801-1';
+const ASSET_VERSION = '20260805-2';
 
 export const icon = (name, classes = 'size-5') => {
   const paths = {
     arrowLeft: '<path d="m15 18-6-6 6-6"/>',
+    bold: '<path d="M6 4h8a4 4 0 0 1 0 8H6z"/><path d="M6 12h9a4 4 0 0 1 0 8H6z"/>',
+    boxes: '<path d="M2.97 12.92 12 17.94l9.03-5.02"/><path d="m7 4.27 10 5.46"/><path d="M12 22V12"/><path d="m21.03 7.08-9.03 5.03-9.03-5.03L12 2.06z"/>',
+    chevronRight: '<path d="m9 18 6-6-6-6"/>',
+    copy: '<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+    download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
+    image: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
+    italic: '<line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/>',
+    message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>',
+    pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+    power: '<path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/>',
     qr: '<rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/>',
+    receipt: '<path d="M4 2v20l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V2l-2 2-2-2-2 2-2-2-2 2-2-2-2 2Z"/><path d="M16 8h-6"/><path d="M16 12h-6"/><path d="M13 16h-3"/>',
+    store: '<path d="M3 9V7l2-4h14l2 4v2"/><path d="M5 13v8h14v-8"/><path d="M9 21v-6h6v6"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/>',
     wifiOff: '<path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M5 12.86a10 10 0 0 1 5.17-2.69"/><path d="M19 12.86a10 10 0 0 0-2.01-1.52"/><path d="M2 8.82a15 15 0 0 1 4.18-2.64"/><path d="M22 8.82a15 15 0 0 0-11.29-3.76"/><path d="m2 2 20 20"/>',
   };
 
@@ -47,17 +60,19 @@ export const appFrame = ({
   back,
   content,
   bottom,
+  status = '',
+  animate = true,
 }) => {
   const backButton = back
     ? `<a class="inline-flex size-11 items-center justify-center rounded-xl text-muted transition-colors hover:bg-surface-2 hover:text-text active:scale-95" href="${escapeAttribute(back)}" aria-label="Back">${icon('arrowLeft', 'size-6')}</a>`
     : '';
 
-  return `<div class="mx-auto flex h-full max-w-[480px] flex-col bg-base page-enter">
+  return `<div class="mx-auto flex h-full max-w-[480px] flex-col bg-base${animate ? ' page-enter' : ''}">
   <header class="sticky top-0 z-30 border-b border-border bg-elevated/95 backdrop-blur pt-safe">
     <div class="flex h-14 items-center gap-1 px-2">
-      <div class="flex w-11 justify-start">${backButton}</div>
+      <div class="flex ${status ? 'w-28' : 'w-11'} justify-start">${backButton}</div>
       <h1 class="flex-1 truncate text-center text-[15px] font-bold text-text">${escapeHtml(title)}</h1>
-      <div class="min-w-11"></div>
+      <div class="flex ${status ? 'w-28' : 'min-w-11'} justify-end">${status}</div>
     </div>
   </header>
   <main class="no-scrollbar flex-1 overflow-y-auto">${content}</main>
@@ -66,6 +81,8 @@ export const appFrame = ({
 };
 
 const BUTTON_VARIANTS = {
+  danger: 'bg-transparent text-danger border border-danger/40 hover:bg-danger/10',
+  ghost: 'bg-transparent text-text hover:bg-surface-2',
   primary: 'bg-accent text-on-accent hover:bg-accent-hover active:bg-accent-press',
   secondary: 'bg-surface-2 text-text border border-border hover:border-border-strong',
 };
@@ -76,12 +93,13 @@ export const button = ({
   type = 'button',
   variant = 'primary',
   buttonIcon = '',
+  classes = '',
   attributes = '',
 }) => {
   const tag = href ? 'a' : 'button';
   const target = href ? ` href="${escapeAttribute(href)}"` : ` type="${escapeAttribute(type)}"`;
 
-  return `<${tag}${target} class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-[15px] font-semibold transition-colors duration-150 select-none active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50 ${BUTTON_VARIANTS[variant]}" ${attributes}>${buttonIcon}${escapeHtml(label)}</${tag}>`;
+  return `<${tag}${target} class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-[15px] font-semibold transition-colors duration-150 select-none active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50 ${BUTTON_VARIANTS[variant]} ${escapeAttribute(classes)}" ${attributes}>${buttonIcon}${escapeHtml(label)}</${tag}>`;
 };
 
 export const field = ({

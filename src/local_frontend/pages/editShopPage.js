@@ -1,47 +1,62 @@
-import head from './head.js';
+import {
+  photoField,
+  richEditor,
+} from '../../shared/pages/components.js';
+import {
+  appFrame,
+  button,
+  document,
+  field,
+} from '../../shared/pages/layout.js';
 import indicators from './indicators.js';
 
 const editShopPage = ({
   name,
   description,
-}) => `<!doctype html>
-<html>
-<head>
-  ${head()}
+  profile_photo,
+  banner_photo,
+}) => document({
+  title: 'Edit Shop',
+  scripts: ['editor.js', 'owner.js'],
+  body: appFrame({
+    title: 'Edit Shop',
+    back: '/shop',
+    status: indicators(),
+    content: `<div class="space-y-5 px-5 py-6">
+      <form id="shop-details-form" action="/shop/settings" method="post" data-disable-on-submit class="contents">
+        ${field({
+    label: 'Shop name',
+    name: 'name',
+    value: name,
+    placeholder: 'My Shop',
+    attributes: 'required',
+  })}
+        ${richEditor({ value: description, label: 'Shop description' })}
+      </form>
 
-  <style>
-    button {
-      font-size: 150%;
-    }
+      <form action="/shop/settings/profile-photo" method="post" enctype="multipart/form-data" data-disable-on-submit>
+        ${photoField({
+    label: 'Profile photo',
+    value: profile_photo,
+    autoSubmit: true,
+  })}
+      </form>
 
-    input[type='file'] {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-  ${indicators()}
-
-  <form action='/shop/settings' method='post'>
-    <input
-      type='text'
-      name='name'
-      placeholder='Shop name'
-      value='${name}'
-    >
-    <br>
-
-    <textarea
-      name='description'
-      placeholder='Shop description'
-    >${description}</textarea>
-    <hr>
-
-    <button>UPDATE</button>
-  </form>
-
-  <form action='/shop'><button>BACK</button></form>
-</body>
-</html>`;
+      <form action="/shop/settings/banner-photo" method="post" enctype="multipart/form-data" data-disable-on-submit>
+        ${photoField({
+    label: 'Banner photo',
+    value: banner_photo,
+    aspect: 'banner',
+    autoSubmit: true,
+  })}
+      </form>
+    </div>`,
+    bottom: button({
+      label: 'Update',
+      type: 'submit',
+      attributes: 'form="shop-details-form"',
+    }),
+  }),
+});
 
 export default editShopPage;

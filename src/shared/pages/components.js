@@ -1,0 +1,174 @@
+import { CURRENCIES } from '../../const.js';
+import { renderBbcode } from '../utils/bbcode.js';
+import { escapeAttribute, escapeHtml } from '../utils/html.js';
+import { button, icon } from './layout.js';
+
+const dataImage = (value) => (
+  typeof value === 'string' && /^data:image\/(?:gif|jpeg|png|webp);base64,/i.test(value)
+);
+
+export const truncateMiddle = (value, head = 10, tail = 10) => {
+  const text = String(value ?? '');
+  return text.length <= head + tail + 1
+    ? text
+    : `${text.slice(0, head)}…${text.slice(-tail)}`;
+};
+
+export const formatFiat = (amount, currency) => {
+  try {
+    return new Intl.NumberFormat('en', {
+      currency: String(currency ?? 'USD').toUpperCase(),
+      maximumFractionDigits: 2,
+      style: 'currency',
+    }).format(Number(amount));
+  } catch {
+    return `${Number(amount).toFixed(2)} ${String(currency ?? '').toUpperCase()}`;
+  }
+};
+
+export const richText = (description) => (
+  `<div class="rich-text">${renderBbcode(description)}</div>`
+);
+
+export const avatar = (src, size = 72) => (
+  `<div style="width:${size}px;height:${size}px" class="flex items-center justify-center overflow-hidden rounded-full border-2 border-base bg-surface-2 text-faint">
+    ${dataImage(src)
+    ? `<img src="${escapeAttribute(src)}" alt="" class="h-full w-full object-cover">`
+    : icon('store', 'size-1/2')}
+  </div>`
+);
+
+export const shopBanner = (src) => (
+  `<div class="relative h-36 w-full overflow-hidden bg-surface-2">
+    ${dataImage(src)
+    ? `<img src="${escapeAttribute(src)}" alt="" class="h-full w-full object-cover">`
+    : `<div class="flex h-full items-center justify-center text-faint">${icon('image', 'size-7')}</div>`}
+  </div>`
+);
+
+export const qrView = ({
+  qr,
+  caption = '',
+  fileName = 'openshop-qr.png',
+  size = 64,
+}) => {
+  const artwork = (artworkSize) => `<span class="qr-art" style="--qr-size:${artworkSize}px">
+    <img data-qr-image src="${escapeAttribute(qr)}" alt="" width="${artworkSize}" height="${artworkSize}">
+    <span class="qr-watermark">
+      <img data-qr-logo src="/static/images/logo-orange.svg" alt="OpenShop">
+    </span>
+  </span>`;
+
+  return `<div data-qr-view data-file-name="${escapeAttribute(fileName)}">
+    <button type="button" data-qr-open class="qr-trigger" aria-label="Enlarge QR code">
+      ${artwork(Number(size))}
+    </button>
+    <div data-qr-modal class="qr-modal" role="dialog" aria-modal="true" aria-label="QR code" hidden>
+      <button type="button" data-qr-close class="qr-modal-close" aria-label="Close QR code">×</button>
+      <div class="qr-modal-panel">
+        <div class="qr-large">${artwork(240)}</div>
+        ${caption ? `<p class="qr-caption">${escapeHtml(caption)}</p>` : ''}
+        <p data-qr-save-error role="alert" class="hidden text-[12px] text-danger"></p>
+        ${button({
+    label: 'Save image',
+    buttonIcon: icon('download', 'size-4'),
+    attributes: 'data-qr-save',
+  })}
+      </div>
+    </div>
+  </div>`;
+};
+
+export const hubLink = ({
+  href,
+  label,
+  linkIcon,
+}) => `<a href="${escapeAttribute(href)}" class="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3.5 text-left transition-colors hover:border-border-strong active:scale-[0.99]">
+  <span class="text-accent">${icon(linkIcon, 'size-5')}</span>
+  <span class="flex-1 text-[15px] font-medium text-text">${escapeHtml(label)}</span>
+  <span class="text-faint">${icon('chevronRight', 'size-4')}</span>
+</a>`;
+
+export const richEditor = ({
+  value = '',
+  label = 'Description',
+  name = 'description',
+}) => `<div data-rich-editor>
+  <span class="mb-1.5 block text-[12px] font-semibold uppercase tracking-wide text-muted">${escapeHtml(label)}</span>
+  <div class="overflow-hidden rounded-xl border border-border bg-surface-2 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/30">
+    <div class="rich-toolbar flex items-center gap-1 border-b border-border p-1.5" aria-label="Text formatting">
+      <button type="button" data-bbcode="b" title="Bold" aria-label="Bold">${icon('bold', 'size-4')}</button>
+      <button type="button" data-bbcode="i" title="Italic" aria-label="Italic">${icon('italic', 'size-4')}</button>
+      <button type="button" data-bbcode="quote" title="Quote">Quote</button>
+    </div>
+    <textarea rows="6" class="w-full resize-none bg-transparent px-4 py-3 text-[15px] leading-relaxed text-text placeholder:text-faint outline-none" name="${escapeAttribute(name)}" placeholder="Describe it…">${escapeHtml(value)}</textarea>
+  </div>
+  <span class="mt-1.5 block text-[12px] text-faint">Use the toolbar to add BBCode formatting.</span>
+</div>`;
+
+export const photoField = ({
+  label,
+  name = 'photo',
+  value,
+  aspect = 'square',
+  autoSubmit = false,
+}) => `<div class="photo-field" data-photo-field${autoSubmit ? ' data-auto-submit' : ''}>
+  <span class="mb-1.5 block text-[12px] font-semibold uppercase tracking-wide text-muted">${escapeHtml(label)}</span>
+  <button type="button" class="photo-picker photo-picker-${escapeAttribute(aspect)}" data-photo-pick>
+    ${dataImage(value)
+    ? `<img data-photo-preview src="${escapeAttribute(value)}" alt="${escapeAttribute(label)}">`
+    : `<span data-photo-placeholder>${icon('image', 'size-6')}<span>Choose image</span></span>`}
+  </button>
+  <input class="hidden" data-photo-input type="file" name="${escapeAttribute(name)}" accept="image/png,image/jpeg,image/webp,image/gif">
+  <span data-photo-name class="mt-1.5 block truncate text-[12px] text-faint">PNG, JPEG, WebP, or GIF</span>
+</div>`;
+
+export const selectCurrency = (value = 'usd') => `<label class="block">
+  <span class="mb-1.5 block text-[12px] font-semibold uppercase tracking-wide text-muted">Currency</span>
+  <select class="h-12 w-full rounded-xl border border-border bg-surface-2 px-4 text-[15px] text-text outline-none focus:border-accent focus:ring-2 focus:ring-accent/30" name="currency" required>
+    ${CURRENCIES.map((currency) => (
+    `<option value="${currency}" ${currency === String(value).toLowerCase() ? 'selected' : ''}>${currency.toUpperCase()}</option>`
+  )).join('')}
+  </select>
+</label>`;
+
+export const thumb = (src, size = 56) => (
+  `<div style="width:${size}px;height:${size}px" class="flex shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-2 text-faint">
+    ${dataImage(src)
+    ? `<img src="${escapeAttribute(src)}" alt="" class="h-full w-full object-cover">`
+    : icon('image', 'size-5')}
+  </div>`
+);
+
+export const productCard = ({ product, actionHref }) => {
+  const quantity = Number(product.available_quantity);
+  const out = quantity <= 0;
+
+  return `<article class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4 ${out ? 'opacity-60' : ''}">
+    ${thumb(product.photo)}
+    <div class="min-w-0 flex-1">
+      <p class="truncate text-[15px] font-semibold text-text">${escapeHtml(product.name)}</p>
+      <p class="text-[13px] text-muted">${escapeHtml(formatFiat(product.price, product.currency))}</p>
+      <div class="mt-1">${out
+    ? '<span class="inline-flex rounded-full bg-danger/15 px-2 py-0.5 text-[11px] font-semibold text-danger">Out of stock</span>'
+    : `<span class="text-[12px] text-faint">${quantity} in stock</span>`}
+      </div>
+    </div>
+    <div class="shrink-0">${button({
+    label: 'Edit',
+    href: actionHref,
+    variant: 'secondary',
+    classes: 'h-9 px-3 text-[13px]',
+  })}</div>
+  </article>`;
+};
+
+export const emptyState = ({
+  emptyIcon,
+  title,
+  description,
+}) => `<div class="flex flex-col items-center justify-center px-6 py-16 text-center">
+  <div class="mb-4 flex size-14 items-center justify-center rounded-2xl bg-surface-2 text-faint">${icon(emptyIcon, 'size-8')}</div>
+  <p class="text-[15px] font-semibold text-text">${escapeHtml(title)}</p>
+  <p class="mt-1.5 max-w-[260px] text-[13px] text-muted">${escapeHtml(description)}</p>
+</div>`;
