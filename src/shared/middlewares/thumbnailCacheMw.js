@@ -1,4 +1,4 @@
-import ThumbnailCache from '../backend/ThumbnailCache/index.js';
+import ThumbnailCache from '../../backend/ThumbnailCache/index.js';
 
 export default () => {
   const thumbnailCache = new ThumbnailCache();

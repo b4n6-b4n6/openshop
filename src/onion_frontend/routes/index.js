@@ -7,7 +7,7 @@ import convo from './convo.js';
 import convoPost from './convoPost.js';
 import order from './order.js';
 import orders from './orders.js';
-import downloadImage from '../../routes/downloadImage.js';
+import downloadImage from '../../shared/routes/downloadImage.js';
 
 const router = new Router();
 router

@@ -2,9 +2,9 @@ import Koa from 'koa';
 import routes from './routes/index.js';
 
 import adaptedBody from './middlewares/adaptedBody.js';
-import createBackendMw from '../middlewares/backendMw.js';
+import createBackendMw from '../shared/middlewares/backendMw.js';
 import createWalletSetupMw from './middlewares/walletSetupMw.js';
-import thumbnailCacheMw from '../middlewares/thumbnailCacheMw.js';
+import thumbnailCacheMw from '../shared/middlewares/thumbnailCacheMw.js';
 import singularAccess from './middlewares/singularAccess.js';
 import exportBrowsedOnion from './middlewares/exportBrowsedOnion.js';
 import onionSpinner from './middlewares/onionSpinner.js';

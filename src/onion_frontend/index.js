@@ -7,13 +7,13 @@ import {
 
 import waitForFile from '../utils/waitForFile.js';
 
-import body from '../middlewares/body.js';
+import body from '../shared/middlewares/body.js';
 import onionFilter from './middlewares/onionFilter.js';
 import walletHandlerMw from './middlewares/walletHandlerMw.js';
 import createUser from './middlewares/createUser.js';
 import validateUser from './middlewares/validateUser.js';
-import createBackendMw from '../middlewares/backendMw.js';
-import thumbnailCacheMw from '../middlewares/thumbnailCacheMw.js';
+import createBackendMw from '../shared/middlewares/backendMw.js';
+import thumbnailCacheMw from '../shared/middlewares/thumbnailCacheMw.js';
 import createMyOnion from './middlewares/myOnion.js';
 
 import preRoutes from './routes/pre.js';

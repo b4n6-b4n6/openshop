@@ -1,4 +1,4 @@
-import body from '../../middlewares/body.js';
+import body from '../../shared/middlewares/body.js';
 
 export default () => {
   const bodyMw = body();
