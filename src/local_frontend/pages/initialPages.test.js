@@ -24,6 +24,7 @@ test('browse page preserves and escapes its onion value', () => {
   expect(page).toContain('&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;');
   expect(page).not.toContain('<script>alert(1)</script>');
   expect(page).toContain('data-scan-qr');
+  expect(page).toContain('browse-loading h-full flex-col items-center justify-center gap-6');
 });
 
 test('wallet page keeps the backend field contract and reports errors', () => {
