@@ -1,3 +1,6 @@
+import newProductPage from '../pages/newProductPage.js';
+import validateProductInput from '../utils/validateProductInput.js';
+
 export default async (ctx) => {
   const { request, backend } = ctx;
   const { products } = backend;
@@ -11,14 +14,30 @@ export default async (ctx) => {
     available_quantity,
   } = request.body;
 
-  const id = await products.create({
+  const error = validateProductInput({ price, available_quantity });
+  if (error) {
+    ctx.status = 400;
+    ctx.body = newProductPage({
+      error,
+      values: {
+        available_quantity,
+        currency,
+        description,
+        name,
+        price,
+      },
+    });
+    return;
+  }
+
+  await products.create({
     name,
     photo,
     description,
-    price: price || '0',
+    price,
     currency,
-    available_quantity: available_quantity || '0',
+    available_quantity,
   });
 
-  ctx.redirect(`/shop/products/${id}`);
+  ctx.redirect('/shop/products');
 };
