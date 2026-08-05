@@ -14,7 +14,7 @@ export default async (ctx) => {
         product_photo: (
           order.product_photo
             ? await thumbnailCache.genThumb(
-              `product:${order.id}`,
+              `order:${order.id}`,
               order.product_photo,
               MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION,
             )
