@@ -1,71 +1,54 @@
-import head from './head.js';
-import formatUserId from '../../utils/formatUserId.js';
+import {
+  emptyState,
+  truncateMiddle,
+} from '../../shared/pages/components.js';
+import {
+  appFrame,
+  document,
+  icon,
+} from '../../shared/pages/layout.js';
+import { escapeAttribute, escapeHtml } from '../../shared/utils/html.js';
 import formatDate from '../../utils/formatDate.js';
 import indicators from './indicators.js';
-import refresher from './refresher.js';
 
-const viewConvosPage = ({
-  allConvos,
-}) => `<!doctype html>
-<html>
-<head>
-  ${head()}
-  ${refresher({ interval: 10 })}
-
-  <style>
-    input[type='file'] {
-      display: none
-    }
-
-
-    ul {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    li {
-      background: #ccc;
-      margin: 0.5em;
-      padding: 0.5em;
-      border-radius: 0.5em;
-      align-self: flex-start;
-    }
-
-    pre {
-      margin: 0;
-      padding: 0.25em;
-      background: #eee;
-    }
-  </style>
-</head>
-<body>
-  ${indicators()}
-
-  <ul>
-    ${allConvos.map(({
-    id, last_message_at, last_message_sender, unread,
-  }) => (
-    `<li>
-      <pre><a href='/shop/convos/${id}'>${formatUserId(id)}</a></pre>
-      <small title='${last_message_at}'>${formatDate(last_message_at)}</small>
-      ${
-    (id === last_message_sender ? unread : false)
-      ? ' <span title="UNREAD">🟠</span>'
-      : ''
-    }
-
-      <form action='/shop/convos/${id}'><button>OPEN</button></form>
-    </li>`
-  )).join('')}
-  </ul>
-  ${!allConvos.length ? 'nothing' : ''}
-
-  <hr>
-
-  <form action='/shop'><button>BACK</button></form>
-</body>
-</html>`;
+const viewConvosPage = ({ allConvos }) => document({
+  title: 'Chats',
+  refresh: 10,
+  body: appFrame({
+    title: 'Chats',
+    back: '/shop',
+    status: indicators(),
+    animate: false,
+    content: allConvos.length
+      ? `<div class="flex flex-col gap-2.5 px-5 py-5">
+        ${allConvos.map(({
+    id,
+    last_message_at,
+    last_message_sender,
+    unread,
+  }) => {
+    const isUnread = id === last_message_sender && unread;
+    return `<a href="/shop/convos/${encodeURIComponent(id)}" class="block text-left active:scale-[0.99]">
+      <article class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4">
+        <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted">${icon('message', 'size-5')}</div>
+        <div class="min-w-0 flex-1">
+          <p class="truncate font-mono text-[13px] text-text">${escapeHtml(truncateMiddle(id, 10, 6))}</p>
+          <p title="${escapeAttribute(last_message_at)}" class="text-[12px] text-faint">${escapeHtml(formatDate(last_message_at))}</p>
+        </div>
+        ${isUnread
+    ? '<span class="size-2.5 shrink-0 rounded-full bg-accent" aria-label="Unread messages"></span>'
+    : ''}
+        <span class="text-faint">${icon('chevronRight', 'size-4')}</span>
+      </article>
+    </a>`;
+  }).join('')}
+      </div>`
+      : emptyState({
+        emptyIcon: 'message',
+        title: 'No chats yet',
+        description: 'Conversations with customers appear here.',
+      }),
+  }),
+});
 
 export default viewConvosPage;

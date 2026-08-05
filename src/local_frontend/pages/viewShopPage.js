@@ -1,6 +1,18 @@
-import { IMG_SRC_PLACEHOLDER } from '../../const.js';
-import bufferToDataURI from '../../utils/bufferToDataURI.js';
-import head from './head.js';
+import {
+  avatar,
+  hubLink,
+  qrView,
+  richText,
+  shopBanner,
+  truncateMiddle,
+} from '../../shared/pages/components.js';
+import {
+  appFrame,
+  button,
+  document,
+  icon,
+} from '../../shared/pages/layout.js';
+import { escapeAttribute, escapeHtml } from '../../shared/utils/html.js';
 import indicators from './indicators.js';
 
 const viewShopPage = ({
@@ -9,113 +21,96 @@ const viewShopPage = ({
   description,
   profile_photo,
   banner_photo,
-}) => `<!doctype html>
-<html>
-<head>
-  ${head()}
+  qr,
+}) => document({
+  title: 'My Shop',
+  scripts: ['owner.js', 'qr.js'],
+  body: appFrame({
+    title: 'My Shop',
+    status: indicators(),
+    content: `${shopBanner(banner_photo)}
+      <div class="px-5">
+        <div class="relative z-10 -mt-8 mb-3 w-fit">${avatar(profile_photo)}</div>
 
-  <style>
-    button {
-      font-size: 150%;
-    }
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <h2 class="truncate text-xl font-bold text-text">${escapeHtml(name || 'Unnamed shop')}</h2>
+            <div class="mt-1 flex items-center gap-1">
+              <span class="truncate font-mono text-[12px] text-muted">${escapeHtml(truncateMiddle(address))}</span>
+              <button type="button" data-copy="${escapeAttribute(address)}" aria-label="Copy address" class="inline-flex size-10 items-center justify-center rounded-xl text-muted transition-colors hover:bg-surface-2 hover:text-text">
+                ${icon('copy', 'size-4')}
+              </button>
+            </div>
+          </div>
+          ${qrView({
+    qr,
+    caption: address,
+    fileName: 'openshop-address.png',
+  })}
+        </div>
 
-    input[type='file'] {
-      display: none;
-    }
+        ${description
+    ? `<div class="mt-3">${richText(description)}</div>`
+    : '<p class="mt-3 text-[14px] text-faint">No description yet. Tap “Edit shop” to add one.</p>'}
 
-    input[name='address'] {
-      width: 40em;
-      text-align: center;
-      font-family: monospace;
-      font-size: 1em;
-    }
+        <div class="mt-5 grid grid-cols-2 gap-2.5">
+          ${button({
+    label: 'Edit shop',
+    href: '/shop/settings',
+    variant: 'secondary',
+    buttonIcon: icon('pencil', 'size-4'),
+  })}
+          ${button({
+    label: 'Add product',
+    href: '/shop/products/new',
+    variant: 'secondary',
+    buttonIcon: icon('plus', 'size-4'),
+  })}
+        </div>
 
-    img {
-      border: 1px dotted black;
-    }
-    
-    .enlarged {
-      transform: scale(1200%);
-    }
-  </style>
-</head>
-<body>
-  ${indicators()}
+        <div class="mt-3 flex flex-col gap-2.5">
+          ${hubLink({
+    href: '/shop/products',
+    label: 'View my products',
+    linkIcon: 'boxes',
+  })}
+          ${hubLink({
+    href: '/shop/orders',
+    label: 'View my orders',
+    linkIcon: 'receipt',
+  })}
+          ${hubLink({
+    href: '/shop/convos',
+    label: 'View my chats',
+    linkIcon: 'message',
+  })}
+        </div>
 
-  <input name='address' type='text' readonly value='${address}'>
-  <br>
+        <div class="my-6">
+          ${button({
+    label: 'Close shop',
+    variant: 'danger',
+    buttonIcon: icon('power', 'size-4'),
+    attributes: 'data-close-shop-open',
+  })}
+        </div>
+      </div>
 
-  <button class='qr-button'>▣</button>
-  <br>
-  <script>
-    document
-      .querySelector('.qr-button')
-      .addEventListener('click', (event) => {
-        event.target.classList.toggle('enlarged')
-      })
-  </script>
-
-  <img alt='profile photo' src="${profile_photo ? bufferToDataURI('unknown', profile_photo) : IMG_SRC_PLACEHOLDER}">
-  <br>
-
-  <img alt='banner photo' src="${banner_photo ? bufferToDataURI('unknown', banner_photo) : IMG_SRC_PLACEHOLDER}">
-  <br>
-
-  <input type='text' readonly placeholder='Shop name' value='${name}'>
-  <br>
-
-  <textarea readonly placeholder='Shop description'>${description}</textarea>
-
-  <form action='/shop/settings'><button>EDIT SHOP NAME</button></form>
-  <form action='/shop/settings'><button>EDIT SHOP DESCRIPTION</button></form>
-
-  <script>
-    implementImageUpload = (selectorQuery) => {
-      const form = document.querySelector(selectorQuery)
-      const fileInput = form.querySelector('input[type=file]')
-      const changeButton = form.querySelector('button')
-
-      fileInput.addEventListener('change', (event) => {
-        const files = event.target.files
-
-        if (files.length) {
-          changeButton.disabled = true
-          form.submit()
-        }
-      })
-      changeButton.addEventListener('click', (event) => {
-        fileInput.click()
-      })
-    };
-  </script>
-
-  <form action='/shop/settings/profile-photo' method='POST' enctype='multipart/form-data'>
-    <button type='button'>CHANGE PROFILE PHOTO</button>
-
-    <input name='photo' type='file'>
-  </form>
-  <script>
-    implementImageUpload('[action="/shop/settings/profile-photo"]')
-  </script>
-
-  <form action='/shop/settings/banner-photo' method='POST' enctype='multipart/form-data'>
-    <button type='button'>CHANGE BANNER PHOTO</button>
-
-    <input name='photo' type='file'>
-  </form>
-  <script>
-    implementImageUpload('[action="/shop/settings/banner-photo"]')
-  </script>
-
-  <form action='/shop/products/new'><button>ADD NEW PRODUCT</button></form>
-  <form action='/shop/products'><button>VIEW MY PRODUCTS</button></form>
-  <form action='/shop/convos'><button>VIEW MY CHATS</button></form>
-  <form action='/shop/orders'><button>VIEW MY ORDERS</button></form>
-
-  <hr>
-
-  <form action='/'><button>CLOSE SHOP</button></form>
-</body>
-</html>`;
+      <div data-close-shop-modal class="owner-modal" role="dialog" aria-modal="true" aria-label="Close shop" hidden>
+        <div class="owner-modal-panel">
+          <h2 class="text-lg font-bold text-text">Close shop?</h2>
+          <p class="mt-2 text-[14px] leading-relaxed text-muted">Your shop screen will close. The service launchers continue running until you stop them in their terminals.</p>
+          <div class="mt-5 flex flex-col gap-2.5">
+            ${button({ label: 'Close shop', href: '/', variant: 'danger' })}
+            ${button({
+    label: 'Cancel',
+    variant: 'ghost',
+    attributes: 'data-close-shop-cancel',
+  })}
+          </div>
+        </div>
+      </div>`,
+  }),
+});
 
 export default viewShopPage;

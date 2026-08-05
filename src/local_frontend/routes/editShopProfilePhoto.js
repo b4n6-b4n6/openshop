@@ -10,5 +10,5 @@ export default async (ctx) => {
   await shops.update({ address, profile_photo });
   await thumbnailCache.clear('profile_photo');
 
-  ctx.redirect('/shop');
+  ctx.redirect('/shop/settings');
 };
