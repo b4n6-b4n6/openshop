@@ -7,6 +7,7 @@ import {
   appFrame,
   button,
   document,
+  errorNotice,
   field,
 } from '../../shared/pages/layout.js';
 import { escapeAttribute } from '../../shared/utils/html.js';
@@ -20,6 +21,7 @@ const viewProductPage = ({
   price,
   currency,
   available_quantity,
+  error = '',
 }) => {
   const action = `/shop/products/${encodeURIComponent(id)}`;
 
@@ -31,6 +33,7 @@ const viewProductPage = ({
       back: '/shop/products',
       status: indicators(),
       content: `<form id="product-form" action="${escapeAttribute(action)}" method="post" enctype="multipart/form-data" data-disable-on-submit class="space-y-5 px-5 py-6">
+        ${error ? errorNotice(error, 'Product could not be updated') : ''}
         ${field({
     label: 'Name',
     name: 'name',
@@ -46,13 +49,13 @@ const viewProductPage = ({
     name: 'price',
     value: price,
     placeholder: '0.00',
-    attributes: 'type="number" inputmode="decimal" step="0.01" min="0" required',
+    attributes: 'type="number" inputmode="decimal" step="0.01" min="0.01" max="999.99" required',
   })}
         ${field({
     label: 'Available quantity',
     name: 'available_quantity',
     value: available_quantity,
-    attributes: 'type="number" inputmode="numeric" min="0" required',
+    attributes: 'type="number" inputmode="numeric" min="0" max="2147483647" required',
   })}
       </form>`,
       bottom: button({

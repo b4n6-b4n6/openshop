@@ -17,7 +17,6 @@ const syncStatusResult = ({ height, percent } = {}) => {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Wallet sync status</title>
   <style>
-    :root { color-scheme: dark; }
     * { box-sizing: border-box; }
     html, body { background: transparent !important; height: 100%; margin: 0; }
     body {

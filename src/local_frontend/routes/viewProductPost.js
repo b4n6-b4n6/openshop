@@ -1,4 +1,6 @@
 import assertImage from '../utils/assertImage.js';
+import viewProductPage from '../pages/viewProductPage.js';
+import validateProductInput from '../utils/validateProductInput.js';
 
 export default async (ctx) => {
   const {
@@ -18,12 +20,27 @@ export default async (ctx) => {
 
   if (photo) { await assertImage(photo); }
 
+  const error = validateProductInput({ price, available_quantity });
+  if (error) {
+    ctx.status = 400;
+    ctx.body = viewProductPage({
+      id,
+      name,
+      description,
+      price,
+      currency,
+      available_quantity,
+      error,
+    });
+    return;
+  }
+
   await products.update({
     id,
     name,
     photo,
     description,
-    price: price || '0',
+    price,
     currency,
     available_quantity: available_quantity || '0',
   });

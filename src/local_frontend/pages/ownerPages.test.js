@@ -1,5 +1,9 @@
+import { jest } from '@jest/globals';
 import editShopPage from './editShopPage.js';
 import newProductPage from './newProductPage.js';
+import newProductPost from '../routes/newProductPost.js';
+import onionErrorPage from './onionErrorPage.js';
+import validateProductInput from '../utils/validateProductInput.js';
 import syncStatusResult from './syncStatusResult.js';
 import viewConvosPage from './viewConvosPage.js';
 import viewProductPage from './viewProductPage.js';
@@ -37,6 +41,7 @@ test('all owner screens include the live wallet sync indicator', () => {
 
   pages.forEach((page) => {
     expect(page).toContain('src="/sync-status"');
+    expect(page).toContain('allowtransparency="true"');
     expect(page).not.toContain('src="/self-test"');
   });
 });
@@ -82,6 +87,54 @@ test('product forms preserve backend field names', () => {
   expect(pages[1]).toContain('action="/shop/products/product-1"');
 });
 
+test('new products return to the product list after creation', async () => {
+  const create = jest.fn().mockResolvedValue('product-1');
+  const ctx = {
+    backend: { products: { create } },
+    request: {
+      body: {
+        available_quantity: '1',
+        currency: 'usd',
+        description: '',
+        name: 'New product',
+        price: '2.50',
+      },
+      files: { photo: [] },
+    },
+    redirect: jest.fn(),
+  };
+
+  await newProductPost(ctx);
+
+  expect(create).toHaveBeenCalledTimes(1);
+  expect(ctx.redirect).toHaveBeenCalledWith('/shop/products');
+});
+
+test('product prices are bounded before PostgreSQL receives them', async () => {
+  const create = jest.fn();
+  const ctx = {
+    backend: { products: { create } },
+    request: {
+      body: {
+        available_quantity: '1',
+        currency: 'usd',
+        description: '',
+        name: 'Too expensive',
+        price: '1000',
+      },
+      files: { photo: [] },
+    },
+  };
+
+  await newProductPost(ctx);
+
+  expect(validateProductInput({ price: '999.99', available_quantity: '1' })).toBeNull();
+  expect(validateProductInput({ price: '1000', available_quantity: '1' })).toContain('999.99');
+  expect(ctx.status).toBe(400);
+  expect(ctx.body).toContain('Price must be greater than 0 and no more than 999.99.');
+  expect(create).not.toHaveBeenCalled();
+});
+
 test('owner pages escape database content', () => {
   const payload = '<script>alert(1)</script>"';
   const page = viewShopPage({
@@ -116,4 +169,13 @@ test('wallet status reports waiting, syncing, and synchronized states', () => {
   expect(syncStatusResult()).toContain('Wallet');
   expect(syncStatusResult({ height: 100, percent: 42.4 })).toContain('42%');
   expect(syncStatusResult({ height: 200, percent: 100 })).toContain('Synced');
+});
+
+test('onion startup failures are reported in the frontend', () => {
+  const page = onionErrorPage({ message: 'hostname missing' });
+
+  expect(page).toContain('SHOP UNAVAILABLE');
+  expect(page).toContain('hostname missing');
+  expect(page).toContain('href="/onion-spinner"');
+  expect(page).not.toContain('<script>alert');
 });
