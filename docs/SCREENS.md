@@ -158,7 +158,7 @@ Pressing "PURCHASE" would yield a screen where is displayed
 
 ## Shared orders screens
 
-**VIEW ORDER SCREEN**  
+**VIEW ORDER SCREEN✅**  
 Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
   * product name (text)
   * product photo (image)
@@ -186,7 +186,7 @@ Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
   * 
   * "BACK" (button)
 
-**VIEW ORDERS SCREEN**  
+**VIEW ORDERS SCREEN✅**  
 Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
   * orders (list) where each item is displayed
     * product name (text)

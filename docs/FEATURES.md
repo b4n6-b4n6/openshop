@@ -46,9 +46,9 @@
   * Image upload containing forms
   * Browser input screen form✅
 
-<code style='color: cyan;'>[UI_Behaviour]</code>[WIP] 2 indicators on shown owner screen on
-  * onion/internet connectivity indicator (this will check in the background in short intervals whether we can contact our own onion and display green or red icon depending on result)
-  * xmr wallet syncronisation indicator (display green or red or loading to indicate status) (only for shop owner)
+<code style='color: cyan;'>[UI_Behaviour]</code> 2 indicators shown on owner screens
+  * onion/internet connectivity indicator (display online or offline)
+  * xmr wallet syncronisation indicator (display syncing or synced)
 
 <code style='color: cyan;'>[UI_Behaviour]</code> Add note
   * State that this software is strictly prohibited from being used for illegal purposes.
