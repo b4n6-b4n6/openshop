@@ -1,11 +1,9 @@
 # Feature implementation notes
 
-<code style='color: cyan;'>[Core]</code> No escrow or multisig in this version!
-
-<code style='color: cyan;'>[Core]</code> Purchase flow implementation (alpha)
+<code style='color: cyan;'>[Core]</code> Purchase flow implementation (alpha) ✅
   * use order payment monero amount to match orders with incoming deposits
-  * don't handle race conditions where quantity can become negative
-  * don't handle edge conditions where 2 customers might get the same address
+  * don't handle race conditions where quantity can become negative in this version
+  * don't handle edge conditions where 2 customers might get the same address in this version
   * 
   * when creating new order
     * products with current quanitity less or equal to 0 cannot be purchased
@@ -18,13 +16,14 @@
 <code style='color: cyan;'>[Core]</code> Image upload implementation (shop banner photo / shop profile photo / product photo) ✅
   * resize to a predefined size based on the HTML container width/height
 
-<code style='color: cyan;'>[Core]</code> Pagination
-  * no
-
 <code style='color: cyan;'>[Core]</code> Notifications
   * Chat messages implementation
     * shop owner polls his backend and generates notifications when it finds unread messages
     * customer polls his last visited onion and generates notifications when it finds unread messages
+
+<code style='color: red;'>[Core]</code> No pagination
+
+<code style='color: red;'>[Core]</code> No escrow or multisig in this version!
 
 <br><br><br>
 
@@ -44,7 +43,7 @@
 
 <code style='color: cyan;'>[UI_Behaviour]</code> UX loading indicators
   * Image upload containing forms
-  * Browser input screen form✅
+  * Browser input screen form
 
 <code style='color: cyan;'>[UI_Behaviour]</code> 2 indicators shown on owner screens
   * onion/internet connectivity indicator (display online or offline)
