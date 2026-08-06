@@ -3,7 +3,6 @@
 <code style='color: cyan;'>[Core]</code> Purchase flow implementation (alpha) ✅
   * use order payment monero amount to match orders with incoming deposits
   * don't handle race conditions where quantity can become negative in this version
-  * don't handle edge conditions where 2 customers might get the same address in this version
   * 
   * when creating new order
     * products with current quanitity less or equal to 0 cannot be purchased
