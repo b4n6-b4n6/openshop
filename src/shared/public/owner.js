@@ -1,5 +1,13 @@
-/* global FileReader, document */
+/* global FileReader, DataTransfer, document, window */
 (() => {
+  window.addEventListener('dragover', (e) => {
+    e.preventDefault();
+  });
+
+  window.addEventListener('drop', (e) => {
+    e.preventDefault();
+  });
+
   document.querySelectorAll('[data-photo-field]').forEach((field) => {
     const input = field.querySelector('[data-photo-input]');
     const picker = field.querySelector('[data-photo-pick]');
@@ -25,6 +33,50 @@
         picker.disabled = true;
         fileName.textContent = 'Uploading…';
         field.closest('form').requestSubmit();
+      }
+    });
+
+    const handleFiles = (files) => {
+      if (!files || files.length === 0) return;
+      const file = Array.from(files).find((f) => f.type && f.type.startsWith('image/'));
+      if (!file) return;
+
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      input.files = dataTransfer.files;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+
+    field.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      field.classList.add('drag-over');
+    });
+
+    field.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      if (!field.contains(e.relatedTarget)) {
+        field.classList.remove('drag-over');
+      }
+    });
+
+    field.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      field.classList.remove('drag-over');
+
+      if (e.dataTransfer?.files?.length) {
+        handleFiles(e.dataTransfer.files);
+      } else if (e.dataTransfer?.items?.length) {
+        const itemsFiles = [];
+        for (let i = 0; i < e.dataTransfer.items.length; i += 1) {
+          const item = e.dataTransfer.items[i];
+          if (item.kind === 'file') {
+            const f = item.getAsFile();
+            if (f) itemsFiles.push(f);
+          }
+        }
+        handleFiles(itemsFiles);
       }
     });
   });
