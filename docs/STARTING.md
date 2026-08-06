@@ -9,5 +9,6 @@ also needs to be configured!
 - postgres
 - redis
 - imagemagick `convert` binary
+- monero binaries
 
 open localhost:7001
