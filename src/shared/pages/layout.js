@@ -10,6 +10,7 @@ export const icon = (name, classes = 'size-5') => {
     chevronRight: '<path d="m9 18 6-6-6-6"/>',
     copy: '<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
     download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
+    eye: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
     image: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
     italic: '<line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/>',
     message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>',
@@ -70,9 +71,9 @@ export const appFrame = ({
   return `<div class="mx-auto flex h-full max-w-[480px] flex-col bg-base${animate ? ' page-enter' : ''}">
   <header class="sticky top-0 z-30 border-b border-border bg-elevated/95 backdrop-blur pt-safe">
     <div class="flex h-14 items-center gap-1 px-2">
-      <div class="flex ${status ? 'w-28' : 'w-11'} justify-start">${backButton}</div>
+      <div class="flex ${status ? 'w-44' : 'w-11'} justify-start">${backButton}</div>
       <h1 class="flex-1 truncate text-center text-[15px] font-bold text-text">${escapeHtml(title)}</h1>
-      <div class="flex ${status ? 'w-28' : 'min-w-11'} justify-end">${status}</div>
+      <div class="flex ${status ? 'w-44' : 'min-w-11'} justify-end">${status}</div>
     </div>
   </header>
   <main class="no-scrollbar flex-1 overflow-y-auto">${content}</main>

@@ -25,11 +25,57 @@ select {
   -webkit-tap-highlight-color: transparent;
 }
 
+button,
+a,
+select,
+summary,
+[role="button"],
+[type="button"],
+[type="submit"],
+[type="reset"],
+[type="checkbox"],
+[type="radio"],
+[type="file"],
+label,
+.photo-picker,
+[data-bbcode],
+[data-qr-open],
+[data-qr-save] {
+  cursor: pointer;
+}
+
+button:disabled,
+[type="button"]:disabled,
+[type="submit"]:disabled,
+[type="reset"]:disabled,
+:disabled {
+  cursor: not-allowed;
+}
+
 .wallet-sync-frame {
   background: transparent !important;
   border: 0;
   height: 30px;
   width: 88px;
+}
+
+[data-rich-editor] > div:focus-within,
+[data-rich-editor].drag-over > div,
+.focus-within\:border-accent:focus-within {
+  border-color: var(--color-accent);
+}
+
+[data-rich-editor] > div:focus-within,
+[data-rich-editor].drag-over > div,
+.focus-within\:ring-2:focus-within,
+.focus-within\:ring-accent\/30:focus-within {
+  box-shadow: 0 0 0 2px #ff66004d;
+}
+
+[data-photo-field].drag-over .photo-picker,
+.photo-picker.drag-over {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px #ff66004d;
 }
 
 .rich-text {
@@ -125,6 +171,32 @@ select {
 .rich-toolbar button:hover {
   background: var(--color-surface);
   color: var(--color-text);
+}
+
+.rich-tab {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  color: var(--color-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 0.375rem;
+  padding: 0.35rem 0.85rem;
+  transition: all 150ms ease;
+}
+
+.rich-tab:hover {
+  color: var(--color-text);
+}
+
+.rich-tab.active {
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 30%);
+  color: var(--color-accent);
 }
 
 .photo-picker {

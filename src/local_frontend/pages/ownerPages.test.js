@@ -29,7 +29,7 @@ const product = {
   price: '12.50',
 };
 
-test('all owner screens include the live wallet sync indicator', () => {
+test('all owner screens include the live wallet sync and shop status indicators', () => {
   const pages = [
     viewShopPage(shop),
     editShopPage(shop),
@@ -41,8 +41,8 @@ test('all owner screens include the live wallet sync indicator', () => {
 
   pages.forEach((page) => {
     expect(page).toContain('src="/sync-status"');
+    expect(page).toContain('src="/self-test"');
     expect(page).toContain('allowtransparency="true"');
-    expect(page).not.toContain('src="/self-test"');
   });
 });
 
