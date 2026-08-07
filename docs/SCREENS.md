@@ -203,7 +203,7 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
 
 ## Shared chat screens
 
-**CHAT SCREEN**
+**CHAT SCREEN✅**
   * one of
     * shop onion address (text)
     * customer uuid (text)

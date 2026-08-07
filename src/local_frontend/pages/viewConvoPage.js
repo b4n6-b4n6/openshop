@@ -1,10 +1,10 @@
 /* eslint-disable no-constant-binary-expression */
 import { IMG_SRC_PLACEHOLDER } from '../../const.js';
 import bufferToDataURI from '../../utils/bufferToDataURI.js';
-import head from './head.js';
 import formatDate from '../../utils/formatDate.js';
-import refresher from './refresher.js';
 import formatUserId from '../../utils/formatUserId.js';
+import head from './head.js';
+import refresher from './refresher.js';
 import indicators from './indicators.js';
 
 const orderStatusUpdateBubble = ({
@@ -119,14 +119,13 @@ const viewConvoPage = ({
 
   <input readOnly value='${formatUserId(userId)}' />
   <ul>
-    ${!allExtMessages.length ? 'nothing' : ''}
       ${allExtMessages.map(({
     id,
     ext_message_occured_at,
     ext_message_type,
     ext_message_payload,
   }) => (
-    ext_message_type === 'CONVO_MESSAGE' ? convoMessageBubble({
+    ext_message_type === 'CONVO' ? convoMessageBubble({
       id,
       ...ext_message_payload,
       isMine: userId !== ext_message_payload.sender,
@@ -139,6 +138,8 @@ const viewConvoPage = ({
       })
   )).join('')}
   </ul>
+  ${!allExtMessages.length ? 'nothing' : ''}
+
   <hr>
 
   <form action='/shop/convos/${userId}' method='POST' enctype='multipart/form-data'>

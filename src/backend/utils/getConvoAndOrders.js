@@ -52,7 +52,7 @@ const getConvoAndOrders = async ({ pool, customer }) => {
       SELECT
         id,
         created_at AS ext_message_occured_at,
-        'CONVO_MESSAGE' as ext_message_type,
+        'CONVO' as ext_message_type,
         jsonb_build_object(
           'sender', sender,
           'receiver', receiver,
@@ -64,7 +64,7 @@ const getConvoAndOrders = async ({ pool, customer }) => {
       FROM messages
       WHERE sender = $1 OR receiver = $1
 
-      ORDER BY ext_message_occured_at DESC;
+      ORDER BY ext_message_occured_at;
     `,
     [customer],
   );

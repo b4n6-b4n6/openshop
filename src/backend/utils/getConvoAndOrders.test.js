@@ -47,7 +47,7 @@ test('can get some', async () => {
   const allExtMessages = await getConvoAndOrders({ pool, customer: CUSTOMER });
   expect(allExtMessages).toMatchObject([
     {
-      ext_message_type: 'ORDER_DEPOSIT_DETECTED',
+      ext_message_type: 'NEW_ORDER_CREATED',
       ext_message_payload: {
         product_name: 'brownie',
         product_photo: null,
@@ -57,13 +57,13 @@ test('can get some', async () => {
       },
     },
     {
-      ext_message_type: 'CONVO_MESSAGE',
+      ext_message_type: 'CONVO',
       ext_message_payload: {
         text_content: 'hello',
       },
     },
     {
-      ext_message_type: 'NEW_ORDER_CREATED',
+      ext_message_type: 'ORDER_DEPOSIT_DETECTED',
       ext_message_payload: {
         product_name: 'brownie',
         product_photo: null,
@@ -74,15 +74,15 @@ test('can get some', async () => {
     },
   ]);
   expect(allExtMessages.length).toBe(3);
-  expect(allExtMessages[0].id).toBeTruthy();
-  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[2].id).toBeTruthy();
+  expect(allExtMessages[2].ext_message_occured_at).toBeTruthy();
   expect(allExtMessages[1].id).toBeTruthy();
   expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
   expect(allExtMessages[1].ext_message_payload.sender).toBeTruthy();
   expect(allExtMessages[1].ext_message_payload.receiver).toBeTruthy();
   expect(allExtMessages[1].ext_message_payload.created_at).toBeTruthy();
-  expect(allExtMessages[2].id).toBeTruthy();
-  expect(allExtMessages[2].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
 
   await pool.end();
 });

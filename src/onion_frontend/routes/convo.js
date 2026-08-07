@@ -1,15 +1,36 @@
 import convoPage from '../pages/convoPage.js';
+import getConvoAndOrders from '../../backend/utils/getConvoAndOrders.js';
+import { MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION } from '../../const.js';
 
 export default async (ctx) => {
-  const { myOnion, backend, state } = ctx;
-  const { messages } = backend;
+  const { state, backend, thumbnailCache } = ctx;
   const { userId } = state.user;
+  const { pool } = backend;
 
-  await messages.markAllReadInConvo({ sender: myOnion, receiver: userId });
-  const allMessages = await messages.getConvo([myOnion, userId]);
+  const allExtMessages = (
+    await Promise.all( // ???? quering photo from database is excessive here / TODO
+      (await getConvoAndOrders({ pool, customer: userId })).map(async (extMessage) => ({
+        ...extMessage,
+        ext_message_payload: {
+          ...extMessage.ext_message_payload,
+          product_photo: (
+            extMessage.ext_message_payload.product_photo
+              ? (
+                await thumbnailCache.genThumb(
+                  `order:${extMessage.id}`,
+                  extMessage.ext_message_payload.product_photo,
+                  MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION,
+                )
+              )
+              : null
+          ),
+        },
+      })),
+    )
+  );
 
   ctx.body = convoPage({
-    allMessages,
+    allExtMessages,
     userId,
   });
 };
