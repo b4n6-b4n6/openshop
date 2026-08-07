@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 import head from './head.js';
 import formatDate from '../../utils/formatDate.js';
 import refresher from './refresher.js';
@@ -39,6 +40,10 @@ const viewConvoPage = ({
     li:not(.mine) {
       align-self: flex-start;
     }
+
+    .float-right {
+      float: right;
+    }
   </style>
 </head>
 <body>
@@ -47,17 +52,25 @@ const viewConvoPage = ({
   <input readOnly value='${formatUserId(userId)}' />
   <ul>
     ${allMessages.map(({
-    id, sender, text_content, created_at,
+    id, sender, text_content, created_at, received_at, read_at,
   }) => (
     `<li class='${userId !== sender ? 'mine' : ''}'>
       ${text_content ? `<label>${text_content}</label>` : ''}
       ${!text_content
       ? `<label>Image (<a href="/shop/convos/images/${id}">download</a>)</label>`
-      : ''
-    }
+      : ''}
       <br>
 
       <small title='${created_at}'>${formatDate(created_at)}</small>
+      ${(userId !== sender
+      ? (
+        `<span class='float-right'>
+          ${(false
+          || (read_at && '✔✔')
+          || (received_at && '✔')
+          || '')}
+        </span>`
+      ) : '')}
     </li>`
   )).join('')}
   </ul>

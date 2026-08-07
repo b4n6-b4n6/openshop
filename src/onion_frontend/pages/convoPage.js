@@ -42,17 +42,19 @@ const convoPage = ({
 <body>
   <ul>
     ${allMessages.map(({
-    id, sender, text_content, created_at,
+    id, sender, text_content, created_at, read_at,
   }) => (
     `<li class='${userId === sender ? 'mine' : ''}'>
       ${text_content ? `<label>${text_content}</label>` : ''}
       ${!text_content
       ? `<label>Image (<a href="/browser/convo/images/${id}">download</a>)</label>`
-      : ''
-    }
+      : ''}
       <br>
 
       <small title='${created_at}'>${formatDate(created_at)}</small>
+      ${(userId !== sender && read_at
+      ? '<span class=\'float-right\'>✔✔</span>'
+      : '')}
     </li>`
   )).join('')}
   </ul>
