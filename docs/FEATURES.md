@@ -41,7 +41,6 @@
   * when on edit page - do not parse bbcode, allow pasting of image into textarea as data uri [img]data:image/...[/img]
 
 <code style='color: cyan;'>[UI_Behaviour]</code> UX loading indicators
-  * Image upload containing forms
   * Browser input screen form
 
 <code style='color: cyan;'>[UI_Behaviour]</code> 2 indicators shown on owner screens
