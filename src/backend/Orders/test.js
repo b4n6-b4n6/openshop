@@ -344,7 +344,7 @@ test('can create an order and get as ext. messages', async () => {
 
   const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
   expect(allExtMessages.length).toBe(1);
-  expect(allExtMessages[0].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[0].ext_message_type).toBe('NEW_ORDER_CREATED');
   expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
   expect(allExtMessages[0].id).toBeTruthy();
 
@@ -375,10 +375,10 @@ test('can create an order and get as ext. messages including deposit detected', 
   expect(allExtMessages.length).toBe(2);
   expect(allExtMessages[0].id).toBeTruthy();
   expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[0].ext_message_event_type).toBe('ORDER_DEPOSIT_DETECTED');
+  expect(allExtMessages[0].ext_message_type).toBe('ORDER_DEPOSIT_DETECTED');
   expect(allExtMessages[1].id).toBeTruthy();
   expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[1].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[1].ext_message_type).toBe('NEW_ORDER_CREATED');
 
   await orders.destroy();
 });
@@ -410,13 +410,13 @@ test('can create an order and get as ext. messages including deposit confirmed',
   const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
   expect(allExtMessages[0].id).toBeTruthy();
   expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[0].ext_message_event_type).toBe('ORDER_DEPOSIT_CONFIRMED');
+  expect(allExtMessages[0].ext_message_type).toBe('ORDER_DEPOSIT_CONFIRMED');
   expect(allExtMessages[1].id).toBeTruthy();
   expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[1].ext_message_event_type).toBe('ORDER_DEPOSIT_DETECTED');
+  expect(allExtMessages[1].ext_message_type).toBe('ORDER_DEPOSIT_DETECTED');
   expect(allExtMessages[2].id).toBeTruthy();
   expect(allExtMessages[2].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[2].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[2].ext_message_type).toBe('NEW_ORDER_CREATED');
 
   await orders.destroy();
 });
@@ -454,10 +454,10 @@ test('can create many orders and get as ext. messages', async () => {
   expect(allExtMessages.length).toBe(2);
   expect(allExtMessages[0].id).toBeTruthy();
   expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[0].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[0].ext_message_type).toBe('NEW_ORDER_CREATED');
   expect(allExtMessages[1].id).toBeTruthy();
   expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[1].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[1].ext_message_type).toBe('NEW_ORDER_CREATED');
 
   await orders.destroy();
 });

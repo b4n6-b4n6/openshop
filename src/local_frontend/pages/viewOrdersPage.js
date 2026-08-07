@@ -2,6 +2,7 @@ import { IMG_SRC_PLACEHOLDER } from '../../const.js';
 import bufferToDataURI from '../../utils/bufferToDataURI.js';
 import formatDate from '../../utils/formatDate.js';
 import head from './head.js';
+import refresher from './refresher.js';
 
 const viewOrdersPage = ({
   allOrders,
@@ -9,6 +10,7 @@ const viewOrdersPage = ({
 <html>
 <head>
   ${head()}
+  ${refresher({ interval: 10 })}
 
 </head>
 <body>
@@ -16,7 +18,6 @@ const viewOrdersPage = ({
     id,
     product_name, product_photo,
     purchase_price, purchase_currency, purchase_quantity,
-    deposit_txid,
     created_at,
   }) => (
     `<form action='/shop/orders/${id}' method='GET'>
@@ -35,12 +36,6 @@ const viewOrdersPage = ({
 
       Purchase quantity ${purchase_quantity}
       <br>
-
-      ${(
-      deposit_txid
-        ? `<h3><pre>DEPOSIT TXID${deposit_txid}</pre></h3>`
-        : ''
-    )}
 
       Created <small title='${created_at}'>${formatDate(created_at)}</small>
       <br>

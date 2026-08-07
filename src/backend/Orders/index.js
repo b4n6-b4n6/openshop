@@ -120,7 +120,7 @@ class Orders {
         SELECT
           id,
           created_at AS ext_message_occured_at,
-          'NEW_ORDER_CREATED' AS ext_message_event_type,
+          'NEW_ORDER_CREATED' AS ext_message_type,
           jsonb_build_object(
             'product_name', product_name,
             'product_photo', product_photo,
@@ -136,7 +136,7 @@ class Orders {
         SELECT
           id,
           deposit_detected_at AS ext_message_occured_at,
-          'ORDER_DEPOSIT_DETECTED' as ext_message_event_type,
+          'ORDER_DEPOSIT_DETECTED' as ext_message_type,
           jsonb_build_object(
             'product_name', product_name,
             'product_photo', product_photo,
@@ -152,7 +152,7 @@ class Orders {
         SELECT
           id,
           deposit_confirmed_at AS ext_message_occured_at,
-          'ORDER_DEPOSIT_CONFIRMED' as ext_message_event_type,
+          'ORDER_DEPOSIT_CONFIRMED' as ext_message_type,
           jsonb_build_object(
             'product_name', product_name,
             'product_photo', product_photo,

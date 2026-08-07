@@ -9,13 +9,13 @@ const CUSTOMER = '370c6cbe-8a6c-4d77-8070-bc21c32fc904';
 
 test('can get none', async () => {
   const pool = createPool();
-  const orders = await createOrders(pool);
-  const messages = await createMessages(pool);
+  await createOrders(pool);
+  await createMessages(pool);
 
   const allExtMessages = await getConvoAndOrders({ pool });
   expect(allExtMessages).toEqual([]);
 
-  await orders.destroy();
+  await pool.end();
 });
 
 test('can get some', async () => {
@@ -47,7 +47,7 @@ test('can get some', async () => {
   const allExtMessages = await getConvoAndOrders({ pool, customer: CUSTOMER });
   expect(allExtMessages).toMatchObject([
     {
-      ext_message_event_type: 'ORDER_DEPOSIT_DETECTED',
+      ext_message_type: 'ORDER_DEPOSIT_DETECTED',
       ext_message_payload: {
         product_name: 'brownie',
         product_photo: null,
@@ -57,13 +57,13 @@ test('can get some', async () => {
       },
     },
     {
-      ext_message_event_type: 'CONVO_MESSAGE',
+      ext_message_type: 'CONVO_MESSAGE',
       ext_message_payload: {
         text_content: 'hello',
       },
     },
     {
-      ext_message_event_type: 'NEW_ORDER_CREATED',
+      ext_message_type: 'NEW_ORDER_CREATED',
       ext_message_payload: {
         product_name: 'brownie',
         product_photo: null,
@@ -84,5 +84,5 @@ test('can get some', async () => {
   expect(allExtMessages[2].id).toBeTruthy();
   expect(allExtMessages[2].ext_message_occured_at).toBeTruthy();
 
-  await orders.destroy();
+  await pool.end();
 });

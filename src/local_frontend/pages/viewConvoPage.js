@@ -1,12 +1,76 @@
 /* eslint-disable no-constant-binary-expression */
+import { IMG_SRC_PLACEHOLDER } from '../../const.js';
+import bufferToDataURI from '../../utils/bufferToDataURI.js';
 import head from './head.js';
 import formatDate from '../../utils/formatDate.js';
 import refresher from './refresher.js';
 import formatUserId from '../../utils/formatUserId.js';
 import indicators from './indicators.js';
 
+const orderStatusUpdateBubble = ({
+  id,
+  type,
+  occured_at,
+  product_name, product_photo,
+  purchase_price, purchase_currency, purchase_quantity,
+}) => (
+  `<li class='order-status-update'>
+    <form action='/shop/orders/${id}' method='GET'>
+      <input type='text' readOnly value='${type}'>
+      <br>
+
+      <input type='text' readOnly value='${product_name}'>
+      <br>
+
+      <img
+        class='change-product-photo-preview'
+        alt='product photo'
+        src="${product_photo ? bufferToDataURI('unknown', product_photo) : IMG_SRC_PLACEHOLDER}"
+      >
+      <br>
+
+      Purchase price ${purchase_price} ${purchase_currency}
+      <br>
+
+      Purchase quantity ${purchase_quantity}
+      <br>
+
+      Created <small title='${occured_at}'>${formatDate(occured_at)}</small>
+      <br>
+
+      <button>VIEW</button>
+    </form>
+  </li>`
+);
+
+const convoMessageBubble = ({
+  id,
+  text_content,
+  created_at, received_at, read_at,
+  isMine,
+}) => (
+  `<li class='convo-message ${isMine ? 'mine' : ''}'>
+    ${text_content ? `<label>${text_content}</label>` : ''}
+    ${!text_content
+    ? `<label>Image (<a href="/shop/convos/images/${id}">download</a>)</label>`
+    : ''}
+    <br>
+
+    <small title='${created_at}'>${formatDate(created_at)}</small>
+    ${(isMine
+    ? (
+      `<span class='float-right'>
+        ${(false
+        || (read_at && '✔✔')
+        || (received_at && '✔')
+        || '')}
+      </span>`
+    ) : '')}
+  </li>`
+);
+
 const viewConvoPage = ({
-  allMessages,
+  allExtMessages,
   userId,
 }) => `<!doctype html>
 <html>
@@ -33,11 +97,15 @@ const viewConvoPage = ({
       border-radius: 0.5em;
     }
 
-    li.mine {
+    li.convo-message.mine {
       align-self: flex-end;
     }
 
-    li:not(.mine) {
+    li.convo-message:not(.mine) {
+      align-self: flex-start;
+    }
+
+    .order-status-update {
       align-self: flex-start;
     }
 
@@ -51,31 +119,26 @@ const viewConvoPage = ({
 
   <input readOnly value='${formatUserId(userId)}' />
   <ul>
-    ${allMessages.map(({
-    id, sender, text_content, created_at, received_at, read_at,
+    ${!allExtMessages.length ? 'nothing' : ''}
+      ${allExtMessages.map(({
+    id,
+    ext_message_occured_at,
+    ext_message_type,
+    ext_message_payload,
   }) => (
-    `<li class='${userId !== sender ? 'mine' : ''}'>
-      ${text_content ? `<label>${text_content}</label>` : ''}
-      ${!text_content
-      ? `<label>Image (<a href="/shop/convos/images/${id}">download</a>)</label>`
-      : ''}
-      <br>
-
-      <small title='${created_at}'>${formatDate(created_at)}</small>
-      ${(userId !== sender
-      ? (
-        `<span class='float-right'>
-          ${(false
-          || (read_at && '✔✔')
-          || (received_at && '✔')
-          || '')}
-        </span>`
-      ) : '')}
-    </li>`
+    ext_message_type === 'CONVO_MESSAGE' ? convoMessageBubble({
+      id,
+      ...ext_message_payload,
+      isMine: userId !== ext_message_payload.sender,
+    })
+      : orderStatusUpdateBubble({
+        id,
+        occured_at: ext_message_occured_at,
+        type: ext_message_type,
+        ...ext_message_payload,
+      })
   )).join('')}
   </ul>
-  ${!allMessages.length ? 'nothing' : ''}
-
   <hr>
 
   <form action='/shop/convos/${userId}' method='POST' enctype='multipart/form-data'>

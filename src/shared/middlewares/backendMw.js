@@ -13,6 +13,7 @@ export default async () => {
 
   return async (ctx, next) => {
     ctx.backend = {
+      pool,
       shops,
       products,
       orders,
