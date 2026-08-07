@@ -37,7 +37,7 @@ Pressing "ENTER" would potentially yield (after loading) an error screen where i
 
 ## Shop owner screens
 
-**VIEW MY SHOP SCREEN✅**  
+**VIEW MY SHOP SCREEN✅🌟**  
 Pressing "OPEN NEW SHOP" would (after loading) yield a screen where is displayed
   * shop onion address (text)
   * qr code (tappable icon)
@@ -57,7 +57,7 @@ Pressing "OPEN NEW SHOP" would (after loading) yield a screen where is displayed
   * 
   * "CLOSE SHOP" (button)
 
-**EDIT MY SHOP SCREEN✅**  
+**EDIT MY SHOP SCREEN✅🌟**  
 Pressing "EDIT SHOP NAME" or "EDIT SHOP DESCRIPTION" would yield a screen where is displayed
   * "SHOP NAME" (text input)
   * "SHOP DESCRIPTION" (rich text input)
@@ -65,7 +65,7 @@ Pressing "EDIT SHOP NAME" or "EDIT SHOP DESCRIPTION" would yield a screen where 
   * "UPDATE" (button)
   * "BACK" (button)
 
-**ADD MY PRODUCT SCREEN✅**  
+**ADD MY PRODUCT SCREEN✅🌟**  
 Pressing "ADD NEW PRODUCT" would yield a screen where is displayed
   * "NAME" (text input)
   * "DESCRIPTION" (rich text input)
@@ -78,7 +78,7 @@ Pressing "ADD NEW PRODUCT" would yield a screen where is displayed
   * "ADD" (button)
   * "BACK" (button)
 
-**VIEW MY PRODUCTS SCREEN✅**  
+**VIEW MY PRODUCTS SCREEN✅🌟**  
 Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
   * products (list) where each item is displayed
     * product name (text)
@@ -92,7 +92,7 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
   * 
   * "BACK" (button)
 
-**EDIT MY PRODUCT SCREEN✅**  
+**EDIT MY PRODUCT SCREEN✅🌟**  
   * "NAME" (text input)
   * "DESCRIPTION" (rich text input)
   * product photo (image)
@@ -104,7 +104,7 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
   * "UPDATE" (button)
   * "BACK" (button)
 
-**CHATS SCREEN✅**
+**CHATS SCREEN✅🌟**
   * chats (list) where each item is displayed
     * customer uuid (text)
     * last message datetime (text)
