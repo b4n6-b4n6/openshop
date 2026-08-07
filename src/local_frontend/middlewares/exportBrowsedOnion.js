@@ -8,7 +8,7 @@ export default () => {
   return async (ctx, next) => {
     const browsedOnion = ctx.cookies.get(BROWSED_ONION_COOKIE_NAME);
 
-    if (lastBrowsedOnion !== browsedOnion) {
+    if (lastBrowsedOnion !== browsedOnion && browsedOnion) {
       await fs.writeFile(BROWSED_ONION_FILE_NAME, browsedOnion);
       lastBrowsedOnion = browsedOnion;
     }
