@@ -228,7 +228,7 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
       * purchase price (number)
       * purchase currency (text)
       * purchase quantity (number)
-      * creation datetime (text)
+      * order status update occurance datetime (text)
       * 
       * "VIEW" (button)
   * 

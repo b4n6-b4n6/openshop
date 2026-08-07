@@ -66,10 +66,11 @@ test('can create an order and mark deposit as detected', async () => {
   });
 
   const order = await orders.get(id);
-  expect(order.detected_deposit_at).toBeTruthy();
+  expect(order.deposit_detected_at).toBeTruthy();
 
   await orders.destroy();
 });
+
 test('cannot create an order with negative price', async () => {
   const orders = await createOrders();
 
@@ -321,6 +322,142 @@ test('can create an order and get all for customer', async () => {
   expect(allOrders[0].created_at).toBeTruthy();
   expect(allOrders[1].id).toBeTruthy();
   expect(allOrders[1].created_at).toBeTruthy();
+
+  await orders.destroy();
+});
+
+test('can create an order and get as ext. messages', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+
+  const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
+  expect(allExtMessages.length).toBe(1);
+  expect(allExtMessages[0].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[0].id).toBeTruthy();
+
+  await orders.destroy();
+});
+
+test('can create an order and get as ext. messages including deposit detected', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  await timers.setTimeout(25);
+  await orders.markDepositDetected({
+    deposit_amount: 2000000000000,
+  });
+
+  const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
+  expect(allExtMessages.length).toBe(2);
+  expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[0].ext_message_event_type).toBe('ORDER_DEPOSIT_DETECTED');
+  expect(allExtMessages[1].id).toBeTruthy();
+  expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[1].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+
+  await orders.destroy();
+});
+
+test('can create an order and get as ext. messages including deposit confirmed', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  await timers.setTimeout(25);
+  await orders.markDepositDetected({
+    deposit_amount: 2000000000000,
+  });
+  await timers.setTimeout(25);
+  await orders.markDepositConfirmed({
+    deposit_amount: 2000000000000,
+  });
+
+  const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
+  expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[0].ext_message_event_type).toBe('ORDER_DEPOSIT_CONFIRMED');
+  expect(allExtMessages[1].id).toBeTruthy();
+  expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[1].ext_message_event_type).toBe('ORDER_DEPOSIT_DETECTED');
+  expect(allExtMessages[2].id).toBeTruthy();
+  expect(allExtMessages[2].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[2].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+
+  await orders.destroy();
+});
+
+test('can create many orders and get as ext. messages', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  await timers.setTimeout(25);
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 300,
+
+    deposit_amount: 3000000000000,
+  });
+
+  const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
+  expect(allExtMessages.length).toBe(2);
+  expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[0].ext_message_event_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[1].id).toBeTruthy();
+  expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[1].ext_message_event_type).toBe('NEW_ORDER_CREATED');
 
   await orders.destroy();
 });

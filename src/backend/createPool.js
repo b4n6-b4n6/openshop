@@ -1,7 +1,5 @@
-import Pg from 'pg';
+import { Pool } from 'pg';
 import isTest from '../utils/isTest.js';
-
-const { Pool } = Pg;
 
 const createPool = () => new Pool({
   database: isTest ? 'test' : undefined,

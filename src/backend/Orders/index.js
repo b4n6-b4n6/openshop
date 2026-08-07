@@ -33,8 +33,8 @@ class Orders {
           deposit_txid TEXT,
 
           created_at TIMESTAMP NOT NULL DEFAULT now(),
-          detected_deposit_at TIMESTAMP,
-          confirmed_deposit_at TIMESTAMP
+          deposit_detected_at TIMESTAMP,
+          deposit_confirmed_at TIMESTAMP
         )
       `,
     );
@@ -87,7 +87,7 @@ class Orders {
           id, customer,
           product_name, product_photo,
           purchase_price, purchase_currency, purchase_quantity,
-          created_at, detected_deposit_at, confirmed_deposit_at
+          created_at, deposit_detected_at, deposit_confirmed_at
         FROM orders
         ORDER BY created_at DESC
       `,
@@ -103,7 +103,7 @@ class Orders {
           id, 
           product_name, product_photo, 
           purchase_price, purchase_currency, purchase_quantity, 
-          created_at, detected_deposit_at, confirmed_deposit_at
+          created_at, deposit_detected_at, deposit_confirmed_at
         FROM orders
         WHERE customer = $1
         ORDER BY created_at DESC
@@ -114,6 +114,63 @@ class Orders {
     return rows.map(map);
   }
 
+  async getAllForCustomerAsExtMessages(customer) {
+    const { rows } = await this.pool.query(
+      `
+        SELECT
+          id,
+          created_at AS ext_message_occured_at,
+          'NEW_ORDER_CREATED' AS ext_message_event_type,
+          jsonb_build_object(
+            'product_name', product_name,
+            'product_photo', product_photo,
+            'purchase_price', purchase_price,
+            'purchase_currency', purchase_currency,
+            'purchase_quantity', purchase_quantity
+          ) AS ext_message_payload
+        FROM orders
+        WHERE customer = $1
+
+        UNION ALL
+
+        SELECT
+          id,
+          deposit_detected_at AS ext_message_occured_at,
+          'ORDER_DEPOSIT_DETECTED' as ext_message_event_type,
+          jsonb_build_object(
+            'product_name', product_name,
+            'product_photo', product_photo,
+            'purchase_price', purchase_price,
+            'purchase_currency', purchase_currency,
+            'purchase_quantity', purchase_quantity
+          ) AS ext_message_payload
+        FROM orders
+        WHERE customer = $1 AND deposit_detected_at IS NOT NULL
+
+        UNION ALL
+
+        SELECT
+          id,
+          deposit_confirmed_at AS ext_message_occured_at,
+          'ORDER_DEPOSIT_CONFIRMED' as ext_message_event_type,
+          jsonb_build_object(
+            'product_name', product_name,
+            'product_photo', product_photo,
+            'purchase_price', purchase_price,
+            'purchase_currency', purchase_currency,
+            'purchase_quantity', purchase_quantity
+          ) AS ext_message_payload
+        FROM orders
+        WHERE customer = $1 AND deposit_confirmed_at IS NOT NULL
+
+        ORDER BY ext_message_occured_at DESC;
+      `,
+      [customer],
+    );
+
+    return rows;
+  }
+
   async get(id) {
     const { rows } = await this.pool.query(
       `
@@ -121,7 +178,7 @@ class Orders {
           product_name, product_photo, product_description, 
           purchase_price, purchase_currency, purchase_quantity, 
           deposit_amount, deposit_txid, 
-          created_at, detected_deposit_at, confirmed_deposit_at 
+          created_at, deposit_detected_at, deposit_confirmed_at 
         FROM orders
         WHERE id = $1
       `,
@@ -136,8 +193,8 @@ class Orders {
     const result = await this.pool.query(
       `
         UPDATE orders
-        SET detected_deposit_at = now()
-        WHERE deposit_amount = $1 AND detected_deposit_at IS NULL
+        SET deposit_detected_at = now()
+        WHERE deposit_amount = $1 AND deposit_detected_at IS NULL
       `,
       [deposit_amount],
     );
@@ -149,8 +206,8 @@ class Orders {
     const result = await this.pool.query(
       `
         UPDATE orders
-        SET confirmed_deposit_at = now()
-        WHERE AND deposit_amount = $1 AND confirmed_deposit_at IS NULL
+        SET deposit_confirmed_at = now()
+        WHERE deposit_amount = $1 AND deposit_confirmed_at IS NULL
       `,
       [deposit_amount],
     );
