@@ -17,7 +17,7 @@ export const truncateMiddle = (value, head = 10, tail = 10) => {
 export const formatFiat = (amount, currency) => {
   try {
     return new Intl.NumberFormat('en', {
-      currency: String(currency ?? 'USD').toUpperCase(),
+      currency: String(currency).toUpperCase(),
       maximumFractionDigits: 2,
       style: 'currency',
     }).format(Number(amount));
@@ -141,7 +141,7 @@ export const photoField = ({
   <span data-photo-name class="mt-1.5 block truncate text-[12px] text-faint">PNG, JPEG, WebP, or GIF (Click or Drag &amp; Drop)</span>
 </div>`;
 
-export const selectCurrency = (value = 'usd') => `<label class="block">
+export const selectCurrency = (value) => `<label class="block">
   <span class="mb-1.5 block text-[12px] font-semibold uppercase tracking-wide text-muted">Currency</span>
   <select class="h-12 w-full rounded-xl border border-border bg-surface-2 px-4 text-[15px] text-text outline-none focus:border-accent focus:ring-2 focus:ring-accent/30" name="currency" required>
     ${CURRENCIES.map((currency) => (
