@@ -52,7 +52,7 @@ const convoPage = ({
       <br>
 
       <small title='${created_at}'>${formatDate(created_at)}</small>
-      ${(userId !== sender && read_at
+      ${(userId === sender && read_at
       ? '<span class=\'float-right\'>✔✔</span>'
       : '')}
     </li>`
