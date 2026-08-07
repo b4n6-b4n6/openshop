@@ -171,15 +171,16 @@ Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
   * deposit amount in xmr (number)
   * "XMR" (text)
   * 
-  * deposit amount in currency (number)
-  * currency (text)
+  * purchase price (number)
+  * purchase currency (text)
   * "PURCHASE QUANTITY" (text)
-  * quantity (number)
+  * purchase quantity (number)
   * 
   * one of
     * "INCOMING TRANSACTION DETECTED" (text)
     * "INCOMING TRANSACTION CONFIRMED" (text)
-  * txid (text)
+  * "DEPOSIT TXID" (text)
+  * deposit txid (text)
   * 
   * "CREATED AT" (text)
   * creation datetime (text)
@@ -191,10 +192,9 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
   * orders (list) where each item is displayed
     * product name (text)
     * product photo (image)
-    * price (number)
-    * currency (text)
-    * quantity (number)
-    * txid (text)
+    * purchase price (number)
+    * purchase currency (text)
+    * purchase quantity (number)
     * creation datetime (text)
     * 
     * "VIEW" (button)
@@ -211,20 +211,26 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
     * text messsage
       * content (text)
       * creation datetime (text)
+      * received/not received state indicator (only for shop owner and only for messages sent by me)
+      * read/unread state indicator (only for messages sent by me)
     * image messsage
-      * content (image)
+      * "download" (button)
       * creation datetime (text)
+      * received/not received state indicator (only for shop owner and only for messages sent by me)
+      * read/unread state indicator (only for messages sent by me)
     * order status update
       * order status update type, one of
-        * "NEW ORDER"
+        * "NEW ORDER CREATED"
         * "INCOMING TRANSACTION DETECTED"
         * "INCOMING TRANSACTION CONFIRMED"
       * product name (text)
       * product photo (image)
-      * price (number)
-      * currency (text)
-      * txid (text)
+      * purchase price (number)
+      * purchase currency (text)
+      * purchase quantity (number)
       * creation datetime (text)
+      * 
+      * "VIEW" (button)
   * 
   * "TEXT MESSAGE" (text input)
   * "SEND TEXT" (button)
