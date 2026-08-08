@@ -1,6 +1,17 @@
-import head from './head.js';
-import bufferToDataURI from '../../utils/bufferToDataURI.js';
-import { IMG_SRC_PLACEHOLDER } from '../../const.js';
+import {
+  avatar,
+  qrView,
+  richText,
+  shopBanner,
+  truncateMiddle,
+} from '../../shared/pages/components.js';
+import {
+  appFrame,
+  button,
+  document,
+  icon,
+} from '../../shared/pages/layout.js';
+import { escapeAttribute, escapeHtml } from '../../shared/utils/html.js';
 
 const shopPage = ({
   enableBackButton,
@@ -9,85 +20,57 @@ const shopPage = ({
   description,
   profile_photo,
   banner_photo,
-}) => `<!doctype html>
-<html>
-<head>
-  ${head()}
+  qr,
+}) => document({
+  title: name || 'Shop',
+  scripts: ['customer.js', 'qr.js'],
+  body: appFrame({
+    title: 'Shop',
+    back: enableBackButton ? '/browser-input' : '',
+    content: `${shopBanner(banner_photo)}
+      <div class="px-5">
+        <div class="relative z-10 -mt-8 mb-3 w-fit">${avatar(profile_photo)}</div>
 
-  <style>
-    button {
-      font-size: 150%;
-    }
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <h2 class="truncate text-xl font-bold text-text">${escapeHtml(name || 'Unnamed shop')}</h2>
+            <div class="mt-1 flex items-center gap-1">
+              <span class="truncate font-mono text-[12px] text-muted">${escapeHtml(truncateMiddle(address))}</span>
+              <button type="button" data-copy="${escapeAttribute(address)}" aria-label="Copy address" class="inline-flex size-10 items-center justify-center rounded-xl text-muted transition-colors hover:bg-surface-2 hover:text-text">
+                ${icon('copy', 'size-4')}
+              </button>
+            </div>
+          </div>
+          ${qrView({
+    qr,
+    caption: address,
+    fileName: 'openshop-address.png',
+  })}
+        </div>
 
-    input[name='address'] {
-      width: 40em;
-      text-align: center;
-      font-family: monospace;
-      font-size: 1em;
-    }
+        ${description ? `<div class="mt-3">${richText(description)}</div>` : ''}
 
-    img {
-      border: 1px dotted black;
-    }
-
-    .enlarged {
-      transform: scale(1200%);
-    }
-  </style>
-</head>
-<body>
-  <input
-    name='address'
-    type='text'
-    readonly
-    value='${address}'
-  >
-  <br>
-
-  <button class='qr-button'>▣</button>
-  <br>
-  <script>
-    document
-      .querySelector('.qr-button')
-      .addEventListener('click', (event) => {
-        event.target.classList.toggle('enlarged')
-      })
-  </script>
-
-  <img
-    alt='profile photo'
-    src="${profile_photo ? bufferToDataURI('unknown', profile_photo) : IMG_SRC_PLACEHOLDER}"
-  >
-  <br>
-
-  <img
-    alt='banner photo'
-    src="${banner_photo ? bufferToDataURI('unknown', banner_photo) : IMG_SRC_PLACEHOLDER}"
-  >
-  <br>
-
-  <input
-    type='text'
-    readonly
-    placeholder='Shop name'
-    value='${name}'
-  >
-  <br>
-
-  <textarea readonly placeholder='Shop description'>${description}</textarea>
-
-  <form action='/browser/products'><button>PRODUCTS</button></form>
-  <form action='/browser/convo'><button>CHAT</button></form>
-  <form action='/browser/orders'><button>ORDERS</button></form>
-
-  <hr>
-
-  ${
-  enableBackButton ? (
-    '<form action=\'/browser-input\'><button>BACK</button></form>'
-  ) : ''
-}
-</body>
-</html>`;
+        <div class="mt-5 mb-6 flex flex-col gap-2.5">
+          ${button({
+    label: 'Products',
+    href: '/browser/products',
+    buttonIcon: icon('boxes', 'size-4'),
+  })}
+          ${button({
+    label: 'Chat',
+    href: '/browser/convo',
+    variant: 'secondary',
+    buttonIcon: icon('message', 'size-4'),
+  })}
+          ${button({
+    label: 'Orders',
+    href: '/browser/orders',
+    variant: 'secondary',
+    buttonIcon: icon('receipt', 'size-4'),
+  })}
+        </div>
+      </div>`,
+  }),
+});
 
 export default shopPage;
