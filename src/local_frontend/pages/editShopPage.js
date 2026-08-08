@@ -23,7 +23,7 @@ const editShopPage = ({
     back: '/shop',
     status: indicators(),
     content: `<div class="space-y-5 px-5 py-6">
-      <form id="shop-details-form" action="/shop/settings" method="post" data-disable-on-submit class="contents">
+      <form id="shop-details-form" action="/shop/settings" method="post" data-disable-on-submit class="space-y-5">
         ${field({
     label: 'Shop name',
     name: 'name',
