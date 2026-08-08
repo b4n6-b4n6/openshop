@@ -35,7 +35,7 @@ const orderStatusUpdateBubble = ({
       Purchase quantity ${purchase_quantity}
       <br>
 
-      Created <small title='${occured_at}'>${formatDate(occured_at)}</small>
+      Occured <small title='${occured_at}'>${formatDate(occured_at)}</small>
       <br>
 
       <button>VIEW</button>

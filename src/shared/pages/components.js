@@ -121,7 +121,7 @@ export const richEditor = ({
       <div data-rich-preview class="rich-text"></div>
     </div>
   </div>
-  <span class="mt-1.5 block text-[12px] text-faint">Use toolbar for BBCode, or paste/drag &amp; drop images.</span>
+  <span class="mt-1.5 block text-[12px] text-faint">Insert images with paste or drop</span>
 </div>`;
 
 export const photoField = ({
@@ -138,7 +138,7 @@ export const photoField = ({
     : `<span data-photo-placeholder>${icon('image', 'size-6')}<span>Choose or drop image</span></span>`}
   </button>
   <input class="hidden" data-photo-input type="file" name="${escapeAttribute(name)}" accept="image/png,image/jpeg,image/webp,image/gif">
-  <span data-photo-name class="mt-1.5 block truncate text-[12px] text-faint">PNG, JPEG, WebP, or GIF (Click or Drag &amp; Drop)</span>
+  <span data-photo-name class="mt-1.5 block truncate text-[12px] text-faint">PNG, JPEG, WebP, or GIF (choose or drop)</span>
 </div>`;
 
 export const selectCurrency = (value) => `<label class="block">
