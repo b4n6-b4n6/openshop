@@ -15,7 +15,7 @@ import indicators from './indicators.js';
 
 const newProductPage = ({ error = '', values = {} } = {}) => document({
   title: 'Add Product',
-  scripts: ['editor.js', 'owner.js'],
+  scripts: ['editor.js', 'owner.js', 'sound.js', 'owner-notifications.js'],
   body: appFrame({
     title: 'Add Product',
     back: '/shop',

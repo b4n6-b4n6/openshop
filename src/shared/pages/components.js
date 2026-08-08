@@ -1,4 +1,5 @@
 import { CURRENCIES } from '../../const.js';
+import formatDate from '../../utils/formatDate.js';
 import { renderBbcode } from '../utils/bbcode.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import { button, icon } from './layout.js';
@@ -24,6 +25,12 @@ export const formatFiat = (amount, currency) => {
   } catch {
     return `${Number(amount).toFixed(2)} ${String(currency ?? '').toUpperCase()}`;
   }
+};
+
+export const formatXmr = (amount) => {
+  const value = Number(amount) / 1e12;
+  if (!Number.isFinite(value)) return '0';
+  return value.toFixed(12).replace(/0+$/, '').replace(/\.$/, '');
 };
 
 export const richText = (description) => (
@@ -83,9 +90,12 @@ export const hubLink = ({
   href,
   label,
   linkIcon,
+  unread,
+  chatId,
 }) => `<a href="${escapeAttribute(href)}" class="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3.5 text-left transition-colors hover:border-border-strong active:scale-[0.99]">
   <span class="text-accent">${icon(linkIcon, 'size-5')}</span>
   <span class="flex-1 text-[15px] font-medium text-text">${escapeHtml(label)}</span>
+  ${unread === undefined && !chatId ? '' : `<span data-unread-dot${chatId ? ` data-chat-id="${escapeAttribute(chatId)}"` : ''} class="${unread ? 'block' : 'hidden'} size-2.5 shrink-0 rounded-full bg-accent" aria-label="Unread messages"></span>`}
   <span class="text-faint">${icon('chevronRight', 'size-4')}</span>
 </a>`;
 
@@ -185,6 +195,42 @@ export const productCard = ({
     attributes: purchase && out ? 'disabled aria-label="Out of stock"' : '',
   })}</div>
   </article>`;
+};
+
+export const orderStatus = (order) => {
+  if (order.deposit_confirmed_at) {
+    return { label: 'Confirmed', classes: 'bg-success/15 text-success' };
+  }
+  if (order.deposit_detected_at) {
+    return { label: 'Detected', classes: 'bg-warning/15 text-warning' };
+  }
+  return { label: 'Pending', classes: 'bg-surface-2 text-muted' };
+};
+
+export const orderStatusBadge = (order) => {
+  const status = orderStatus(order);
+  return `<span class="inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${status.classes}">${status.label}</span>`;
+};
+
+export const orderCard = ({ order, href }) => {
+  const card = `<article class="space-y-3 rounded-2xl border border-border bg-surface p-4">
+    <div class="flex items-center gap-3">
+      ${thumb(order.product_photo)}
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-[15px] font-semibold text-text">${escapeHtml(order.product_name)}</p>
+        <p class="text-[13px] text-muted">${Number(order.purchase_quantity)} × · ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
+      </div>
+      ${orderStatusBadge(order)}
+    </div>
+    <div class="flex items-center justify-between border-t border-border pt-2.5 text-[12px]">
+      <span class="font-mono text-muted">${escapeHtml(formatXmr(order.deposit_amount))} XMR</span>
+      <span title="${escapeAttribute(order.created_at)}" class="text-faint">${escapeHtml(formatDate(order.created_at))}</span>
+    </div>
+  </article>`;
+
+  return href
+    ? `<a href="${escapeAttribute(href)}" class="block active:scale-[0.99]" aria-label="View order for ${escapeAttribute(order.product_name)}">${card}</a>`
+    : card;
 };
 
 export const emptyState = ({

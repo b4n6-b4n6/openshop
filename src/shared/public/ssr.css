@@ -251,6 +251,78 @@ button:disabled,
   margin: 0;
 }
 
+.chat-frame {
+  border: 0;
+  display: block;
+}
+
+.thread-body {
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  position: fixed;
+  right: 0;
+  scrollbar-width: none;
+  top: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.thread-body::-webkit-scrollbar {
+  display: none;
+}
+
+.notification-error {
+  background: color-mix(in srgb, var(--color-danger) 12%, var(--color-base));
+  border: 1px solid color-mix(in srgb, var(--color-danger) 35%, transparent);
+  border-radius: 0.75rem;
+  bottom: 1rem;
+  color: var(--color-danger);
+  font-size: 12px;
+  left: 50%;
+  max-width: min(92vw, 440px);
+  padding: 0.65rem 0.8rem;
+  position: fixed;
+  transform: translateX(-50%);
+  width: max-content;
+  z-index: 80;
+}
+
+.image-viewer {
+  align-items: center;
+  background: rgb(0 0 0 / 90%);
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  padding: 1rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 80;
+}
+
+.image-viewer img {
+  max-height: 92vh;
+  max-width: 94vw;
+  object-fit: contain;
+}
+
+.image-viewer button {
+  align-items: center;
+  background: rgb(255 255 255 / 12%);
+  border-radius: 999px;
+  color: white;
+  display: flex;
+  font-size: 24px;
+  height: 2.75rem;
+  justify-content: center;
+  position: absolute;
+  right: 1rem;
+  top: calc(env(safe-area-inset-top) + 1rem);
+  width: 2.75rem;
+}
+
 .qr-trigger {
   background: white;
   border-radius: 1rem;

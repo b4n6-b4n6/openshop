@@ -17,7 +17,7 @@ const editShopPage = ({
   banner_photo,
 }) => document({
   title: 'Edit Shop',
-  scripts: ['editor.js', 'owner.js'],
+  scripts: ['editor.js', 'owner.js', 'sound.js', 'owner-notifications.js'],
   body: appFrame({
     title: 'Edit Shop',
     back: '/shop',

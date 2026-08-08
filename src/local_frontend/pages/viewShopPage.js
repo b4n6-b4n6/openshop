@@ -24,7 +24,7 @@ const viewShopPage = ({
   qr,
 }) => document({
   title: 'My Shop',
-  scripts: ['owner.js', 'qr.js'],
+  scripts: ['owner.js', 'sound.js', 'owner-notifications.js', 'qr.js'],
   body: appFrame({
     title: 'My Shop',
     status: indicators(),
@@ -83,6 +83,7 @@ const viewShopPage = ({
     href: '/shop/convos',
     label: 'View my chats',
     linkIcon: 'message',
+    unread: false,
   })}
         </div>
 

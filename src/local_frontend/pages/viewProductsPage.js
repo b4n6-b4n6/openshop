@@ -12,6 +12,7 @@ import indicators from './indicators.js';
 
 const viewProductsPage = ({ allProducts }) => document({
   title: 'My Products',
+  scripts: ['sound.js', 'owner-notifications.js'],
   body: appFrame({
     title: 'My Products',
     back: '/shop',
