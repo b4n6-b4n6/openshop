@@ -4,21 +4,21 @@ import { MY_SHOP_PRODUCT_THUMB_SIZE } from '../../const.js';
 
 export default async (ctx) => {
   const { state, backend, thumbnailCache } = ctx;
+  const { pool, orders } = backend;
   const { userId } = state.user;
-  const { pool } = backend;
 
   const allExtMessages = (
-    await Promise.all( // ???? quering photo from database is excessive here / TODO
+    await Promise.all(
       (await getConvoAndOrders({ pool, customer: userId })).map(async (extMessage) => ({
         ...extMessage,
         ext_message_payload: {
           ...extMessage.ext_message_payload,
           product_photo: (
-            extMessage.ext_message_payload.product_photo
+            extMessage.ext_message_payload.product_photo_exists
               ? (
                 await thumbnailCache.genThumb(
                   `order:${extMessage.id}`,
-                  extMessage.ext_message_payload.product_photo,
+                  () => orders.getProductPhoto(extMessage.id),
                   MY_SHOP_PRODUCT_THUMB_SIZE,
                 )
               )

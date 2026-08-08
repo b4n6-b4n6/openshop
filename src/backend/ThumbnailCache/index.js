@@ -23,7 +23,7 @@ class ThumbnailCache {
     await this.redis.del(KEY(key));
   }
 
-  async genThumb(key, getValue, maxDimension) {
+  async genThumb(key, getValue, maxDimension) { // TODO is this okay in handling race conditinos?
     const cached = await this.get(key);
     if (cached) { return cached; }
 

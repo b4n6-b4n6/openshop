@@ -50,7 +50,7 @@ test('can get some', async () => {
       ext_message_type: 'NEW_ORDER_CREATED',
       ext_message_payload: {
         product_name: 'brownie',
-        product_photo: null,
+        product_photo_exists: false,
         purchase_currency: 'usd',
         purchase_price: '1.50',
         purchase_quantity: 200,
@@ -66,7 +66,77 @@ test('can get some', async () => {
       ext_message_type: 'ORDER_DEPOSIT_DETECTED',
       ext_message_payload: {
         product_name: 'brownie',
-        product_photo: null,
+        product_photo_exists: false,
+        purchase_currency: 'usd',
+        purchase_price: '1.50',
+        purchase_quantity: 200,
+      },
+    },
+  ]);
+  expect(allExtMessages.length).toBe(3);
+  expect(allExtMessages[2].id).toBeTruthy();
+  expect(allExtMessages[2].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[1].id).toBeTruthy();
+  expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[1].ext_message_payload.sender).toBeTruthy();
+  expect(allExtMessages[1].ext_message_payload.receiver).toBeTruthy();
+  expect(allExtMessages[1].ext_message_payload.created_at).toBeTruthy();
+  expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+
+  await pool.end();
+});
+
+test('can get some with image', async () => {
+  const pool = createPool();
+  const orders = await createOrders(pool);
+  const messages = await createMessages(pool);
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_photo: Buffer.from('aabbccdd', 'hex'),
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  await timers.setTimeout(25);
+  await messages.create({
+    text_content: 'hello', sender: CUSTOMER, receiver: SHOP_ADDRESS,
+  });
+  await timers.setTimeout(25);
+  await orders.markDepositDetected({
+    deposit_amount: 2000000000000,
+  });
+
+  const allExtMessages = await getConvoAndOrders({ pool, customer: CUSTOMER });
+  expect(allExtMessages).toMatchObject([
+    {
+      ext_message_type: 'NEW_ORDER_CREATED',
+      ext_message_payload: {
+        product_name: 'brownie',
+        product_photo_exists: true,
+        purchase_currency: 'usd',
+        purchase_price: '1.50',
+        purchase_quantity: 200,
+      },
+    },
+    {
+      ext_message_type: 'CONVO',
+      ext_message_payload: {
+        text_content: 'hello',
+      },
+    },
+    {
+      ext_message_type: 'ORDER_DEPOSIT_DETECTED',
+      ext_message_payload: {
+        product_name: 'brownie',
+        product_photo_exists: true,
         purchase_currency: 'usd',
         purchase_price: '1.50',
         purchase_quantity: 200,

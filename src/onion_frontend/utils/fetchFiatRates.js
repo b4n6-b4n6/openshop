@@ -10,7 +10,7 @@ const client = new CoinGeckoClient({
   timeout: FETCH_FIAT_PRICE_TIMEOUT,
 });
 
-const createDebounced = (func, rememberFor) => { //  TODO
+const createDebounced = (func, rememberFor) => { // TODO is this okay in handling race conditinos?
   let lastResult;
   let lastCheckTime;
 

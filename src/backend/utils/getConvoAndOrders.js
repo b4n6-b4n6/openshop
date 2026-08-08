@@ -7,7 +7,7 @@ const getConvoAndOrders = async ({ pool, customer }) => {
         'NEW_ORDER_CREATED' AS ext_message_type,
         jsonb_build_object(
           'product_name', product_name,
-          'product_photo', product_photo,
+          'product_photo_exists', product_photo IS NOT NULL,
           'purchase_price', purchase_price::text,
           'purchase_currency', purchase_currency,
           'purchase_quantity', purchase_quantity
@@ -23,7 +23,7 @@ const getConvoAndOrders = async ({ pool, customer }) => {
         'ORDER_DEPOSIT_DETECTED' as ext_message_type,
         jsonb_build_object(
           'product_name', product_name,
-          'product_photo', product_photo,
+          'product_photo_exists', product_photo IS NOT NULL,
           'purchase_price', purchase_price::text,
           'purchase_currency', purchase_currency,
           'purchase_quantity', purchase_quantity
@@ -39,7 +39,7 @@ const getConvoAndOrders = async ({ pool, customer }) => {
         'ORDER_DEPOSIT_CONFIRMED' as ext_message_type,
         jsonb_build_object(
           'product_name', product_name,
-          'product_photo', product_photo,
+          'product_photo_exists', product_photo IS NOT NULL,
           'purchase_price', purchase_price::text,
           'purchase_currency', purchase_currency,
           'purchase_quantity', purchase_quantity
