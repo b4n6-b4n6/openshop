@@ -33,6 +33,7 @@ test('can create an order', async () => {
   const order = await orders.get(id);
   expect(order).toMatchObject({
     product_name: 'brownie',
+    product_photo: null,
     product_description: 'coco!',
 
     purchase_currency: 'usd',
@@ -42,6 +43,41 @@ test('can create an order', async () => {
     deposit_amount: 2000000000000,
   });
   expect(order.created_at).toBeTruthy();
+
+  await orders.destroy();
+});
+
+test('can create an order with a photo', async () => {
+  const orders = await createOrders();
+
+  const id = await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_photo: Buffer.from('12341234', 'hex'),
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+
+  const order = await orders.get(id);
+  expect(order).toMatchObject({
+    product_name: 'brownie',
+    product_photo: Buffer.from('12341234', 'hex'),
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  expect(order.created_at).toBeTruthy();
+  expect(await orders.getPhoto(id)).toEqual(Buffer.from('12341234', 'hex'));
 
   await orders.destroy();
 });
@@ -249,6 +285,7 @@ test('can create an order and get all for shop', async () => {
       customer: CUSTOMER,
 
       product_name: 'cookie',
+      product_photo_exists: false,
 
       purchase_currency: 'usd',
       purchase_price: '0.60',
@@ -258,6 +295,7 @@ test('can create an order and get all for shop', async () => {
       customer: CUSTOMER,
 
       product_name: 'brownie',
+      product_photo_exists: false,
 
       purchase_currency: 'usd',
       purchase_price: '1.50',
@@ -305,6 +343,7 @@ test('can create an order and get all for customer', async () => {
   expect(allOrders).toMatchObject([
     {
       product_name: 'cookie',
+      product_photo_exists: false,
 
       purchase_currency: 'usd',
       purchase_price: '0.60',
@@ -312,6 +351,7 @@ test('can create an order and get all for customer', async () => {
     },
     {
       product_name: 'brownie',
+      product_photo_exists: false,
 
       purchase_currency: 'usd',
       purchase_price: '1.50',
@@ -347,6 +387,36 @@ test('can create an order and get as ext. messages', async () => {
   expect(allExtMessages[0].ext_message_type).toBe('NEW_ORDER_CREATED');
   expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
   expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_payload.product_name).toBe('brownie');
+  expect(allExtMessages[0].ext_message_payload.product_photo_exists).toBe(false);
+
+  await orders.destroy();
+});
+
+test('can create an order and get as ext. messages with photo', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_photo: Buffer.from('abcdabcd', 'hex'),
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+
+  const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
+  expect(allExtMessages.length).toBe(1);
+  expect(allExtMessages[0].ext_message_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_payload.product_name).toBe('brownie');
+  expect(allExtMessages[0].ext_message_payload.product_photo_exists).toBe(true);
 
   await orders.destroy();
 });
@@ -373,12 +443,16 @@ test('can create an order and get as ext. messages including deposit detected', 
 
   const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
   expect(allExtMessages.length).toBe(2);
-  expect(allExtMessages[0].id).toBeTruthy();
-  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[0].ext_message_type).toBe('ORDER_DEPOSIT_DETECTED');
   expect(allExtMessages[1].id).toBeTruthy();
   expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[1].ext_message_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[1].ext_message_type).toBe('ORDER_DEPOSIT_DETECTED');
+  expect(allExtMessages[1].ext_message_payload.product_name).toBe('brownie');
+  expect(allExtMessages[1].ext_message_payload.product_photo_exists).toBe(false);
+  expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[0].ext_message_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[0].ext_message_payload.product_name).toBe('brownie');
+  expect(allExtMessages[0].ext_message_payload.product_photo_exists).toBe(false);
 
   await orders.destroy();
 });
@@ -408,15 +482,15 @@ test('can create an order and get as ext. messages including deposit confirmed',
   });
 
   const allExtMessages = await orders.getAllForCustomerAsExtMessages(CUSTOMER);
-  expect(allExtMessages[0].id).toBeTruthy();
-  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[0].ext_message_type).toBe('ORDER_DEPOSIT_CONFIRMED');
+  expect(allExtMessages[2].id).toBeTruthy();
+  expect(allExtMessages[2].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[2].ext_message_type).toBe('ORDER_DEPOSIT_CONFIRMED');
   expect(allExtMessages[1].id).toBeTruthy();
   expect(allExtMessages[1].ext_message_occured_at).toBeTruthy();
   expect(allExtMessages[1].ext_message_type).toBe('ORDER_DEPOSIT_DETECTED');
-  expect(allExtMessages[2].id).toBeTruthy();
-  expect(allExtMessages[2].ext_message_occured_at).toBeTruthy();
-  expect(allExtMessages[2].ext_message_type).toBe('NEW_ORDER_CREATED');
+  expect(allExtMessages[0].id).toBeTruthy();
+  expect(allExtMessages[0].ext_message_occured_at).toBeTruthy();
+  expect(allExtMessages[0].ext_message_type).toBe('NEW_ORDER_CREATED');
 
   await orders.destroy();
 });

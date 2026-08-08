@@ -9,14 +9,14 @@ export default async (ctx) => {
   const { userId } = state.user;
 
   const allOrders = (
-    await Promise.all( // ???? quering photo from database is excessive here / TODO
+    await Promise.all(
       (await orders.getAllForCustomer(userId)).map(async (order) => ({
         ...order,
         product_photo: (
-          order.product_photo
+          order.product_photo_exists
             ? await thumbnailCache.genThumb(
               `order:${order.id}`,
-              order.product_photo,
+              () => orders.getPhoto(order.id),
               MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION,
             )
             : null

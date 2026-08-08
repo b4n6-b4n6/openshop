@@ -85,7 +85,7 @@ class Orders {
       `
         SELECT
           id, customer,
-          product_name, product_photo,
+          product_name, product_photo IS NOT NULL AS product_photo_exists,
           purchase_price, purchase_currency, purchase_quantity,
           created_at, deposit_detected_at, deposit_confirmed_at
         FROM orders
@@ -101,7 +101,7 @@ class Orders {
       `
         SELECT
           id, 
-          product_name, product_photo, 
+          product_name, product_photo IS NOT NULL AS product_photo_exists, 
           purchase_price, purchase_currency, purchase_quantity, 
           created_at, deposit_detected_at, deposit_confirmed_at
         FROM orders
@@ -114,6 +114,15 @@ class Orders {
     return rows.map(map);
   }
 
+  async getPhoto(id) {
+    const { rows } = await this.pool.query(
+      'SELECT product_photo FROM orders WHERE id = $1',
+      [id],
+    );
+
+    return rows[0]?.product_photo;
+  }
+
   async getAllForCustomerAsExtMessages(customer) {
     const { rows } = await this.pool.query(
       `
@@ -123,7 +132,7 @@ class Orders {
           'NEW_ORDER_CREATED' AS ext_message_type,
           jsonb_build_object(
             'product_name', product_name,
-            'product_photo', product_photo,
+            'product_photo_exists', product_photo IS NOT NULL,
             'purchase_price', purchase_price,
             'purchase_currency', purchase_currency,
             'purchase_quantity', purchase_quantity
@@ -139,7 +148,7 @@ class Orders {
           'ORDER_DEPOSIT_DETECTED' as ext_message_type,
           jsonb_build_object(
             'product_name', product_name,
-            'product_photo', product_photo,
+            'product_photo_exists', product_photo IS NOT NULL,
             'purchase_price', purchase_price,
             'purchase_currency', purchase_currency,
             'purchase_quantity', purchase_quantity
@@ -155,7 +164,7 @@ class Orders {
           'ORDER_DEPOSIT_CONFIRMED' as ext_message_type,
           jsonb_build_object(
             'product_name', product_name,
-            'product_photo', product_photo,
+            'product_photo_exists', product_photo IS NOT NULL,
             'purchase_price', purchase_price,
             'purchase_currency', purchase_currency,
             'purchase_quantity', purchase_quantity
@@ -163,7 +172,7 @@ class Orders {
         FROM orders
         WHERE customer = $1 AND deposit_confirmed_at IS NOT NULL
 
-        ORDER BY ext_message_occured_at DESC;
+        ORDER BY ext_message_occured_at;
       `,
       [customer],
     );
