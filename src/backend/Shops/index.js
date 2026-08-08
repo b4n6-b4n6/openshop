@@ -44,7 +44,6 @@ class Shops {
             updated_shop.profile_photo,
             updated_shop.banner_photo
           )
-        ;
       `,
       [address, name, description, profile_photo, banner_photo],
     );
@@ -55,7 +54,12 @@ class Shops {
   async get(address) {
     const { rows } = await this.pool.query(
       `
-        SELECT address, name, description, profile_photo, banner_photo
+        SELECT
+          address,
+          name,
+          description,
+          profile_photo IS NOT NULL AS profile_photo_exists,
+          banner_photo IS NOT NULL AS banner_photo_exists
         FROM shops
         WHERE address = $1
       `,
@@ -63,6 +67,55 @@ class Shops {
     );
 
     return rows[0];
+  }
+
+  async getOrCreate(address) {
+    const { rows } = await this.pool.query(
+      `
+        MERGE INTO shops AS shop
+        USING (VALUES($1))
+        AS my_shop (address)
+        ON shop.address = my_shop.address
+        WHEN NOT MATCHED THEN
+          INSERT (address, name, description, profile_photo, banner_photo)
+          VALUES (
+            my_shop.address,
+            '',
+            '',
+            NULL,
+            NULL
+          )
+        WHEN MATCHED THEN
+          UPDATE SET address = my_shop.address
+        RETURNING
+          shop.address,
+          shop.name,
+          shop.description,
+          profile_photo IS NOT NULL AS profile_photo_exists,
+          banner_photo IS NOT NULL AS banner_photo_exists
+      `,
+      [address],
+    );
+
+    return rows[0];
+  }
+
+  async getProfilePhoto(address) {
+    const { rows } = await this.pool.query(
+      'SELECT profile_photo FROM shops WHERE address = $1',
+      [address],
+    );
+
+    return rows[0]?.profile_photo;
+  }
+
+  async getBannerPhoto(address) {
+    const { rows } = await this.pool.query(
+      'SELECT banner_photo FROM shops WHERE address = $1',
+      [address],
+    );
+
+    return rows[0]?.banner_photo;
   }
 
   async destroy() {

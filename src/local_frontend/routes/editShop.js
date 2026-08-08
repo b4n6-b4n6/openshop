@@ -10,30 +10,20 @@ export default async (ctx) => {
   const address = onionSpinner.onion;
   const { shops } = backend;
 
-  let shop = await shops.get(address);
-  if (!shop) {
-    shop = {
-      address,
-      name: '',
-      description: '',
-      profile_photo: null,
-      banner_photo: null,
-    };
-    await shops.update(shop);
-  }
+  const shop = await shops.getOrCreate(address);
 
   const [profilePhoto, bannerPhoto] = await Promise.all([
-    shop.profile_photo
+    shop.profile_photo_exists
       ? thumbnailCache.genThumb(
         'profile_photo',
-        shop.profile_photo,
+        () => shops.getProfilePhoto(address),
         MY_SHOP_PROFILE_PHOTO_MAX_DIMENSION,
       )
       : null,
-    shop.banner_photo
+    shop.banner_photo_exists
       ? thumbnailCache.genThumb(
         'banner_photo',
-        shop.banner_photo,
+        () => shops.getBannerPhoto(address),
         MY_SHOP_BANNER_PHOTO_MAX_DIMENSION,
       )
       : null,

@@ -23,10 +23,11 @@ class ThumbnailCache {
     await this.redis.del(KEY(key));
   }
 
-  async genThumb(key, value, maxDimension) {
+  async genThumb(key, getValue, maxDimension) {
     const cached = await this.get(key);
     if (cached) { return cached; }
 
+    const value = await (getValue instanceof Function ? getValue() : getValue);
     const thumbnail = await convert(value, maxDimension);
     await this.set(key, thumbnail);
 
