@@ -39,6 +39,7 @@ test('can create a product', async () => {
     {
       id: brownieId,
       name: 'brownie',
+      photo_exists: false,
       currency: 'usd',
       price: '1.50',
       available_quantity: 25,
@@ -46,6 +47,7 @@ test('can create a product', async () => {
     {
       id: cookieId,
       name: 'cookie',
+      photo_exists: false,
       currency: 'usd',
       price: '1.00',
       available_quantity: 20,
@@ -128,6 +130,7 @@ test('can update a product: name, currency, price, available_quantity', async ()
     {
       id: brownieId,
       name: 'brownie',
+      photo_exists: false,
       currency: 'usd',
       price: '1.50',
       available_quantity: 25,
@@ -135,11 +138,20 @@ test('can update a product: name, currency, price, available_quantity', async ()
     {
       id: cookieId,
       name: 'cookies',
+      photo_exists: false,
       currency: 'eur',
       price: '2.00',
       available_quantity: 10,
     },
   ]);
+  expect(await products.get(cookieId)).toMatchObject({
+    name: 'cookies',
+    photo: null,
+    description: 'crunchy!!!',
+    currency: 'eur',
+    price: '2.00',
+    available_quantity: 10,
+  });
 
   await products.destroy();
 });
@@ -194,7 +206,7 @@ test('can update a product: photo', async () => {
     {
       id: brownieId,
       name: 'brownie',
-      photo: Buffer.from('12341234', 'hex'),
+      photo_exists: true,
       currency: 'usd',
       price: '1.50',
       available_quantity: 25,
@@ -202,7 +214,7 @@ test('can update a product: photo', async () => {
     {
       id: cookieId,
       name: 'cookie',
-      photo: Buffer.from('22222222', 'hex'),
+      photo_exists: true,
       currency: 'usd',
       price: '1.00',
       available_quantity: 15,
@@ -210,12 +222,20 @@ test('can update a product: photo', async () => {
     {
       id: hashbrownId,
       name: 'hashbrown',
-      photo: Buffer.from('33333333', 'hex'),
+      photo_exists: true,
       currency: 'usd',
       price: '1.60',
       available_quantity: 100,
     },
   ]);
+
+  expect(await products.getPhoto(brownieId)).toEqual(Buffer.from('12341234', 'hex'));
+  expect(await products.getPhoto(cookieId)).toEqual(Buffer.from('22222222', 'hex'));
+  expect(await products.getPhoto(hashbrownId)).toEqual(Buffer.from('33333333', 'hex'));
+
+  expect((await products.get(brownieId)).photo).toEqual(Buffer.from('12341234', 'hex'));
+  expect((await products.get(cookieId)).photo).toEqual(Buffer.from('22222222', 'hex'));
+  expect((await products.get(hashbrownId)).photo).toEqual(Buffer.from('33333333', 'hex'));
 
   await products.destroy();
 });
@@ -241,7 +261,6 @@ test('can update a product: description', async () => {
   });
 
   expect(await products.get(cookieId)).toMatchObject({
-    id: cookieId,
     name: 'cookie',
     description: 'extra crunchy!',
     currency: 'usd',

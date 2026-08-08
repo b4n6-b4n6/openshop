@@ -9,12 +9,12 @@ export default async (ctx) => {
   const { products } = backend;
 
   const allProducts = (
-    await Promise.all( // ???? quering photo from database is excessive here / TODO
+    await Promise.all(
       (await products.getAll()).map(async (product) => {
-        const photo = product.photo
+        const photo = product.photo_exists
           ? await thumbnailCache.genThumb(
             `product:${product.id}`,
-            product.photo,
+            () => products.getPhoto(product.id),
             MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION,
           )
           : null;

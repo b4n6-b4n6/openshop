@@ -67,7 +67,13 @@ class Products {
   async getAll() {
     const { rows } = await this.pool.query(
       `
-        SELECT id, name, photo, price, currency, available_quantity
+        SELECT
+          id,
+          name,
+          photo IS NOT NULL AS photo_exists,
+          price,
+          currency,
+          available_quantity
         FROM products
         ORDER BY name
       `,
@@ -78,11 +84,29 @@ class Products {
 
   async get(id) {
     const { rows } = await this.pool.query(
-      'SELECT * FROM products WHERE id = $1',
+      `
+        SELECT
+          name,
+          photo,
+          description,
+          price,
+          currency,
+          available_quantity
+        FROM products
+        WHERE id = $1`,
       [id],
     );
 
     return rows[0];
+  }
+
+  async getPhoto(id) {
+    const { rows } = await this.pool.query(
+      'SELECT photo FROM products WHERE id = $1',
+      [id],
+    );
+
+    return rows[0]?.photo;
   }
 
   async destroy() {
