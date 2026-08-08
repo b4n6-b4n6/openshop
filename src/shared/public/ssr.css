@@ -238,6 +238,19 @@ button:disabled,
   gap: 0.5rem;
 }
 
+.purchase-quantity {
+  appearance: textfield;
+  background: transparent;
+  text-align: center;
+  width: 3rem;
+}
+
+.purchase-quantity::-webkit-inner-spin-button,
+.purchase-quantity::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
 .qr-trigger {
   background: white;
   border-radius: 1rem;

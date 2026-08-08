@@ -158,9 +158,14 @@ export const thumb = (src, size = 56) => (
   </div>`
 );
 
-export const productCard = ({ product, actionHref }) => {
+export const productCard = ({
+  product,
+  actionHref,
+  actionLabel = 'Edit',
+}) => {
   const quantity = Number(product.available_quantity);
   const out = quantity <= 0;
+  const purchase = actionLabel === 'Purchase';
 
   return `<article class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4 ${out ? 'opacity-60' : ''}">
     ${thumb(product.photo)}
@@ -173,10 +178,11 @@ export const productCard = ({ product, actionHref }) => {
       </div>
     </div>
     <div class="shrink-0">${button({
-    label: 'Edit',
-    href: actionHref,
-    variant: 'secondary',
+    label: actionLabel,
+    href: purchase && out ? undefined : actionHref,
+    variant: purchase ? 'primary' : 'secondary',
     classes: 'h-9 px-3 text-[13px]',
+    attributes: purchase && out ? 'disabled aria-label="Out of stock"' : '',
   })}</div>
   </article>`;
 };

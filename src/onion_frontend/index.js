@@ -15,6 +15,7 @@ import validateUser from './middlewares/validateUser.js';
 import createBackendMw from '../shared/middlewares/backendMw.js';
 import thumbnailCacheMw from '../shared/middlewares/thumbnailCacheMw.js';
 import createMyOnion from './middlewares/myOnion.js';
+import staticFiles from '../shared/middlewares/staticFiles.js';
 
 import preRoutes from './routes/pre.js';
 import browserPathRedirect from './middlewares/browserPathRedirect.js';
@@ -36,6 +37,7 @@ const server = app
   .use(walletHandlerMw())
   .use(onionFilter())
   .use(preRoutes())
+  .use(staticFiles())
   .use(browserPathRedirect())
   .use(createUser())
   .use(validateUser())

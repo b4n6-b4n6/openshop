@@ -1,3 +1,4 @@
+import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import productPage from '../pages/productPage.js';
 
 export default async (ctx) => {
@@ -20,7 +21,7 @@ export default async (ctx) => {
   ctx.body = productPage({
     id,
     name,
-    photo,
+    photo: await bufferToImageDataURI(photo),
     description,
     price,
     currency,
