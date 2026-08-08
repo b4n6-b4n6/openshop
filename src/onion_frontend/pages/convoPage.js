@@ -44,7 +44,7 @@ const orderStatusUpdateBubble = ({
 const convoMessageBubble = ({
   id,
   text_content,
-  created_at, received_at, read_at,
+  created_at, read_at,
   isMine,
 }) => (
   `<li class='convo-message ${isMine ? 'mine' : ''}'>
@@ -60,7 +60,6 @@ const convoMessageBubble = ({
       `<span class='float-right'>
         ${(false
         || (read_at && '✔✔')
-        || (received_at && '✔')
         || '')}
       </span>`
     ) : '')}
