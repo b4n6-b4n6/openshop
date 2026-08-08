@@ -1,6 +1,6 @@
 import viewConvoPage from '../pages/viewConvoPage.js';
 import getConvoAndOrders from '../../backend/utils/getConvoAndOrders.js';
-import { MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION } from '../../const.js';
+import { MY_SHOP_PRODUCT_THUMB_SIZE } from '../../const.js';
 
 export default async (ctx) => {
   const { backend, params, thumbnailCache } = ctx;
@@ -19,7 +19,7 @@ export default async (ctx) => {
                 await thumbnailCache.genThumb(
                   `order:${extMessage.id}`,
                   extMessage.ext_message_payload.product_photo,
-                  MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION,
+                  MY_SHOP_PRODUCT_THUMB_SIZE,
                 )
               )
               : null

@@ -1,6 +1,6 @@
 import {
-  MY_SHOP_BANNER_PHOTO_MAX_DIMENSION,
-  MY_SHOP_PROFILE_PHOTO_MAX_DIMENSION,
+  MY_SHOP_BANNER_PHOTO_SIZE,
+  MY_SHOP_PROFILE_PHOTO_SIZE,
 } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import editShopPage from '../pages/editShopPage.js';
@@ -17,14 +17,14 @@ export default async (ctx) => {
       ? thumbnailCache.genThumb(
         'profile_photo',
         () => shops.getProfilePhoto(address),
-        MY_SHOP_PROFILE_PHOTO_MAX_DIMENSION,
+        MY_SHOP_PROFILE_PHOTO_SIZE,
       )
       : null,
     shop.banner_photo_exists
       ? thumbnailCache.genThumb(
         'banner_photo',
         () => shops.getBannerPhoto(address),
-        MY_SHOP_BANNER_PHOTO_MAX_DIMENSION,
+        MY_SHOP_BANNER_PHOTO_SIZE,
       )
       : null,
   ]);

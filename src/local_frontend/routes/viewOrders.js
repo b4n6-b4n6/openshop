@@ -1,5 +1,5 @@
 import {
-  MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION,
+  MY_SHOP_PRODUCT_THUMB_SIZE,
 } from '../../const.js';
 import viewOrdersPage from '../pages/viewOrdersPage.js';
 
@@ -16,7 +16,7 @@ export default async (ctx) => {
             ? await thumbnailCache.genThumb(
               `order:${order.id}`,
               () => orders.getProductPhoto(order.id),
-              MY_SHOP_PRODUCT_PHOTO_MAX_DIMENSION,
+              MY_SHOP_PRODUCT_THUMB_SIZE,
             )
             : null
         ),

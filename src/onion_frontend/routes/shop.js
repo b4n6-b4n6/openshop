@@ -1,8 +1,8 @@
 import checkOpenShopBrowser from '../utils/checkOpenShopBrowser.js';
 import shopPage from '../pages/shopPage.js';
 import {
-  MY_SHOP_BANNER_PHOTO_MAX_DIMENSION,
-  MY_SHOP_PROFILE_PHOTO_MAX_DIMENSION,
+  MY_SHOP_BANNER_PHOTO_SIZE,
+  MY_SHOP_PROFILE_PHOTO_SIZE,
 } from '../../const.js';
 
 export default async (ctx) => {
@@ -17,7 +17,7 @@ export default async (ctx) => {
         await thumbnailCache.genThumb(
           'profile_photo',
           () => shops.getProfilePhoto(myOnion),
-          MY_SHOP_PROFILE_PHOTO_MAX_DIMENSION,
+          MY_SHOP_PROFILE_PHOTO_SIZE,
         )
       )
       : null
@@ -29,7 +29,7 @@ export default async (ctx) => {
         await thumbnailCache.genThumb(
           'banner_photo',
           () => shops.getBannerPhoto(myOnion),
-          MY_SHOP_BANNER_PHOTO_MAX_DIMENSION,
+          MY_SHOP_BANNER_PHOTO_SIZE,
         )
       )
       : null
