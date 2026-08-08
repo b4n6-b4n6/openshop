@@ -56,6 +56,7 @@ const getConvoAndOrders = async ({ pool, customer }) => {
         jsonb_build_object(
           'sender', sender,
           'receiver', receiver,
+          'image_content_exists', image_content IS NOT NULL,
           'text_content', text_content,
           'created_at', created_at,
           'received_at', received_at,

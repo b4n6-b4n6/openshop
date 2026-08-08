@@ -46,7 +46,10 @@ class Messages {
 
     const { rows } = await this.pool.query(
       `
-        SELECT id, sender, receiver, text_content, created_at, received_at, read_at
+        SELECT
+          id, sender, receiver,
+          image_content IS NOT NULL AS image_content_exists,
+          text_content, created_at, received_at, read_at
         FROM messages
         WHERE (sender = $1 OR receiver = $1) AND (sender = $2 OR receiver = $2)
         ORDER BY created_at
@@ -85,12 +88,39 @@ class Messages {
     return rows[0]?.image_content;
   }
 
+  async getNotificationState(party) {
+    const { rows } = await this.pool.query(
+      `
+        SELECT
+          (
+            SELECT id
+            FROM messages
+            WHERE receiver = $1
+            ORDER BY created_at DESC, id DESC
+            LIMIT 1
+          ) AS latest_incoming_id,
+          ARRAY(
+            SELECT DISTINCT sender
+            FROM messages
+            WHERE receiver = $1 AND read_at IS NULL
+            ORDER BY sender
+          ) AS unread_chat_ids
+      `,
+      [party],
+    );
+
+    return {
+      latestIncomingId: rows[0].latest_incoming_id,
+      unreadChatIds: rows[0].unread_chat_ids,
+    };
+  }
+
   async markAllReceivedInConvo({ sender, receiver }) {
     await this.pool.query(
       `
         UPDATE messages
         SET received_at = COALESCE(received_at, now())
-        WHERE sender = $1 AND receiver = $2
+        WHERE sender = $1 AND receiver = $2 AND received_at IS NULL
       `,
       [sender, receiver],
     );

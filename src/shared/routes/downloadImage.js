@@ -13,10 +13,18 @@ export default async (ctx) => {
   }
 
   const fileType = await fileTypeFromBuffer(imageContent);
+  if (!fileType) {
+    ctx.throw(415, 'Unsupported image type');
+    return;
+  }
   const filename = `${id}.${fileType.ext}`;
 
   ctx.set('Content-Length', imageContent.length);
   ctx.type = fileType.mime;
-  ctx.attachment(filename);
+  if (ctx.query.inline === '1') {
+    ctx.set('Content-Disposition', `inline; filename="${filename}"`);
+  } else {
+    ctx.attachment(filename);
+  }
   ctx.body = imageContent;
 };

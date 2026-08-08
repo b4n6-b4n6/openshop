@@ -12,6 +12,7 @@ import onionFilter from './middlewares/onionFilter.js';
 import walletHandlerMw from './middlewares/walletHandlerMw.js';
 import createUser from './middlewares/createUser.js';
 import validateUser from './middlewares/validateUser.js';
+import receiveMessages from './middlewares/receiveMessages.js';
 import createBackendMw from '../shared/middlewares/backendMw.js';
 import thumbnailCacheMw from '../shared/middlewares/thumbnailCacheMw.js';
 import createMyOnion from './middlewares/myOnion.js';
@@ -41,6 +42,7 @@ const server = app
   .use(browserPathRedirect())
   .use(createUser())
   .use(validateUser())
+  .use(receiveMessages())
   .use(routes())
   .listen(7007, () => {
     console.log('Started!');

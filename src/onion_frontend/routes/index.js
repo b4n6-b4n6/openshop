@@ -4,6 +4,7 @@ import products from './products.js';
 import product from './product.js';
 import productPost from './productPost.js';
 import convo from './convo.js';
+import convoThread from './convoThread.js';
 import convoPost from './convoPost.js';
 import order from './order.js';
 import orders from './orders.js';
@@ -18,6 +19,7 @@ router
   .get('/browser/orders', orders)
   .get('/browser/orders/:id', order)
   .get('/browser/convo', convo)
+  .get('/browser/convo/thread', convoThread)
   .post('/browser/convo', convoPost)
   .get('/browser/convo/images/:id', downloadImage);
 

@@ -1,27 +1,46 @@
+import createChatMessages from '../../shared/routes/createChatMessages.js';
+import viewConvoPage from '../pages/viewConvoPage.js';
+
 export default async (ctx) => {
   const {
     request, onionSpinner, backend, params,
   } = ctx;
-  const { messages } = backend;
-
   const { id } = params;
   const { onion } = onionSpinner;
-  const { text } = request.body;
-  const image = ctx.request.files?.image?.[0]?.buffer;
+  const asyncRequest = ctx.get('x-openshop-async') === '1';
 
-  if (text) {
-    await messages.create({
+  try {
+    const result = await createChatMessages({
+      messages: backend.messages,
       sender: onion,
       receiver: id,
-      text_content: text,
+      text: request.body.text,
+      image: request.files?.image?.[0]?.buffer,
     });
-  } else if (image) {
-    await messages.create({
-      sender: onion,
-      receiver: id,
-      image_content: image,
-    });
+    if (result.error) {
+      ctx.status = result.status;
+      ctx.type = 'text/html; charset=utf-8';
+      ctx.body = asyncRequest
+        ? `<div data-send-error>${result.error}</div>`
+        : viewConvoPage({ userId: id, error: result.error });
+      return;
+    }
+
+    if (asyncRequest) {
+      ctx.status = 201;
+      ctx.type = 'text/html; charset=utf-8';
+      ctx.body = '<div data-message-sent></div>';
+      return;
+    }
+    ctx.redirect(`/shop/convos/${encodeURIComponent(id)}`);
+    ctx.status = 303;
+  } catch (error) {
+    console.error(error);
+    const message = 'The message could not be sent. Try again.';
+    ctx.status = 500;
+    ctx.type = 'text/html; charset=utf-8';
+    ctx.body = asyncRequest
+      ? `<div data-send-error>${message}</div>`
+      : viewConvoPage({ userId: id, error: message });
   }
-
-  ctx.redirect(`/shop/convos/${id}`);
 };

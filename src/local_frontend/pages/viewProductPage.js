@@ -27,7 +27,7 @@ const viewProductPage = ({
 
   return document({
     title: 'Edit Product',
-    scripts: ['editor.js', 'owner.js'],
+    scripts: ['editor.js', 'owner.js', 'sound.js', 'owner-notifications.js'],
     body: appFrame({
       title: 'Edit Product',
       back: '/shop/products',

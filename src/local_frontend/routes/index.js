@@ -25,7 +25,9 @@ import viewOrders from './viewOrders.js';
 
 import viewConvos from './viewConvos.js';
 import viewConvo from './viewConvo.js';
+import viewConvoThread from './viewConvoThread.js';
 import viewConvoPost from './viewConvoPost.js';
+import chatStatus from './chatStatus.js';
 import downloadImage from '../../shared/routes/downloadImage.js';
 
 import selfTest from './selfTest.js';
@@ -58,6 +60,8 @@ router
   .get('/shop/orders', viewOrders)
 
   .get('/shop/convos', viewConvos)
+  .get('/shop/chat-status', chatStatus)
+  .get('/shop/convos/:id/thread', viewConvoThread)
   .get('/shop/convos/:id', viewConvo)
   .post('/shop/convos/:id', viewConvoPost)
   .get('/shop/convos/images/:id', downloadImage)
