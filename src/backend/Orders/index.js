@@ -40,6 +40,53 @@ class Orders {
     );
     await this.pool.query(
       `
+        ALTER TABLE orders
+          ADD COLUMN IF NOT EXISTS deposit_detected_at TIMESTAMP,
+          ADD COLUMN IF NOT EXISTS deposit_confirmed_at TIMESTAMP;
+
+        DO $migration$
+        BEGIN
+          IF EXISTS (
+            SELECT 1
+            FROM pg_attribute
+            WHERE attrelid = 'orders'::regclass
+              AND attname = 'detected_deposit_at'
+              AND NOT attisdropped
+          ) THEN
+            EXECUTE '
+              UPDATE orders
+              SET deposit_detected_at = COALESCE(
+                deposit_detected_at,
+                detected_deposit_at
+              )
+              WHERE deposit_detected_at IS NULL
+                AND detected_deposit_at IS NOT NULL
+            ';
+          END IF;
+
+          IF EXISTS (
+            SELECT 1
+            FROM pg_attribute
+            WHERE attrelid = 'orders'::regclass
+              AND attname = 'confirmed_deposit_at'
+              AND NOT attisdropped
+          ) THEN
+            EXECUTE '
+              UPDATE orders
+              SET deposit_confirmed_at = COALESCE(
+                deposit_confirmed_at,
+                confirmed_deposit_at
+              )
+              WHERE deposit_confirmed_at IS NULL
+                AND confirmed_deposit_at IS NOT NULL
+            ';
+          END IF;
+        END
+        $migration$;
+      `,
+    );
+    await this.pool.query(
+      `
         CREATE UNIQUE INDEX
         IF NOT EXISTS orders_deposit_amount_idx
         ON orders (deposit_amount)
