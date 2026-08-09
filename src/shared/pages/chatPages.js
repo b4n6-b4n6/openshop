@@ -94,8 +94,8 @@ const orderEventBubble = ({ event, orderBase }) => {
         </div>
       </div>
       <div class="mt-2 flex items-end justify-between gap-3">
-        <span title="${escapeAttribute(event.ext_message_occured_at)}" class="text-[10px] text-faint">${escapeHtml(formatDate(event.ext_message_occured_at))}</span>
-        <a href="${escapeAttribute(`${orderBase}/${encodeURIComponent(event.id)}`)}" target="_top" class="rounded-lg border border-border px-2.5 py-1 text-[11px] font-semibold text-text hover:border-border-strong">View</a>
+        <span title="${escapeAttribute(event.ext_message_occured_at)}" class="py-1 text-[11px] text-faint">${escapeHtml(formatDate(event.ext_message_occured_at))}</span>
+        <a href="${escapeAttribute(`${orderBase}/${encodeURIComponent(event.id)}`)}" target="_top" class="rounded-lg px-2.5 py-1 text-[11px] font-semibold text-text">View</a>
       </div>
     </div>
   </div>`;
