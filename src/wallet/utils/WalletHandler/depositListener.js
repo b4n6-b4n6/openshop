@@ -4,8 +4,8 @@ import formatPiconero from '../../../utils/formatPiconero.js';
 
 const deriveTxState = ({ isConfirmed, isLocked }) => (
   false
-  || (isConfirmed === true && isLocked === true) && 'DETECTED'
-  || (isConfirmed === false && isLocked === true) && 'CONFIRMED'
+  || (isConfirmed === false && isLocked === true) && 'DETECTED'
+  || (isConfirmed === true && isLocked === true) && 'CONFIRMED'
   || (isConfirmed === true && isLocked === false) && 'UNLOCKED'
 );
 
@@ -17,7 +17,7 @@ const act = ({
   if (txState === 'DETECTED' || txState === 'CONFIRMED') {
     return orders.markDepositDetected({ deposit_amount: amount });
   } if (txState === 'UNLOCKED') {
-    return orders.markDepositDetected({ deposit_amount: amount });
+    return orders.markDepositConfirmed({ deposit_amount: amount });
   }
 
   throw new Error('undefined branch');
