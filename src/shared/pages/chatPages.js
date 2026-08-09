@@ -38,11 +38,8 @@ const messageBubble = ({
   const own = payload.sender === me;
   const imageHref = `${imageBase}/${encodeURIComponent(event.id)}`;
   const content = payload.image_content_exists
-    ? `<button type="button" data-chat-image class="block overflow-hidden rounded-xl" aria-label="View attached image">
-        <img src="${escapeAttribute(`${imageHref}?inline=1`)}" alt="Image attachment" class="max-h-48 w-full object-contain">
-      </button>
-      <a href="${escapeAttribute(imageHref)}" class="mt-1.5 inline-flex items-center gap-1 text-[11px] underline ${own ? 'text-on-accent/70' : 'text-muted'}">
-        ${icon('download', 'size-3.5')}Download image
+    ? `<a href="${escapeAttribute(imageHref)}" class="mt-1.5 inline-flex items-center gap-1 text-[11px] underline ${own ? 'text-on-accent/70' : 'text-muted'}">
+        ${icon('download', 'size-3.5')}Open image
       </a>`
     : `<p class="whitespace-pre-wrap break-words text-[14px]">${escapeHtml(payload.text_content)}</p>`;
 
