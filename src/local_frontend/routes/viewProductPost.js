@@ -47,5 +47,5 @@ export default async (ctx) => {
 
   if (photo) { await thumbnailCache.clear(`product:${id}`); }
 
-  ctx.redirect(`/shop/products/${id}`);
+  ctx.redirect('/shop/products');
 };
