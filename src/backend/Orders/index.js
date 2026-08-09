@@ -211,7 +211,7 @@ class Orders {
       [deposit_amount],
     );
 
-    return result.rowCount !== 1;
+    return result.rowCount === 1;
   }
 
   async markDepositConfirmed({ deposit_amount }) {
@@ -224,7 +224,7 @@ class Orders {
       [deposit_amount],
     );
 
-    return result.rowCount !== 1;
+    return result.rowCount === 1;
   }
 
   async setDepositTxid({ deposit_amount, deposit_txid }) {
