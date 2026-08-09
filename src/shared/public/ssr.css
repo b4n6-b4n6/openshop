@@ -224,6 +224,17 @@ button:disabled,
   aspect-ratio: 3 / 1;
 }
 
+.product-photo-full {
+  min-height: 180px;
+}
+
+.product-photo-full img {
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  width: 100%;
+}
+
 .photo-picker img {
   height: 100%;
   object-fit: cover;
@@ -314,6 +325,79 @@ button:disabled,
 .copy-feedback.copy-feedback-visible {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+
+.chat-image-message {
+  border-radius: 0.875rem;
+  overflow: hidden;
+  position: relative;
+  width: min(72vw, 280px);
+}
+
+.chat-image-placeholder,
+.chat-image-loaded {
+  align-items: center;
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface-2);
+  border: 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.chat-image-loaded[hidden],
+.chat-image-placeholder[hidden] {
+  display: none;
+}
+
+.chat-image-placeholder img {
+  filter: blur(12px);
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.72;
+  transform: scale(1.35);
+  width: 100%;
+}
+
+.chat-image-download {
+  align-items: center;
+  background: rgb(15 17 21 / 62%);
+  border-radius: 999px;
+  color: white;
+  display: flex;
+  height: 2.5rem;
+  justify-content: center;
+  position: absolute;
+  width: 2.5rem;
+}
+
+.chat-image-loading .chat-image-download {
+  animation: pulse 900ms ease-in-out infinite alternate;
+}
+
+.chat-image-loaded img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.chat-image-meta {
+  align-items: center;
+  background: rgb(15 17 21 / 62%);
+  border-radius: 999px;
+  bottom: 0.4rem;
+  color: white;
+  display: flex;
+  font-size: 10px;
+  gap: 0.2rem;
+  padding: 0.2rem 0.4rem;
+  pointer-events: none;
+  position: absolute;
+  right: 0.4rem;
 }
 
 .image-viewer {

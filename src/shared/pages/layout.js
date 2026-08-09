@@ -1,6 +1,6 @@
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 
-const ASSET_VERSION = '20260809-2';
+const ASSET_VERSION = '20260809-5';
 
 export const icon = (name, classes = 'size-5') => {
   const paths = {

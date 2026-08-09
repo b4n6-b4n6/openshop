@@ -69,12 +69,17 @@ test('customer product list handles available, unavailable, and empty states', (
 });
 
 test('purchase screen preserves form contracts and rich product content', () => {
-  const page = productPage(product);
+  const page = productPage({
+    ...product,
+    photo: 'data:image/png;base64,AAAA',
+  });
 
   expect(page).toContain('action="/browser/products/product-1"');
   expect(page).toContain('name="purchase_quantity"');
   expect(page).toContain('min="1" max="4"');
   expect(page).toContain('Purchase · $12.50');
   expect(page).toContain('<em>Handmade</em>');
+  expect(page).toContain('product-photo-full');
+  expect(page).toContain('src="data:image/png;base64,AAAA"');
   expect(page).toContain('/static/customer.js');
 });

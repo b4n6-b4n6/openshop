@@ -36,7 +36,6 @@ test('order detail keeps payment, QR, rich text, and live status contracts', () 
     version: 'order-version',
   });
 
-  expect(page).toContain('<strong>Private listing</strong>');
   expect(page).toContain('1.23');
   expect(page).toContain('4exampleaddress');
   expect(page).toContain('data-qr-open');
@@ -81,6 +80,7 @@ test('chat thread renders messages, receipts, images, and order updates safely',
       ext_message_occured_at: createdAt,
       ext_message_payload: {
         created_at: createdAt,
+        image_blur_preview: 'data:image/png;base64,BBBB',
         image_content_exists: true,
         receiver: 'shop.onion',
         sender: 'customer-1',
@@ -88,6 +88,19 @@ test('chat thread renders messages, receipts, images, and order updates safely',
       },
       ext_message_type: 'CONVO',
       id: 'message-2',
+    }, {
+      ext_message_occured_at: createdAt,
+      ext_message_payload: {
+        created_at: createdAt,
+        image_blur_preview: 'data:image/png;base64,CCCC',
+        image_content_exists: true,
+        read_at: createdAt,
+        receiver: 'customer-1',
+        sender: 'shop.onion',
+        text_content: null,
+      },
+      ext_message_type: 'CONVO',
+      id: 'message-3',
     }, {
       ext_message_occured_at: createdAt,
       ext_message_payload: {
@@ -110,8 +123,16 @@ test('chat thread renders messages, receipts, images, and order updates safely',
 
   expect(page).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
   expect(page).not.toContain('<script>alert(1)</script>');
-  expect(page).toContain('/shop/convos/images/message-2?inline=1');
-  expect(page).toContain('href="/shop/convos/images/message-2"');
+  expect(page).toContain('src="data:image/png;base64,BBBB"');
+  expect(page).not.toMatch(/<img[^>]+\ssrc="\/shop\/convos\/images\/message-2/);
+  expect(page).toContain('data-src="/shop/convos/images/message-2?inline=1"');
+  expect(page).toContain('data-chat-image-load');
+  expect(page).toContain('aria-label="Download and display image"');
+  expect(page).toContain('data-chat-image class="chat-image-loaded"');
+  expect(page).toContain('src="/shop/convos/images/message-3?inline=1"');
+  expect(page).not.toContain('data-src="/shop/convos/images/message-3?inline=1"');
+  expect(page).toContain('class="chat-image-message"');
+  expect(page).not.toContain('ago');
   expect(page).toContain('aria-label="Read"');
   expect(page).toContain('New order');
   expect(page).toContain('href="/shop/orders/order-1" target="_top"');

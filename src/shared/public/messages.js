@@ -7,6 +7,7 @@
   let knownIncoming = sessionStorage.getItem(key);
   let forceBottom = false;
   let pollTimer;
+  const loadedImages = new Set();
 
   if (knownIncoming === null) {
     knownIncoming = thread.dataset.lastIncoming ?? '';
@@ -59,6 +60,18 @@
     }
   }
 
+  function showLoadedImage(eventNode) {
+    const placeholder = eventNode.querySelector('[data-chat-image-load]');
+    const viewerButton = eventNode.querySelector('[data-chat-image]');
+    const image = eventNode.querySelector('[data-chat-image-content]');
+    const source = image?.dataset.src;
+    if (!placeholder || !viewerButton || !image || !source) return;
+
+    image.src = source;
+    placeholder.hidden = true;
+    viewerButton.hidden = false;
+  }
+
   function patchEvents(nextThread) {
     const shouldStick = nearBottom();
     const current = new Map(Array.from(
@@ -70,6 +83,9 @@
     let additions = 0;
 
     nextEvents.forEach((nextEvent, index) => {
+      if (loadedImages.has(nextEvent.dataset.eventKey)) {
+        showLoadedImage(nextEvent);
+      }
       const existing = current.get(nextEvent.dataset.eventKey);
       if (existing) {
         if (existing.outerHTML !== nextEvent.outerHTML) {
@@ -98,8 +114,43 @@
   }
 
   thread.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-chat-image]');
-    const source = button?.querySelector('img')?.src;
+    const loadButton = event.target.closest('[data-chat-image-load]');
+    if (loadButton) {
+      const eventNode = loadButton.closest('[data-event-key]');
+      const viewerButton = eventNode?.querySelector('[data-chat-image]');
+      const image = eventNode?.querySelector('[data-chat-image-content]');
+      const source = image?.dataset.src;
+      if (!eventNode || !viewerButton || !image || !source) {
+        showError('image', 'This image cannot be downloaded.');
+        return;
+      }
+
+      loadButton.disabled = true;
+      loadButton.classList.add('chat-image-loading');
+      image.onload = () => {
+        image.onload = null;
+        image.onerror = null;
+        loadedImages.add(eventNode.dataset.eventKey);
+        loadButton.hidden = true;
+        viewerButton.hidden = false;
+        loadButton.disabled = false;
+        loadButton.classList.remove('chat-image-loading');
+        clearError('image');
+      };
+      image.onerror = () => {
+        image.onload = null;
+        image.onerror = null;
+        image.removeAttribute('src');
+        loadButton.disabled = false;
+        loadButton.classList.remove('chat-image-loading');
+        showError('image', 'The image could not be downloaded. Try again.');
+      };
+      image.src = source;
+      return;
+    }
+
+    const viewerButton = event.target.closest('[data-chat-image]');
+    const source = viewerButton?.querySelector('img')?.src;
     if (source) {
       window.parent.postMessage({
         type: 'openshop:view-image',
