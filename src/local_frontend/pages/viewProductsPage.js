@@ -15,6 +15,7 @@ const viewProductsPage = ({ allProducts }) => document({
   scripts: ['sound.js', 'owner-notifications.js'],
   body: appFrame({
     title: 'My Products',
+    titleIcon: icon('boxes', 'size-4'),
     back: '/shop',
     status: indicators(),
     content: allProducts.length

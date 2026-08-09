@@ -9,6 +9,7 @@ import {
   document,
   errorNotice,
   field,
+  icon,
 } from '../../shared/pages/layout.js';
 import { escapeAttribute } from '../../shared/utils/html.js';
 import indicators from './indicators.js';
@@ -30,6 +31,7 @@ const viewProductPage = ({
     scripts: ['editor.js', 'owner.js', 'sound.js', 'owner-notifications.js'],
     body: appFrame({
       title: 'Edit Product',
+      titleIcon: icon('boxes', 'size-4'),
       back: '/shop/products',
       status: indicators(),
       content: `<form id="product-form" action="${escapeAttribute(action)}" method="post" enctype="multipart/form-data" data-disable-on-submit class="space-y-5 px-5 py-6">

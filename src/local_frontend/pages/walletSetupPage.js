@@ -4,6 +4,7 @@ import {
   document,
   errorNotice,
   field,
+  icon,
 } from '../../shared/pages/layout.js';
 
 const walletSetupPage = ({ error = '' } = {}) => document({
@@ -11,6 +12,7 @@ const walletSetupPage = ({ error = '' } = {}) => document({
   body: `<form action="/wallet-setup" method="post" class="contents">
     ${appFrame({
     title: 'Open New Shop',
+    titleIcon: icon('wallet', 'size-4'),
     back: '/',
     content: `<div class="space-y-5 px-5 py-6">
         ${error ? errorNotice(error, 'Could not open shop') : ''}

@@ -12,6 +12,7 @@ const browserInputPage = ({ defaultOnionHostname }) => document({
   body: `<form action="/browser-input" method="post" class="contents" data-browse-form>
     ${appFrame({
     title: 'Browse Shop',
+    titleIcon: icon('globe', 'size-4'),
     back: '/',
     content: `<div data-browse-fields class="space-y-5 px-5 py-6">
         <p class="text-[14px] text-muted">Paste the shop&apos;s onion address to connect over Tor, or scan its QR code.</p>
