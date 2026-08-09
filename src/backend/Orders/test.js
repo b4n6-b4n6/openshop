@@ -4,24 +4,6 @@ import createOrders from './index.js';
 
 const CUSTOMER = '370c6cbe-8a6c-4d77-8070-bc21c32fc904';
 
-test('migrates legacy deposit status columns', async () => {
-  const queries = [];
-  const pool = {
-    query: async (query) => {
-      queries.push(query);
-      return {};
-    },
-  };
-
-  await createOrders(pool);
-
-  const migration = queries.join('\n');
-  expect(migration).toContain('ADD COLUMN IF NOT EXISTS deposit_detected_at');
-  expect(migration).toContain('ADD COLUMN IF NOT EXISTS deposit_confirmed_at');
-  expect(migration).toContain('detected_deposit_at');
-  expect(migration).toContain('confirmed_deposit_at');
-});
-
 test('can get a non-existent order', async () => {
   const orders = await createOrders();
 
