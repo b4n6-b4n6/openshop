@@ -119,8 +119,8 @@ class Messages {
     await this.pool.query(
       `
         UPDATE messages
-        SET received_at = COALESCE(received_at, now())
-        WHERE sender = $1 AND receiver = $2
+        SET received_at = now()
+        WHERE sender = $1 AND receiver = $2 AND received_at IS NULL
       `,
       [sender, receiver],
     );
