@@ -4,10 +4,15 @@ import checkAccess from '../../../utils/checkAccess.js';
 import readMyWalletAddress from '../../../utils/readMyWalletAddress.js';
 
 class WalletSetup {
-  async init() {
-    this.completed = await checkAccess(MY_SHOP_WALLET_PATH);
+  async init({
+    checkWalletAccess = checkAccess,
+    readWalletAddress = readMyWalletAddress,
+  } = {}) {
+    this.readWalletAddress = readWalletAddress;
+    this.completed = await checkWalletAccess(MY_SHOP_WALLET_PATH);
     this.restoring = false;
     this.lastErrorMessage = null;
+    this.address = this.completed ? await this.readWalletAddress() : null;
 
     return this;
   }
@@ -30,7 +35,7 @@ class WalletSetup {
 
       this.completed = true;
       this.lastErrorMessage = null;
-      this.address = await readMyWalletAddress();
+      this.address = await this.readWalletAddress();
     } catch (err) {
       console.error(err);
 
