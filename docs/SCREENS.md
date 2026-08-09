@@ -162,7 +162,6 @@ Pressing "PURCHASE" would yield a screen where is displayed
 Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
   * product name (text)
   * product photo (image)
-  * product description (rich text)
   * 
   * "PAYMENT DETAILS" (text)
   * deposit invoice qr code (image)
