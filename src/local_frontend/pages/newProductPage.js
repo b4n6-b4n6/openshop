@@ -18,6 +18,7 @@ const newProductPage = ({ error = '', values = {} } = {}) => document({
   scripts: ['editor.js', 'owner.js', 'sound.js', 'owner-notifications.js'],
   body: appFrame({
     title: 'Add Product',
+    titleIcon: icon('boxes', 'size-4'),
     back: '/shop',
     status: indicators(),
     content: `<form id="product-form" action="/shop/products/new" method="post" enctype="multipart/form-data" data-disable-on-submit class="space-y-5 px-5 py-6">

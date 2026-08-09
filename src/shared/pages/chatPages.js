@@ -102,6 +102,7 @@ export const chatsPage = ({ chats, version, status = '' }) => document({
   scripts: ['sound.js', 'owner-notifications.js', 'chat-list.js'],
   body: appFrame({
     title: 'Chats',
+    titleIcon: icon('message', 'size-4'),
     back: '/shop',
     status,
     animate: false,
@@ -143,6 +144,7 @@ export const chatPage = ({
   body: `<form method="post" action="${escapeAttribute(action)}" enctype="multipart/form-data" class="contents" data-chat-form>
     ${appFrame({
     title: truncateMiddle(title, 10, 6),
+    titleIcon: icon('message', 'size-4'),
     back,
     status,
     animate: false,

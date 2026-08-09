@@ -29,6 +29,7 @@ const productPage = ({
     scripts: ['customer.js'],
     body: appFrame({
       title: 'Purchase',
+      titleIcon: icon('boxes', 'size-4'),
       back: '/browser/products',
       content: `<form id="purchase-form" data-purchase-form data-unit-price="${escapeAttribute(price)}" data-currency="${escapeAttribute(currency)}" action="${escapeAttribute(action)}" method="post" class="space-y-5 px-5 py-6">
         <div class="flex items-center gap-3">

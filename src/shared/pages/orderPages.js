@@ -28,6 +28,7 @@ export const ordersPage = ({ allOrders, owner = false, status = '' }) => {
     scripts: owner ? ownerScripts : [],
     body: appFrame({
       title: owner ? 'My Orders' : 'Orders',
+      titleIcon: icon('receipt', 'size-4'),
       back: owner ? '/shop' : '/browser/',
       status,
       animate: false,
@@ -98,6 +99,7 @@ export const orderPage = ({
     scripts,
     body: appFrame({
       title: 'Order',
+      titleIcon: icon('receipt', 'size-4'),
       back: root,
       status,
       content: `<div data-order-live data-version="${escapeAttribute(version)}" data-complete="${complete}" class="space-y-4 px-5 py-6">

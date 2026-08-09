@@ -7,6 +7,7 @@ import {
   button,
   document,
   field,
+  icon,
 } from '../../shared/pages/layout.js';
 import indicators from './indicators.js';
 
@@ -20,6 +21,7 @@ const editShopPage = ({
   scripts: ['editor.js', 'owner.js', 'sound.js', 'owner-notifications.js'],
   body: appFrame({
     title: 'Edit Shop',
+    titleIcon: icon('store', 'size-4'),
     back: '/shop',
     status: indicators(),
     content: `<div class="space-y-5 px-5 py-6">

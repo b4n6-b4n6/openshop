@@ -26,6 +26,7 @@ const shopPage = ({
   scripts: ['customer.js', 'qr.js'],
   body: appFrame({
     title: 'Shop',
+    titleIcon: icon('store', 'size-4'),
     back: enableBackButton ? '/browser-input' : '',
     content: `${shopBanner(banner_photo)}
       <div class="px-5">

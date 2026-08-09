@@ -27,6 +27,7 @@ const viewShopPage = ({
   scripts: ['owner.js', 'sound.js', 'owner-notifications.js', 'qr.js'],
   body: appFrame({
     title: 'My Shop',
+    titleIcon: icon('store', 'size-4'),
     status: indicators(),
     content: `${shopBanner(banner_photo)}
       <div class="px-5">
