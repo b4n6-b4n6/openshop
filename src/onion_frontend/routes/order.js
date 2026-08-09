@@ -2,9 +2,12 @@ import QRCode from 'qrcode';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import { orderVersion } from '../../shared/utils/viewVersions.js';
 import orderPage from '../pages/orderPage.js';
+import { MY_SHOP_PRODUCT_THUMB_SIZE } from '../../const.js';
 
 export default async (ctx) => {
-  const { params, backend, state } = ctx;
+  const {
+    params, backend, state, thumbnailCache,
+  } = ctx;
   const { orders } = backend;
   const { id } = params;
 
@@ -35,11 +38,23 @@ export default async (ctx) => {
     },
   );
 
+  const productPhoto = (
+    await bufferToImageDataURI(
+      order.product_photo_exists
+        ? await thumbnailCache.genThumb(
+          `order:${order.id}`,
+          () => orders.getPhoto(order.id),
+          MY_SHOP_PRODUCT_THUMB_SIZE,
+        )
+        : null,
+    )
+  ); // TODO parallalelise
+
   ctx.body = orderPage({
     order: {
       ...order,
+      product_photo: productPhoto,
       id,
-      product_photo: await bufferToImageDataURI(order.product_photo),
     },
     depositAddress,
     qr,

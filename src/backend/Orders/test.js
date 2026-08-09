@@ -33,7 +33,7 @@ test('can create an order', async () => {
   const order = await orders.get(id);
   expect(order).toMatchObject({
     product_name: 'brownie',
-    product_photo: null,
+    product_photo_exists: false,
     product_description: 'coco!',
 
     purchase_currency: 'usd',
@@ -67,7 +67,7 @@ test('can create an order with a photo', async () => {
   const order = await orders.get(id);
   expect(order).toMatchObject({
     product_name: 'brownie',
-    product_photo: Buffer.from('12341234', 'hex'),
+    product_photo_exists: true,
     product_description: 'coco!',
 
     purchase_currency: 'usd',
@@ -103,6 +103,7 @@ test('can create an order and mark deposit as detected', async () => {
 
   const order = await orders.get(id);
   expect(order.deposit_detected_at).toBeTruthy();
+  expect(order.product_photo_exists).toBeFalsy();
 
   await orders.destroy();
 });
@@ -163,6 +164,7 @@ test('errors on 2 orders with identical deposit amount', async () => {
   const order = await orders.get(id);
   expect(order).toMatchObject({
     product_name: 'brownie',
+    product_photo_exists: false,
     product_description: 'coco!',
 
     purchase_currency: 'usd',
@@ -207,6 +209,7 @@ test('can create an order with identical deposit amount and on txid', async () =
   const order_1 = await orders.get(id_1);
   expect(order_1).toMatchObject({
     product_name: 'brownie',
+    product_photo_exists: false,
     product_description: 'coco!',
 
     purchase_currency: 'usd',
@@ -237,6 +240,7 @@ test('can create an order with identical deposit amount and on txid', async () =
   const order_2 = await orders.get(id_2);
   expect(order_2).toMatchObject({
     product_name: 'brownie',
+    product_photo_exists: false,
     product_description: 'coco!',
 
     purchase_currency: 'usd',

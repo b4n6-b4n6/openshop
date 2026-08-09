@@ -28,4 +28,4 @@ export const MY_SHOP_WALLET_SYNC_STATUS_IPC = '.ipc/my_shop_wallet_sync_status_i
 export const IMG_SRC_PLACEHOLDER = '/no-img';
 export const MY_SHOP_PROFILE_PHOTO_SIZE = 72;
 export const MY_SHOP_BANNER_PHOTO_SIZE = 480;
-export const MY_SHOP_PRODUCT_THUMB_SIZE = 56;
+export const MY_SHOP_PRODUCT_THUMB_SIZE = 64;

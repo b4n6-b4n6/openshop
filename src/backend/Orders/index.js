@@ -186,11 +186,19 @@ class Orders {
     const { rows } = await this.pool.query(
       `
         SELECT
-          id, customer,
-          product_name, product_photo, product_description,
+          id,
+          customer,
+          
+          product_name,
+          product_photo IS NOT NULL AS product_photo_exists,
+          product_description,
+          
           purchase_price, purchase_currency, purchase_quantity, 
           deposit_amount, deposit_txid, 
-          created_at, deposit_detected_at, deposit_confirmed_at 
+          
+          created_at,
+          deposit_detected_at,
+          deposit_confirmed_at 
         FROM orders
         WHERE id = $1
       `,

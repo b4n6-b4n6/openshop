@@ -6,7 +6,6 @@ import {
   orderStatus,
   orderStatusBadge,
   qrView,
-  richText,
   thumb,
 } from './components.js';
 import {
@@ -113,8 +112,6 @@ export const orderPage = ({
           <div data-order-status-badge>${orderStatusBadge(order)}</div>
         </div>
 
-        ${order.product_description ? richText(order.product_description) : ''}
-
         <section class="flex flex-col items-center gap-4 rounded-2xl border border-border bg-surface p-4 text-center">
           <div>
             <p class="font-mono text-3xl font-bold text-text">${escapeHtml(formatXmr(order.deposit_amount))}</p>
@@ -163,12 +160,37 @@ export const orderPage = ({
 
         <p class="text-center text-[12px] leading-relaxed text-faint">Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>
       </div>`,
-      bottom: button({
-        label: owner ? 'View all orders' : 'View my orders',
-        href: root,
-        variant: 'secondary',
-        buttonIcon: icon('receipt', 'size-4'),
-      }),
+      bottom: (
+        `<div class="flex flex-col gap-2.5">
+          ${
+        owner
+          ? `${button({
+            label: 'Chat with customer',
+            href: `/shop/convos/${order.customer}`,
+            variant: 'secondary',
+            buttonIcon: icon('message', 'size-4'),
+          })}${button({
+            label: 'View all orders',
+            href: root,
+            variant: 'secondary',
+            buttonIcon: icon('receipt', 'size-4'),
+          })}`
+          : ''
+        }
+          ${
+        !owner
+          ? (
+            button({
+              label: 'View my orders',
+              href: root,
+              variant: 'secondary',
+              buttonIcon: icon('receipt', 'size-4'),
+            })
+          )
+          : ''
+        }
+        </div>`
+      ),
     }),
   });
 };
