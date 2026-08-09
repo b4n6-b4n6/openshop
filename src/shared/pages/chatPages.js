@@ -11,6 +11,7 @@ import {
 } from './layout.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import formatUserId from '../../utils/formatUserId.js';
+import formatDate from '../../utils/formatDate.js';
 
 const formatTime = (value) => new Intl.DateTimeFormat('en', {
   hour: '2-digit',
@@ -146,7 +147,7 @@ export const chatsPage = ({ chats, version, status = '' }) => document({
           <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted">${icon('message', 'size-5')}</div>
           <div class="min-w-0 flex-1">
             <p class="truncate font-mono text-[13px] text-text">${escapeHtml(formatUserIdOrShopAddress(chat.id))}</p>
-            <p title="${escapeAttribute(chat.last_message_at)}" class="text-[12px] text-faint">${escapeHtml(formatTime(chat.last_message_at))}</p>
+            <p title="${escapeAttribute(chat.last_message_at)}" class="text-[12px] text-faint">${escapeHtml(formatDate(chat.last_message_at))}</p>
           </div>
           <span data-unread-dot data-chat-id="${escapeAttribute(chat.id)}" class="${chat.unread ? 'block' : 'hidden'} size-2.5 shrink-0 rounded-full bg-accent" aria-label="Unread messages"></span>
           <span class="text-faint">${icon('chevronRight', 'size-4')}</span>
