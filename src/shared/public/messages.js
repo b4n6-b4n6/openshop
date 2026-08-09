@@ -1,5 +1,8 @@
 /* global DOMParser, document, window */
 (() => {
+  const REQUEST_TIMEOUT = 15_000;
+  const POLL_INTERVAL = 3_000;
+
   const thread = document.querySelector('[data-chat]');
   if (!thread) return;
 
@@ -168,7 +171,7 @@
           Accept: 'text/html',
           'If-None-Match': `"${thread.dataset.version}"`,
         },
-        signal: AbortSignal.timeout(15_000),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT),
       });
       if (response.status === 304) {
         clearError('poll');
@@ -197,7 +200,7 @@
       console.error('Could not refresh chat messages', error);
       showError('poll', 'Messages could not refresh. OpenShop will keep trying.');
     } finally {
-      pollTimer = window.setTimeout(poll, 3_000);
+      pollTimer = window.setTimeout(poll, POLL_INTERVAL);
     }
   }
 
@@ -212,5 +215,5 @@
   });
 
   scrollToBottom();
-  pollTimer = window.setTimeout(poll, 3_000);
+  pollTimer = window.setTimeout(poll, POLL_INTERVAL);
 })();

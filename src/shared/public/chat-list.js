@@ -1,5 +1,8 @@
 /* global DOMParser, document, window */
 (() => {
+  const REQUEST_TIMEOUT = 10_000;
+  const POLL_INTERVAL = 5_000;
+
   const list = document.querySelector('[data-chat-list]');
   if (!list) return;
   let timer;
@@ -29,7 +32,7 @@
           Accept: 'text/html',
           'If-None-Match': `"${list.dataset.version}"`,
         },
-        signal: AbortSignal.timeout(10_000),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT),
       });
       if (response.status === 304) {
         clearError();
@@ -48,7 +51,7 @@
       console.error('Could not refresh chats', error);
       showError('Chats could not refresh. OpenShop will keep trying.');
     } finally {
-      timer = window.setTimeout(poll, 5_000);
+      timer = window.setTimeout(poll, POLL_INTERVAL);
     }
   }
 

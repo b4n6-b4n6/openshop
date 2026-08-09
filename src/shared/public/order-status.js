@@ -1,5 +1,9 @@
 /* global DOMParser, document, window */
 (() => {
+  const REQUEST_TIMEOUT = 15_000;
+  const POLL_INTERVAL = 10_000;
+  const POLL_INTERVAL_INITIAL = 5_000;
+
   const order = document.querySelector('[data-order-live]');
   if (!order || order.dataset.complete === 'true') return;
   let timer;
@@ -29,7 +33,7 @@
           Accept: 'text/html',
           'If-None-Match': `"${order.dataset.version}"`,
         },
-        signal: AbortSignal.timeout(15_000),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT),
       });
       if (response.status === 304) {
         clearError();
@@ -55,10 +59,10 @@
       showError('Order status could not refresh. OpenShop will keep trying.');
     } finally {
       if (order.dataset.complete !== 'true') {
-        timer = window.setTimeout(poll, 10_000);
+        timer = window.setTimeout(poll, POLL_INTERVAL);
       }
     }
   }
 
-  timer = window.setTimeout(poll, 5_000);
+  timer = window.setTimeout(poll, POLL_INTERVAL_INITIAL);
 })();

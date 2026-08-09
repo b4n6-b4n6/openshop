@@ -1,7 +1,8 @@
 /* global DOMParser, document, window */
 (() => {
-  const REQUEST_TIMEOUT_MS = 10_000;
-  const POLL_INTERVAL_MS = 3_000;
+  const REQUEST_TIMEOUT = 10_000;
+  const POLL_INTERVAL = 3_000;
+
   const latestKey = 'openshop-owner-latest-incoming';
   let knownIncoming = sessionStorage.getItem(latestKey);
   let timer;
@@ -54,7 +55,7 @@
       const response = await fetch('/shop/chat-status', {
         cache: 'no-store',
         headers: { Accept: 'text/html' },
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT),
       });
       if (!response.ok) throw new Error(`Notification check returned ${response.status}`);
       const parsed = new DOMParser().parseFromString(await response.text(), 'text/html');
@@ -71,7 +72,7 @@
       console.error('Could not check for new owner messages', error);
       showError('New-message checks are unavailable. OpenShop will keep trying.');
     } finally {
-      timer = window.setTimeout(poll, POLL_INTERVAL_MS);
+      timer = window.setTimeout(poll, POLL_INTERVAL);
     }
   }
 

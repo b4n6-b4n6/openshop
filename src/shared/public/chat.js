@@ -1,5 +1,7 @@
 /* global DOMParser, document, window */
 (() => {
+  const FORM_SUBMIT_TIMEOUT = 30_000;
+
   const form = document.querySelector('[data-chat-form]');
   if (!form) return;
 
@@ -96,7 +98,7 @@
           Accept: 'text/html',
           'X-OpenShop-Async': '1',
         },
-        signal: AbortSignal.timeout(30_000),
+        signal: AbortSignal.timeout(FORM_SUBMIT_TIMEOUT),
       });
       const result = new DOMParser().parseFromString(
         await response.text(),
