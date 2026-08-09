@@ -54,7 +54,7 @@ const messageBubble = ({
     <div class="max-w-[82%] rounded-2xl px-3 py-2 ${own ? 'bg-accent text-on-accent' : 'border border-border bg-surface text-text'}">
       ${content}
       <span class="mt-1 flex items-center justify-end gap-1 text-[10px] ${own ? 'text-on-accent/70' : 'text-faint'}">
-        <span title="${escapeAttribute(payload.created_at)}">${escapeHtml(formatDate(payload.created_at))}</span>
+        <span title="${escapeAttribute(new Date(payload.created_at))}">${escapeHtml(formatDate(payload.created_at))}</span>
         ${own ? receipt({ payload, owner }) : ''}
       </span>
     </div>
