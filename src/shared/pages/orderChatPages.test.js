@@ -45,6 +45,7 @@ test('order detail keeps payment, QR, rich text, and live status contracts', () 
   expect(page).toContain('abc123');
   expect(page).toContain('data-order-live');
   expect(page).toContain('/static/order-status.js');
+  expect(page).toContain('/static/copy.js');
 });
 
 test('chat shell polls only its thread and exposes smooth image sending UI', () => {

@@ -23,7 +23,7 @@ const shopPage = ({
   qr,
 }) => document({
   title: name || 'Shop',
-  scripts: ['customer.js', 'qr.js'],
+  scripts: ['customer.js', 'copy.js', 'qr.js'],
   body: appFrame({
     title: 'Shop',
     titleIcon: icon('store', 'size-4'),

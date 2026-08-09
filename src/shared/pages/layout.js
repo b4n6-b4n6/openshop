@@ -1,6 +1,6 @@
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 
-const ASSET_VERSION = '20260809-1';
+const ASSET_VERSION = '20260809-2';
 
 export const icon = (name, classes = 'size-5') => {
   const paths = {
@@ -77,14 +77,14 @@ export const appFrame = ({
   return `<div class="mx-auto flex h-full max-w-[480px] flex-col bg-base${animate ? ' page-enter' : ''}">
   <header class="sticky top-0 z-30 border-b border-border bg-elevated/95 backdrop-blur pt-safe">
     <div class="flex h-14 items-center gap-1 px-2">
-      <div class="flex ${status ? 'w-44' : 'w-11'} justify-start">${backButton}</div>
-      <h1 class="min-w-0 flex-1 text-center text-[15px] font-bold text-text">
-        <span class="inline-flex max-w-full items-center justify-center gap-1.5">
+      <div class="flex w-11 shrink-0 justify-start">${backButton}</div>
+      <h1 class="min-w-0 flex-1 ${back ? 'text-left' : 'text-center'} text-[15px] font-bold text-text">
+        <span class="inline-flex max-w-full items-center ${back ? 'justify-start' : 'justify-center'} gap-1.5">
           ${titleIcon ? `<span class="shrink-0 text-accent">${titleIcon}</span>` : ''}
           <span class="truncate">${escapeHtml(title)}</span>
         </span>
       </h1>
-      <div class="flex ${status ? 'w-44' : 'min-w-11'} justify-end">${status}</div>
+      <div class="flex min-w-11 shrink-0 items-center justify-end gap-1.5 pr-1">${status}</div>
     </div>
   </header>
   <main class="no-scrollbar flex-1 overflow-y-auto">${content}</main>

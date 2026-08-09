@@ -33,6 +33,7 @@ test('customer shop renders its media, actions, QR, and back navigation', () => 
   expect(page).toContain('data-qr-open');
   expect(page).toContain('data-qr-save');
   expect(page).toContain('<strong>Private</strong> shop');
+  expect(page).toContain('/static/copy.js');
 });
 
 test('customer shop hides local-only back navigation for direct visitors', () => {
