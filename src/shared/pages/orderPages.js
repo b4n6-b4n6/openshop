@@ -90,6 +90,7 @@ export const orderPage = ({
   const scripts = [
     owner ? 'owner.js' : 'customer.js',
     ...(owner ? ownerScripts : []),
+    'copy.js',
     'qr.js',
     'order-status.js',
   ];

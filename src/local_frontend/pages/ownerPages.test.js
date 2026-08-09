@@ -58,6 +58,8 @@ test('shop screen renders owner actions and an interactive QR code', () => {
   expect(page).toContain('data-qr-save');
   expect(page).toContain('data-qr-modal');
   expect(page).toContain('data-qr-logo');
+  expect(page).toContain('/static/copy.js');
+  expect(page).toContain('class="flex w-11 shrink-0 justify-start"');
 });
 
 test('edit shop keeps details and photo upload contracts', () => {
@@ -73,6 +75,8 @@ test('edit shop keeps details and photo upload contracts', () => {
 
 test('product forms preserve backend field names', () => {
   const pages = [newProductPage(), viewProductPage(product)];
+
+  expect(pages[0]).toContain('flex-1 text-left');
 
   pages.forEach((page) => {
     expect(page).toContain('name="name"');
