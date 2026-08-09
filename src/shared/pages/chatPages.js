@@ -10,8 +10,12 @@ import {
   icon,
 } from './layout.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
-import formatDate from '../../utils/formatDate.js';
 import formatUserId from '../../utils/formatUserId.js';
+
+const formatTime = (value) => new Intl.DateTimeFormat('en', {
+  hour: '2-digit',
+  minute: '2-digit',
+}).format(new Date(value));
 
 const formatUserIdOrShopAddress = (v) => (
   v.endsWith('.onion')
@@ -44,17 +48,40 @@ const messageBubble = ({
   const payload = event.ext_message_payload;
   const own = payload.sender === me;
   const imageHref = `${imageBase}/${encodeURIComponent(event.id)}`;
-  const content = payload.image_content_exists
-    ? `<a href="${escapeAttribute(imageHref)}" class="mt-1.5 inline-flex items-center gap-1 text-[11px] underline ${own ? 'text-on-accent/70' : 'text-muted'}">
-        ${icon('download', 'size-3.5')}Open image
-      </a>`
-    : `<p class="whitespace-pre-wrap break-words text-[14px]">${escapeHtml(payload.text_content)}</p>`;
+  const imageSource = escapeAttribute(`${imageHref}?inline=1`);
+  const time = `<span title="${escapeAttribute(new Date(payload.created_at))}">${escapeHtml(formatTime(payload.created_at))}</span>`;
+
+  if (payload.image_content_exists) {
+    const image = own
+      ? `<button type="button" data-chat-image class="chat-image-loaded" aria-label="Open image viewer">
+          <img data-chat-image-content src="${imageSource}" alt="Image attachment">
+        </button>`
+      : `<button type="button" data-chat-image-load class="chat-image-placeholder" aria-label="Download and display image">
+          ${payload.image_blur_preview
+    ? `<img src="${escapeAttribute(payload.image_blur_preview)}" alt="" aria-hidden="true">`
+    : `<span class="text-faint">${icon('image', 'size-8')}</span>`}
+          <span class="chat-image-download">${icon('download', 'size-5')}</span>
+        </button>
+        <button type="button" data-chat-image class="chat-image-loaded" aria-label="Open image viewer" hidden>
+          <img data-chat-image-content data-src="${imageSource}" alt="Image attachment">
+        </button>`;
+
+    return `<div data-event-key="${escapeAttribute(eventKey(event))}" class="flex ${own ? 'justify-end' : 'justify-start'}">
+      <div class="chat-image-message">
+        ${image}
+        <span class="chat-image-meta">
+          ${time}
+          ${own ? receipt({ payload, owner }) : ''}
+        </span>
+      </div>
+    </div>`;
+  }
 
   return `<div data-event-key="${escapeAttribute(eventKey(event))}" class="flex ${own ? 'justify-end' : 'justify-start'}">
     <div class="max-w-[82%] rounded-2xl px-3 py-2 ${own ? 'bg-accent text-on-accent' : 'border border-border bg-surface text-text'}">
-      ${content}
+      <p class="whitespace-pre-wrap break-words text-[14px]">${escapeHtml(payload.text_content)}</p>
       <span class="mt-1 flex items-center justify-end gap-1 text-[10px] ${own ? 'text-on-accent/70' : 'text-faint'}">
-        <span title="${escapeAttribute(new Date(payload.created_at))}">${escapeHtml(formatDate(payload.created_at))}</span>
+        ${time}
         ${own ? receipt({ payload, owner }) : ''}
       </span>
     </div>
@@ -94,7 +121,7 @@ const orderEventBubble = ({ event, orderBase }) => {
         </div>
       </div>
       <div class="mt-2 flex items-end justify-between gap-3">
-        <span title="${escapeAttribute(event.ext_message_occured_at)}" class="py-1 text-[11px] text-faint">${escapeHtml(formatDate(event.ext_message_occured_at))}</span>
+        <span title="${escapeAttribute(event.ext_message_occured_at)}" class="py-1 text-[11px] text-faint">${escapeHtml(formatTime(event.ext_message_occured_at))}</span>
         <a href="${escapeAttribute(`${orderBase}/${encodeURIComponent(event.id)}`)}" target="_top" class="rounded-lg px-2.5 py-1 text-[11px] font-semibold text-text">View</a>
       </div>
     </div>
@@ -118,7 +145,7 @@ export const chatsPage = ({ chats, version, status = '' }) => document({
           <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted">${icon('message', 'size-5')}</div>
           <div class="min-w-0 flex-1">
             <p class="truncate font-mono text-[13px] text-text">${escapeHtml(formatUserIdOrShopAddress(chat.id))}</p>
-            <p title="${escapeAttribute(chat.last_message_at)}" class="text-[12px] text-faint">${escapeHtml(formatDate(chat.last_message_at))}</p>
+            <p title="${escapeAttribute(chat.last_message_at)}" class="text-[12px] text-faint">${escapeHtml(formatTime(chat.last_message_at))}</p>
           </div>
           <span data-unread-dot data-chat-id="${escapeAttribute(chat.id)}" class="${chat.unread ? 'block' : 'hidden'} size-2.5 shrink-0 rounded-full bg-accent" aria-label="Unread messages"></span>
           <span class="text-faint">${icon('chevronRight', 'size-4')}</span>

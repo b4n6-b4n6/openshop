@@ -4,11 +4,26 @@ import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import { chatVersion } from '../utils/viewVersions.js';
 
 export default async ({ backend, customer, thumbnailCache }) => {
-  const { pool, orders } = backend;
+  const { pool, messages, orders } = backend;
   const events = await getConvoAndOrders({ pool, customer });
   const version = chatVersion(events);
   const allExtMessages = await Promise.all(events.map(async (event) => {
     const payload = event.ext_message_payload;
+    if (payload.image_content_exists) {
+      const preview = await thumbnailCache.genThumb(
+        `message-preview:${event.id}`,
+        () => messages.getImageContent(event.id),
+        24,
+      );
+
+      return {
+        ...event,
+        ext_message_payload: {
+          ...payload,
+          image_blur_preview: bufferToImageDataURI(preview),
+        },
+      };
+    }
     if (!payload.product_photo_exists) return event;
 
     const photo = await thumbnailCache.genThumb(

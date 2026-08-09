@@ -1,7 +1,7 @@
 import {
   formatFiat,
+  productPhoto,
   richText,
-  thumb,
 } from '../../shared/pages/components.js';
 import {
   appFrame,
@@ -32,12 +32,10 @@ const productPage = ({
       titleIcon: icon('boxes', 'size-4'),
       back: '/browser/products',
       content: `<form id="purchase-form" data-purchase-form data-unit-price="${escapeAttribute(price)}" data-currency="${escapeAttribute(currency)}" action="${escapeAttribute(action)}" method="post" class="space-y-5 px-5 py-6">
-        <div class="flex items-center gap-3">
-          ${thumb(photo, 64)}
-          <div class="min-w-0">
-            <h2 class="text-lg font-bold text-text">${escapeHtml(name)}</h2>
-            <p class="text-[14px] text-muted">${escapeHtml(formatFiat(price, currency))}</p>
-          </div>
+        ${productPhoto(photo, name)}
+        <div>
+          <h2 class="text-lg font-bold text-text">${escapeHtml(name)}</h2>
+          <p class="mt-1 text-[14px] text-muted">${escapeHtml(formatFiat(price, currency))}</p>
         </div>
 
         ${description ? richText(description) : ''}

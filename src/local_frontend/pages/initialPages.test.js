@@ -24,6 +24,8 @@ test('browse page preserves and escapes its onion value', () => {
   expect(page).toContain('&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;');
   expect(page).not.toContain('<script>alert(1)</script>');
   expect(page).toContain('data-scan-qr');
+  expect(page).toContain('/static/jsqr.js');
+  expect(page.indexOf('/static/jsqr.js')).toBeLessThan(page.indexOf('/static/browse.js'));
   expect(page).toContain('browse-loading h-full flex-col items-center justify-center gap-6');
 });
 

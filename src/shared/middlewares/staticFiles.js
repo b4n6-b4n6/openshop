@@ -3,6 +3,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const PUBLIC_PATH = fileURLToPath(new URL('../public/', import.meta.url));
+const STATIC_ALIASES = new Map([
+  [
+    'jsqr.js',
+    fileURLToPath(new URL('../../../node_modules/jsqr/dist/jsQR.js', import.meta.url)),
+  ],
+]);
 const TYPES = {
   '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -18,8 +24,9 @@ export default () => async (ctx, next) => {
   }
 
   const requested = decodeURIComponent(ctx.path.slice('/static/'.length));
-  const resolved = path.resolve(PUBLIC_PATH, requested);
-  if (!resolved.startsWith(PUBLIC_PATH)) {
+  const aliased = STATIC_ALIASES.get(requested);
+  const resolved = aliased ?? path.resolve(PUBLIC_PATH, requested);
+  if (!aliased && !resolved.startsWith(PUBLIC_PATH)) {
     ctx.throw(404);
   }
 

@@ -8,7 +8,7 @@ import {
 
 const browserInputPage = ({ defaultOnionHostname }) => document({
   title: 'Browse Shop',
-  scripts: ['browse.js'],
+  scripts: ['jsqr.js', 'browse.js'],
   body: `<form action="/browser-input" method="post" class="contents" data-browse-form>
     ${appFrame({
     title: 'Browse Shop',
