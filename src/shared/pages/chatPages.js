@@ -11,6 +11,13 @@ import {
 } from './layout.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import formatDate from '../../utils/formatDate.js';
+import formatUserId from '../../utils/formatUserId.js';
+
+const formatUserIdOrShopAddress = (v) => (
+  v.endsWith('.onion')
+    ? truncateMiddle(v)
+    : formatUserId(v)
+);
 
 const eventKey = ({ id, ext_message_type, ext_message_occured_at }) => (
   ext_message_type === 'CONVO'
@@ -110,7 +117,7 @@ export const chatsPage = ({ chats, version, status = '' }) => document({
         <article class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4">
           <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted">${icon('message', 'size-5')}</div>
           <div class="min-w-0 flex-1">
-            <p class="truncate font-mono text-[13px] text-text">${escapeHtml(truncateMiddle(chat.id, 10, 6))}</p>
+            <p class="truncate font-mono text-[13px] text-text">${escapeHtml(formatUserIdOrShopAddress(chat.id))}</p>
             <p title="${escapeAttribute(chat.last_message_at)}" class="text-[12px] text-faint">${escapeHtml(formatDate(chat.last_message_at))}</p>
           </div>
           <span data-unread-dot data-chat-id="${escapeAttribute(chat.id)}" class="${chat.unread ? 'block' : 'hidden'} size-2.5 shrink-0 rounded-full bg-accent" aria-label="Unread messages"></span>
@@ -140,7 +147,7 @@ export const chatPage = ({
   scripts: ['sound.js', 'chat.js', ...(owner ? ['owner-notifications.js'] : [])],
   body: `<form method="post" action="${escapeAttribute(action)}" enctype="multipart/form-data" class="contents" data-chat-form>
     ${appFrame({
-    title: truncateMiddle(title, 10, 6),
+    title: formatUserIdOrShopAddress(title),
     titleIcon: icon('message', 'size-4'),
     back,
     status,
