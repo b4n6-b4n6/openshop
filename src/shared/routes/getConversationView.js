@@ -3,6 +3,8 @@ import getConvoAndOrders from '../../backend/utils/getConvoAndOrders.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import { chatVersion } from '../utils/viewVersions.js';
 
+const CONVO_IMAGE_PREVIEW_SIZE = 24;
+
 export default async ({ backend, customer, thumbnailCache }) => {
   const { pool, messages, orders } = backend;
   const events = await getConvoAndOrders({ pool, customer });
@@ -13,7 +15,7 @@ export default async ({ backend, customer, thumbnailCache }) => {
       const preview = await thumbnailCache.genThumb(
         `message-preview:${event.id}`,
         () => messages.getImageContent(event.id),
-        24,
+        CONVO_IMAGE_PREVIEW_SIZE,
       );
 
       return {
