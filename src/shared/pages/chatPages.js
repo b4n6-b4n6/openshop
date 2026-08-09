@@ -15,6 +15,7 @@ import formatUserId from '../../utils/formatUserId.js';
 const formatTime = (value) => new Intl.DateTimeFormat('en', {
   hour: '2-digit',
   minute: '2-digit',
+  hour12: false,
 }).format(new Date(value));
 
 const formatUserIdOrShopAddress = (v) => (
@@ -69,7 +70,7 @@ const messageBubble = ({
     return `<div data-event-key="${escapeAttribute(eventKey(event))}" class="flex ${own ? 'justify-end' : 'justify-start'}">
       <div class="chat-image-message">
         ${image}
-        <span class="chat-image-meta">
+        <span class="chat-image-meta" title="${escapeAttribute(new Date(payload.created_at))}">
           ${time}
           ${own ? receipt({ payload, owner }) : ''}
         </span>
