@@ -90,7 +90,7 @@ const orderEventBubble = ({ event, orderBase }) => {
         ${thumb(payload.product_photo, 40)}
         <div class="min-w-0 flex-1">
           <p class="truncate text-[14px] font-semibold">${escapeHtml(payload.product_name)}</p>
-          <p class="text-[12px] text-muted">${Number(payload.purchase_quantity)} × · ${escapeHtml(formatFiat(payload.purchase_price, payload.purchase_currency))}</p>
+          <p class="text-[12px] text-muted">${Number(payload.purchase_quantity)} × ${escapeHtml(formatFiat(payload.purchase_price, payload.purchase_currency))}</p>
         </div>
       </div>
       <div class="mt-2 flex items-end justify-between gap-3">

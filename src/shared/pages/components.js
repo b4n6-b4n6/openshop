@@ -218,7 +218,7 @@ export const orderCard = ({ order, href }) => {
       ${thumb(order.product_photo)}
       <div class="min-w-0 flex-1">
         <p class="truncate text-[15px] font-semibold text-text">${escapeHtml(order.product_name)}</p>
-        <p class="text-[13px] text-muted">${Number(order.purchase_quantity)} × · ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
+        <p class="text-[13px] text-muted">${Number(order.purchase_quantity)} × ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
       </div>
       ${orderStatusBadge(order)}
     </div>
