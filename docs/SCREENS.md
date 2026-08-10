@@ -114,7 +114,7 @@ Pressing "VIEW MY PRODUCTS" would yield a screen where is displayed
 
 ## Shop customer screens
 
-**VIEW SHOP SCREEN✅**  
+**VIEW SHOP SCREEN✅🌟**  
 Pressing "ENTER" would potentially yield (after loading) a successfully loaded screen where is displayed
   * shop onion address (text)
   * shop profile photo (image)
@@ -127,7 +127,7 @@ Pressing "ENTER" would potentially yield (after loading) a successfully loaded s
   * "ORDERS" (button)
   * "BACK" (button)
 
-**VIEW PRODUCTS SCREEN✅**  
+**VIEW PRODUCTS SCREEN✅🌟**  
 Pressing "PRODUCTS" would yield a screen where is displayed
   * products (list) where each item is displayed
     * product name (text)
@@ -141,7 +141,7 @@ Pressing "PRODUCTS" would yield a screen where is displayed
   * 
   * "BACK" (button)
 
-**PURCHASE PRODUCT SCREEN✅**  
+**PURCHASE PRODUCT SCREEN✅🌟**  
 Pressing "PURCHASE" would yield a screen where is displayed
   * product name (text)
   * product photo (image)
@@ -158,7 +158,7 @@ Pressing "PURCHASE" would yield a screen where is displayed
 
 ## Shared orders screens
 
-**VIEW ORDER SCREEN✅**  
+**VIEW ORDER SCREEN✅🌟**  
 Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
   * product name (text)
   * product photo (image)
@@ -186,7 +186,7 @@ Pressing "PURCHASE" or "VIEW" would yield a screen where is displayed
   * 
   * "BACK" (button)
 
-**VIEW ORDERS SCREEN✅**  
+**VIEW ORDERS SCREEN✅🌟**  
 Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
   * orders (list) where each item is displayed
     * product name (text)
@@ -202,7 +202,7 @@ Pressing "ORDERS" or "VIEW MY ORDERS" would yield a screen where is displayed
 
 ## Shared chat screens
 
-**CHAT SCREEN✅**
+**CHAT SCREEN✅🌟**
   * one of
     * shop onion address (text)
     * customer uuid (text)

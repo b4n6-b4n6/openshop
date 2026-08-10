@@ -18,6 +18,7 @@
 <code style='color: cyan;'>[Core]</code> Notifications
   * Chat messages implementation
     * shop owner polls his backend and generates notifications when it finds unread messages
+    * shop owner polls his backend and generates notifications when it finds new orders (save previous state, diff with current state)
     * customer polls his last visited onion and generates notifications when it finds unread messages
 
 <code style='color: red;'>[Core]</code> No pagination
@@ -26,24 +27,24 @@
 
 <br><br><br>
 
-<code style='color: cyan;'>[UI_Behaviour]</code> QR Code enlargement implementation
+<code style='color: cyan;'>[UI_Behaviour]</code> QR Code enlargement implementation ✅
   * tapping the QR code icon should display (fullscreen) the QR and tapping one more time will close it
   * implment in 2 locations
     * shop page - for onion address
     * order page - for xmr invoice
 
-<code style='color: cyan;'>[UI_Behaviour]</code> Chat image message implementation
+<code style='color: cyan;'>[UI_Behaviour]</code> Chat image message implementation ✅
   * Do not display the image nor a thumbnail. Only offer to download it.
 
-<code style='color: cyan;'>[UI_Behaviour]</code> Rich text input implemetation (for product & shop description)
+<code style='color: cyan;'>[UI_Behaviour]</code> Rich text input implemetation (for product & shop description) ✅
   * it's a textarea
   * when on view page - parse and display the bbcode (rich text)
   * when on edit page - do not parse bbcode, allow pasting of image into textarea as data uri [img]data:image/...[/img]
 
-<code style='color: cyan;'>[UI_Behaviour]</code> UX loading indicators
+<code style='color: cyan;'>[UI_Behaviour]</code> UX loading indicators ✅
   * Browser input screen form
 
-<code style='color: cyan;'>[UI_Behaviour]</code> 2 indicators shown on owner screens
+<code style='color: cyan;'>[UI_Behaviour]</code> 2 indicators shown on owner screens ✅
   * onion/internet connectivity indicator (display online or offline)
   * xmr wallet syncronisation indicator (display syncing or synced)
 
