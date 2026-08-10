@@ -1,5 +1,6 @@
 /* global DOMParser, document, window */
 (() => {
+  const UPLOAD_FILE_MAX_SIZE = 10 * 1024 * 1024;
   const FORM_SUBMIT_TIMEOUT = 30_000;
 
   const form = document.querySelector('[data-chat-form]');
@@ -56,7 +57,7 @@
       clearAttachment();
       return;
     }
-    if (file.size > 2 * 1024 * 1024) {
+    if (file.size > UPLOAD_FILE_MAX_SIZE) {
       clearAttachment();
       showError('The selected image is larger than 2 MB.');
       return;

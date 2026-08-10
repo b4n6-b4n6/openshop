@@ -3,6 +3,10 @@ import { PassThrough } from 'node:stream';
 import consumers from 'node:stream/consumers';
 import compose from 'koa-compose';
 import { koaBody } from 'koa-body';
+import {
+  UPLOAD_FILE_MAX_SIZE,
+  UPLOAD_FORM_MAX_SIZE,
+} from '../../const.js';
 
 export default () => compose([
   koaBody({
@@ -16,11 +20,14 @@ export default () => compose([
 
         return stream;
       },
-      maxFileSize: 20 * 1024 * 1024,
+      maxFileSize: UPLOAD_FILE_MAX_SIZE,
       allowEmptyFiles: true,
       minFileSize: 0,
     },
     multipart: true,
+    formLimit: UPLOAD_FORM_MAX_SIZE,
+    textLimit: 0,
+    jsonLimit: 0,
   }),
   async (ctx, next) => {
     const { files } = ctx.request;
