@@ -1,8 +1,5 @@
 /* global DOMParser, document, window */
 (() => {
-  const REQUEST_TIMEOUT = 15_000;
-  const POLL_INTERVAL = 3_000;
-
   const thread = document.querySelector('[data-chat]');
   if (!thread) return;
 
@@ -163,45 +160,7 @@
   });
 
   async function poll() {
-    window.clearTimeout(pollTimer);
-    try {
-      const response = await fetch(window.location.href, {
-        cache: 'no-store',
-        headers: {
-          Accept: 'text/html',
-          'If-None-Match': `"${thread.dataset.version}"`,
-        },
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT),
-      });
-      if (response.status === 304) {
-        clearError('poll');
-        if (forceBottom) scrollToBottom(true);
-        forceBottom = false;
-        return;
-      }
-      if (!response.ok) throw new Error(`Refresh returned ${response.status}`);
-
-      const parsed = new DOMParser().parseFromString(await response.text(), 'text/html');
-      const nextThread = parsed.querySelector('[data-chat]');
-      if (!nextThread) throw new Error('Refresh response did not contain messages');
-
-      clearError('poll');
-      if (nextThread.dataset.version !== thread.dataset.version) {
-        const stickForIncoming = patchEvents(nextThread);
-        thread.dataset.version = nextThread.dataset.version;
-        thread.dataset.lastIncoming = nextThread.dataset.lastIncoming;
-        await notify(nextThread.dataset.lastIncoming ?? '');
-        if (forceBottom || stickForIncoming) scrollToBottom(true);
-      } else if (forceBottom) {
-        scrollToBottom(true);
-      }
-      forceBottom = false;
-    } catch (error) {
-      console.error('Could not refresh chat messages', error);
-      showError('poll', 'Messages could not refresh. OpenShop will keep trying.');
-    } finally {
-      pollTimer = window.setTimeout(poll, POLL_INTERVAL);
-    }
+    window.location.reload();
   }
 
   window.addEventListener('message', (event) => {
@@ -215,5 +174,4 @@
   });
 
   scrollToBottom();
-  pollTimer = window.setTimeout(poll, POLL_INTERVAL);
 })();

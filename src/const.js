@@ -19,6 +19,7 @@ export const FETCH_FIAT_PRICE_REMEMBER_FOR = 5 * 60 * 1000;
 export const ORDERS_PAGE_REFRESH = 12;
 export const CONVOS_PAGE_REFRESH = 12;
 export const ORDER_PAGE_REFRESH = 12;
+export const CONVO_PAGE_REFRESH = 12;
 
 export const MY_SHOP_ONION_LAUNCH_IPC = '.ipc/my_shop_onion_launch';
 export const MY_SHOP_ONION_PROGRESS_IPC = '.ipc/my_shop_onion_progress';
@@ -30,8 +31,8 @@ export const CURRENCIES = [
   'eur', 'usd', 'aud', 'nzd', 'gbp', 'cny', 'jpy', 'rub',
 ];
 
-export const UPLOAD_FILE_MAX_SIZE = 10 * 1000;
-export const UPLOAD_FORM_MAX_SIZE = 8 * 1000;
+export const UPLOAD_FILE_MAX_SIZE = 10 * 1024 * 1024;
+export const UPLOAD_FORM_MAX_SIZE = 8 * 1024 * 1024;
 
 export const MY_SHOP_PROFILE_PHOTO_SIZE = 72;
 export const MY_SHOP_BANNER_PHOTO_SIZE = 480;

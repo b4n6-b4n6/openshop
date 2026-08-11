@@ -277,6 +277,9 @@ button:disabled,
   scrollbar-width: none;
   top: 0;
   -webkit-overflow-scrolling: touch;
+  flex-direction: column-reverse;
+
+  /* TODO why is there no flex-col-reverse class? this should be implemented through that */
 }
 
 .thread-body::-webkit-scrollbar {
@@ -331,13 +334,16 @@ button:disabled,
   border-radius: 0.875rem;
   overflow: hidden;
   position: relative;
-  width: min(72vw, 280px);
+  width: 280px;
+  height: 210px;
+  /* TODO define 280px and 210px as a constant */
 }
 
 .chat-image-placeholder,
 .chat-image-loaded {
   align-items: center;
   aspect-ratio: 4 / 3;
+  /* TODO define 4 / 3 as a constant */
   background: var(--color-surface-2);
   border: 0;
   display: flex;

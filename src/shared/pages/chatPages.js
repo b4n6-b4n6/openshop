@@ -176,7 +176,7 @@ export const chatPage = ({
   status = '',
 }) => document({
   title,
-  scripts: ['sound.js', 'chat.js', ...(owner ? ['owner-notifications.js'] : [])],
+  scripts: ['sound.js', 'chat.js'],
   body: `<form method="post" action="${escapeAttribute(action)}" enctype="multipart/form-data" class="contents" data-chat-form>
     ${appFrame({
     title: formatUserIdOrShopAddress(title),
@@ -211,6 +211,7 @@ export const chatThreadPage = ({
   imageBase,
   orderBase,
   version,
+  refresh,
   owner = false,
 }) => {
   const lastIncoming = allExtMessages.filter((event) => (
@@ -221,9 +222,9 @@ export const chatThreadPage = ({
   return document({
     title: 'Messages',
     scripts: ['messages.js'],
-    body: `<div class="thread-body flex flex-col gap-2.5 px-4 py-5" data-chat="${escapeAttribute(chatId)}" data-version="${escapeAttribute(version)}" data-last-incoming="${escapeAttribute(lastIncoming)}">
+    body: `<div class="thread-body flex gap-2.5 px-4 py-5" data-chat="${escapeAttribute(chatId)}" data-version="${escapeAttribute(version)}" data-last-incoming="${escapeAttribute(lastIncoming)}">
       ${allExtMessages.length
-    ? allExtMessages.map((event) => (
+    ? allExtMessages.toReversed().map((event) => (
       event.ext_message_type === 'CONVO'
         ? messageBubble({
           event, me, owner, imageBase,
@@ -232,5 +233,6 @@ export const chatThreadPage = ({
     )).join('')
     : '<p data-thread-empty class="my-auto text-center text-[13px] text-faint">No messages yet. Say hello.</p>'}
     </div>`,
+    refresh,
   });
 };

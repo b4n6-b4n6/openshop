@@ -1,3 +1,4 @@
+import { ORDERS_PAGE_REFRESH } from '../../const.js';
 import { chatThreadPage } from '../../shared/pages/chatPages.js';
 import getConversationView from '../../shared/routes/getConversationView.js';
 
@@ -33,5 +34,6 @@ export default async (ctx) => {
     orderBase: '/shop/orders',
     version,
     owner: true,
+    refresh: ORDERS_PAGE_REFRESH,
   });
 };

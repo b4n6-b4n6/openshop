@@ -1,3 +1,4 @@
+import { CONVO_PAGE_REFRESH } from '../../const.js';
 import { chatThreadPage } from '../../shared/pages/chatPages.js';
 import getConversationView from '../../shared/routes/getConversationView.js';
 
@@ -31,5 +32,6 @@ export default async (ctx) => {
     imageBase: '/browser/convo/images',
     orderBase: '/browser/orders',
     version,
+    refresh: CONVO_PAGE_REFRESH,
   });
 };
