@@ -197,6 +197,6 @@ export const orderPage = ({
         </div>`
       ),
     }),
-    refresh,
+    refresh: !order.deposit_confirmed_at ? refresh : null,
   });
 };
