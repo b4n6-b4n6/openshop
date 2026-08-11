@@ -278,8 +278,6 @@ button:disabled,
   top: 0;
   -webkit-overflow-scrolling: touch;
   flex-direction: column-reverse;
-
-  /* TODO why is there no flex-col-reverse class? this should be implemented through that */
 }
 
 .thread-body::-webkit-scrollbar {
@@ -423,6 +421,8 @@ button:disabled,
   max-height: 92vh;
   max-width: 94vw;
   object-fit: contain;
+  background: var(--color-surface-2);
+  border-radius: 0.875rem;
 }
 
 .image-viewer button {

@@ -62,7 +62,7 @@ const messageBubble = ({
           ${payload.image_blur_preview
     ? `<img src="${escapeAttribute(payload.image_blur_preview)}" alt="" aria-hidden="true">`
     : `<span class="text-faint">${icon('image', 'size-8')}</span>`}
-          <span class="chat-image-download">${icon('download', 'size-5')}</span>
+          <span class="chat-image-download">${icon('image', 'size-5')}</span>
         </button>
         <button type="button" data-chat-image class="chat-image-loaded" aria-label="Open image viewer" hidden>
           <img data-chat-image-content data-src="${imageSource}" alt="Image attachment">
@@ -171,7 +171,6 @@ export const chatPage = ({
   back,
   action,
   thread,
-  owner = false,
   error = '',
   status = '',
 }) => document({

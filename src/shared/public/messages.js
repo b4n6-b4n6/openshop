@@ -1,13 +1,10 @@
-/* global DOMParser, document, window */
+/* global document, window */
 (() => {
   const thread = document.querySelector('[data-chat]');
   if (!thread) return;
 
   const key = `openshop-last-message:${thread.dataset.chat ?? ''}`;
   let knownIncoming = sessionStorage.getItem(key);
-  let forceBottom = false;
-  let pollTimer;
-  const loadedImages = new Set();
 
   if (knownIncoming === null) {
     knownIncoming = thread.dataset.lastIncoming ?? '';
@@ -26,126 +23,21 @@
     notice.textContent = message;
   }
 
-  function clearError(kind) {
-    thread.querySelector(`[data-${kind}-error]`)?.remove();
-  }
-
-  function nearBottom() {
-    return thread.scrollHeight - thread.scrollTop - thread.clientHeight < 96;
-  }
-
-  function scrollToBottom(smooth = false) {
-    thread.scrollTo({
-      top: thread.scrollHeight,
-      behavior: smooth ? 'smooth' : 'auto',
-    });
-  }
-
-  async function notify(incoming) {
-    if (!incoming || incoming === knownIncoming) return;
-    knownIncoming = incoming;
-    sessionStorage.setItem(key, incoming);
-    try {
-      if (typeof window.parent.handleOpenShopIncoming === 'function') {
-        await window.parent.handleOpenShopIncoming(incoming);
-      } else if (typeof window.parent.playMessageTing === 'function') {
-        await window.parent.playMessageTing();
-      } else {
-        throw new Error('The notification sound player is unavailable');
-      }
-      clearError('sound');
-    } catch (error) {
-      console.error('Could not play the new-message sound', error);
-      showError('sound', 'A new message arrived, but sound is blocked. Tap the message box to enable it.');
-    }
-  }
-
-  function showLoadedImage(eventNode) {
-    const placeholder = eventNode.querySelector('[data-chat-image-load]');
-    const viewerButton = eventNode.querySelector('[data-chat-image]');
-    const image = eventNode.querySelector('[data-chat-image-content]');
-    const source = image?.dataset.src;
-    if (!placeholder || !viewerButton || !image || !source) return;
-
-    image.src = source;
-    placeholder.hidden = true;
-    viewerButton.hidden = false;
-  }
-
-  function patchEvents(nextThread) {
-    const shouldStick = nearBottom();
-    const current = new Map(Array.from(
-      thread.querySelectorAll(':scope > [data-event-key]'),
-      (node) => [node.dataset.eventKey, node],
-    ));
-    const nextEvents = Array.from(nextThread.querySelectorAll(':scope > [data-event-key]'));
-    const nextKeys = new Set(nextEvents.map((node) => node.dataset.eventKey));
-    let additions = 0;
-
-    nextEvents.forEach((nextEvent, index) => {
-      if (loadedImages.has(nextEvent.dataset.eventKey)) {
-        showLoadedImage(nextEvent);
-      }
-      const existing = current.get(nextEvent.dataset.eventKey);
-      if (existing) {
-        if (existing.outerHTML !== nextEvent.outerHTML) {
-          existing.replaceWith(nextEvent.cloneNode(true));
-        }
-        return;
-      }
-
-      additions += 1;
-      const eventNodes = thread.querySelectorAll(':scope > [data-event-key]');
-      thread.insertBefore(nextEvent.cloneNode(true), eventNodes[index] ?? null);
-    });
-
-    current.forEach((node, eventKeyValue) => {
-      if (!nextKeys.has(eventKeyValue)) node.remove();
-    });
-
-    if (nextEvents.length) {
-      thread.querySelector('[data-thread-empty]')?.remove();
-    } else if (!thread.querySelector('[data-thread-empty]')) {
-      const empty = nextThread.querySelector('[data-thread-empty]');
-      if (empty) thread.append(empty.cloneNode(true));
-    }
-
-    return additions > 0 && shouldStick;
-  }
-
   thread.addEventListener('click', (event) => {
     const loadButton = event.target.closest('[data-chat-image-load]');
     if (loadButton) {
       const eventNode = loadButton.closest('[data-event-key]');
-      const viewerButton = eventNode?.querySelector('[data-chat-image]');
       const image = eventNode?.querySelector('[data-chat-image-content]');
       const source = image?.dataset.src;
-      if (!eventNode || !viewerButton || !image || !source) {
+      if (!eventNode || !image || !source) {
         showError('image', 'This image cannot be downloaded.');
         return;
       }
 
-      loadButton.disabled = true;
-      loadButton.classList.add('chat-image-loading');
-      image.onload = () => {
-        image.onload = null;
-        image.onerror = null;
-        loadedImages.add(eventNode.dataset.eventKey);
-        loadButton.hidden = true;
-        viewerButton.hidden = false;
-        loadButton.disabled = false;
-        loadButton.classList.remove('chat-image-loading');
-        clearError('image');
-      };
-      image.onerror = () => {
-        image.onload = null;
-        image.onerror = null;
-        image.removeAttribute('src');
-        loadButton.disabled = false;
-        loadButton.classList.remove('chat-image-loading');
-        showError('image', 'The image could not be downloaded. Try again.');
-      };
-      image.src = source;
+      window.parent.postMessage({
+        type: 'openshop:view-image',
+        source,
+      }, window.location.origin);
       return;
     }
 
@@ -163,15 +55,7 @@
     window.location.reload();
   }
 
-  window.addEventListener('message', (event) => {
-    if (event.origin !== window.location.origin
-      || event.data?.type !== 'openshop:refresh-messages') return;
-    forceBottom = Boolean(event.data.stickToBottom);
-    poll();
-  });
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) poll();
   });
-
-  scrollToBottom();
 })();

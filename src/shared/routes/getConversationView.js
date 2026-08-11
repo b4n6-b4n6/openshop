@@ -3,7 +3,7 @@ import getConvoAndOrders from '../../backend/utils/getConvoAndOrders.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import { chatVersion } from '../utils/viewVersions.js';
 
-const CONVO_IMAGE_PREVIEW_SIZE = 24;
+const CONVO_IMAGE_PREVIEW_SIZE = 16;
 
 export default async ({ backend, customer, thumbnailCache }) => {
   const { pool, messages, orders } = backend;
