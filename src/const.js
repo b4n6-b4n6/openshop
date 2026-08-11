@@ -17,9 +17,10 @@ export const FETCH_FIAT_PRICE_TIMEOUT = 20 * 1000;
 export const FETCH_FIAT_PRICE_REMEMBER_FOR = 5 * 60 * 1000;
 
 export const ORDERS_PAGE_REFRESH = 12;
-export const CONVOS_PAGE_REFRESH = 12;
+export const CONVOS_PAGE_REFRESH = 6;
 export const ORDER_PAGE_REFRESH = 12;
 export const CONVO_PAGE_REFRESH = 6;
+export const BROWSER_ERROR_REFRESH = 16;
 
 export const MY_SHOP_ONION_LAUNCH_IPC = '.ipc/my_shop_onion_launch';
 export const MY_SHOP_ONION_PROGRESS_IPC = '.ipc/my_shop_onion_progress';

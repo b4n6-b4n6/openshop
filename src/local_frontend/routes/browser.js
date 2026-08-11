@@ -107,7 +107,10 @@ export default (ctx) => new Promise((resolve) => {
     console.error(err);
 
     ctx.status = 502;
-    ctx.body = browserErrorPage({ message: err.message });
+    ctx.body = browserErrorPage({
+      message: err.message,
+      autoRetry: ctx.headers['sec-fetch-dest'] === 'iframe',
+    });
 
     resolve();
   });
