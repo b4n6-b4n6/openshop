@@ -12,7 +12,7 @@ export const chatVersion = (events) => hash(events.map((event) => ({
   readAt: event.ext_message_payload.read_at,
 })));
 
-export const chatListVersion = (chats) => hash(chats.map((chat) => ({
+export const chatsVersion = (chats) => hash(chats.map((chat) => ({
   id: chat.id,
   lastMessageAt: chat.last_message_at,
   lastMessageSender: chat.last_message_sender,

@@ -213,15 +213,16 @@ export const chatThreadPage = ({
   refresh,
   owner = false,
 }) => {
-  const lastIncoming = allExtMessages.filter((event) => (
-    event.ext_message_type === 'CONVO'
-      && event.ext_message_payload.sender !== me
-  )).at(-1)?.id ?? '';
+  const lastExtMessageVersion = (`${
+    allExtMessages.at(-1)?.id ?? ''
+  }-${
+    allExtMessages.at(-1)?.ext_message_occured_at.getTime() ?? ''
+  }`);
 
   return document({
     title: 'Messages',
     scripts: ['messages.js'],
-    body: `<div class="thread-body flex gap-2.5 px-4 py-5" data-chat="${escapeAttribute(chatId)}" data-version="${escapeAttribute(version)}" data-last-incoming="${escapeAttribute(lastIncoming)}">
+    body: `<div class="thread-body flex gap-2.5 px-4 py-5" data-chat="${escapeAttribute(chatId)}" data-version="${escapeAttribute(version)}" data-last-incoming="${escapeAttribute(lastExtMessageVersion)}">
       ${allExtMessages.length
     ? allExtMessages.toReversed().map((event) => (
       event.ext_message_type === 'CONVO'

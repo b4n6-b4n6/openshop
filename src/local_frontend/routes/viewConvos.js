@@ -1,12 +1,12 @@
 import { CACHE_CONTROL_DIRECTIVE } from '../../const.js';
-import { chatListVersion } from '../../shared/utils/viewVersions.js';
+import { chatsVersion } from '../../shared/utils/viewVersions.js';
 import viewConvosPage from '../pages/viewConvosPage.js';
 
 export default async (ctx) => {
   const { backend, onionSpinner } = ctx;
   const { onion } = onionSpinner;
   const allConvos = await backend.messages.getConvos(onion);
-  const version = chatListVersion(allConvos);
+  const version = chatsVersion(allConvos);
 
   ctx.set('ETag', `"${version}"`);
   if (ctx.get('if-none-match') === `"${version}"`) {

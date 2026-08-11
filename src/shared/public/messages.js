@@ -3,12 +3,11 @@
   const thread = document.querySelector('[data-chat]');
   if (!thread) return;
 
-  const key = `openshop-last-message:${thread.dataset.chat ?? ''}`;
-  let knownIncoming = sessionStorage.getItem(key);
-
-  if (knownIncoming === null) {
-    knownIncoming = thread.dataset.lastIncoming ?? '';
-    sessionStorage.setItem(key, knownIncoming);
+  function scrollToBottom(smooth = false) {
+    thread.scrollTo({
+      top: thread.scrollHeight,
+      behavior: smooth ? 'smooth' : 'auto',
+    });
   }
 
   function showError(kind, message) {
@@ -56,6 +55,16 @@
   }
 
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) poll();
+    if (!document.hidden) { poll(); }
   });
+
+  const key = `openshop-last-message:${thread.dataset.chat ?? ''}`;
+  const lastIncomingVer = sessionStorage.getItem(key);
+  const currentIncomingVer = thread.dataset.lastIncoming;
+
+  if (lastIncomingVer === null || lastIncomingVer !== currentIncomingVer) {
+    sessionStorage.setItem(key, currentIncomingVer);
+
+    scrollToBottom();
+  }
 })();
