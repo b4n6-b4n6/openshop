@@ -43,7 +43,6 @@ test('order detail keeps payment, QR, rich text, and live status contracts', () 
   expect(page).toContain('Incoming transaction detected');
   expect(page).toContain('abc123');
   expect(page).toContain('data-order-live');
-  expect(page).toContain('/static/order-status.js');
   expect(page).toContain('/static/copy.js');
 });
 
@@ -151,6 +150,5 @@ test('owner chat list retains unread state without meta refresh', () => {
 
   expect(page).toContain('href="/shop/convos/customer-1"');
   expect(page).toContain('aria-label="Unread messages"');
-  expect(page).toContain('/static/chat-list.js');
   expect(page).not.toContain('http-equiv="refresh"');
 });

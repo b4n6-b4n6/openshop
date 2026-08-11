@@ -130,9 +130,11 @@ const orderEventBubble = ({ event, orderBase }) => {
   </div>`;
 };
 
-export const chatsPage = ({ chats, version, status = '' }) => document({
+export const chatsPage = ({
+  status = '', chats, version, refresh,
+}) => document({
   title: 'Chats',
-  scripts: ['sound.js', 'chat-list.js'],
+  scripts: ['sound.js'],
   body: appFrame({
     title: 'Chats',
     titleIcon: icon('message', 'size-4'),
@@ -161,6 +163,7 @@ export const chatsPage = ({ chats, version, status = '' }) => document({
     })}
     </div>`,
   }),
+  refresh,
 });
 
 export const chatPage = ({

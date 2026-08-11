@@ -79,6 +79,7 @@ export const orderPage = ({
   depositAddress,
   qr,
   version,
+  refresh,
   owner = false,
   status = '',
 }) => {
@@ -96,7 +97,6 @@ export const orderPage = ({
     ...(owner ? ownerScripts : []),
     'copy.js',
     'qr.js',
-    'order-status.js',
   ];
 
   return document({
@@ -197,5 +197,6 @@ export const orderPage = ({
         </div>`
       ),
     }),
+    refresh,
   });
 };
