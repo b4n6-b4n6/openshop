@@ -131,7 +131,7 @@ const orderEventBubble = ({ event, orderBase }) => {
 };
 
 export const chatsPage = ({
-  status = '', chats, version, refresh,
+  status = '',
 }) => document({
   title: 'Chats',
   scripts: ['sound.js'],
@@ -141,7 +141,23 @@ export const chatsPage = ({
     back: '/shop',
     status,
     animate: false,
-    content: `<div data-chat-list data-version="${escapeAttribute(version)}">
+    content: (
+      `<iframe
+        data-chat-frame
+        title="Messages"
+        src="/shop/convos/thread"
+        class="live-frame h-full w-full border-0 bg-base"
+      ></iframe>`
+    ),
+  }),
+});
+
+export const chatsThreadPage = ({
+  chats, version, refresh,
+}) => document({
+  title: 'Chats',
+  scripts: ['sound.js'],
+  body: `<div data-chat-list data-version="${escapeAttribute(version)}">
       ${chats.length
     ? `<div class="flex flex-col gap-2.5 px-5 py-5">${chats.map((chat) => (
       `<a href="/shop/convos/${encodeURIComponent(chat.id)}" class="block text-left active:scale-[0.99]">
@@ -162,7 +178,6 @@ export const chatsPage = ({
       description: 'Conversations with customers appear here.',
     })}
     </div>`,
-  }),
   refresh,
 });
 
@@ -184,7 +199,7 @@ export const chatPage = ({
     status,
     animate: false,
     content: `${error ? `<div role="alert" class="mx-4 mt-4 rounded-xl border border-danger/35 bg-danger/10 p-3 text-[13px] text-danger">${escapeHtml(error)}</div>` : ''}
-      <iframe data-chat-frame title="Messages" src="${escapeAttribute(thread)}" class="chat-frame h-full w-full border-0 bg-base"></iframe>`,
+      <iframe data-chat-frame title="Messages" src="${escapeAttribute(thread)}" class="live-frame h-full w-full border-0 bg-base"></iframe>`,
     bottom: `<div data-chat-error role="alert" class="mb-2 hidden rounded-xl border border-danger/35 bg-danger/10 px-3 py-2 text-[12px] text-danger"></div>
       <div data-chat-attachment class="mb-2 hidden items-center gap-2 rounded-xl border border-border bg-surface-2 p-2">
         <img data-chat-attachment-preview alt="" class="size-10 shrink-0 rounded-lg object-cover">

@@ -24,6 +24,7 @@ import viewOrder from './viewOrder.js';
 import viewOrders from './viewOrders.js';
 
 import viewConvos from './viewConvos.js';
+import viewConvosThread from './viewConvosThread.js';
 import viewConvo from './viewConvo.js';
 import viewConvoThread from './viewConvoThread.js';
 import viewConvoPost from './viewConvoPost.js';
@@ -59,6 +60,7 @@ router
   .get('/shop/orders', viewOrders)
 
   .get('/shop/convos', viewConvos)
+  .get('/shop/convos/thread', viewConvosThread)
   .get('/shop/convos/:id/thread', viewConvoThread)
   .get('/shop/convos/:id', viewConvo)
   .post('/shop/convos/:id', viewConvoPost)
