@@ -1,8 +1,10 @@
 import QRCode from 'qrcode';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
+import createInvoiceUri from '../../utils/createInvoiceUri.js';
+import picoToXmr from '../../utils/picoToXmr.js';
 import { orderVersion } from '../../shared/utils/viewVersions.js';
 import viewOrderPage from '../pages/viewOrderPage.js';
-import { CACHE_CONTROL_DIRECTIVE, MY_SHOP_PRODUCT_THUMB_SIZE } from '../../const.js';
+import { MY_SHOP_PRODUCT_THUMB_SIZE, CACHE_CONTROL_DIRECTIVE } from '../../const.js';
 
 export default async (ctx) => {
   const { params, backend, thumbnailCache } = ctx;
@@ -23,9 +25,9 @@ export default async (ctx) => {
   }
   ctx.set('Cache-Control', CACHE_CONTROL_DIRECTIVE);
 
-  const amount = (Number(order.deposit_amount) / 1e12).toFixed(12);
+  const amount = picoToXmr(order.deposit_amount);
   const qr = await QRCode.toDataURL(
-    `monero:${depositAddress}?tx_amount=${amount}`,
+    createInvoiceUri({ depositAddress, amount }),
     {
       color: { dark: '#0f1115', light: '#ffffff' },
       errorCorrectionLevel: 'H',

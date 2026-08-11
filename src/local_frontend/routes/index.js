@@ -22,6 +22,7 @@ import viewProductPost from './viewProductPost.js';
 
 import viewOrder from './viewOrder.js';
 import viewOrders from './viewOrders.js';
+import viewOrdersThread from './viewOrdersThread.js';
 
 import viewConvos from './viewConvos.js';
 import viewConvosThread from './viewConvosThread.js';
@@ -56,6 +57,7 @@ router
   .get('/shop/products/:id', viewProduct)
   .post('/shop/products/:id', viewProductPost)
 
+  .get('/shop/orders/thread', viewOrdersThread)
   .get('/shop/orders/:id', viewOrder)
   .get('/shop/orders', viewOrders)
 
@@ -63,8 +65,8 @@ router
   .get('/shop/convos/thread', viewConvosThread)
   .get('/shop/convos/:id/thread', viewConvoThread)
   .get('/shop/convos/:id', viewConvo)
-  .post('/shop/convos/:id', viewConvoPost)
   .get('/shop/convos/images/:id', downloadImage)
+  .post('/shop/convos/:id', viewConvoPost)
 
   .get('/self-test', selfTest)
   .get('/sync-status', syncStatus);

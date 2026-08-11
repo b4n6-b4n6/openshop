@@ -8,6 +8,7 @@ import convoThread from './convoThread.js';
 import convoPost from './convoPost.js';
 import order from './order.js';
 import orders from './orders.js';
+import ordersThread from './ordersThread.js';
 import downloadImage from '../../shared/routes/downloadImage.js';
 
 const router = new Router();
@@ -17,6 +18,7 @@ router
   .get('/browser/products/:id', product)
   .post('/browser/products/:id', productPost)
   .get('/browser/orders', orders)
+  .get('/browser/orders/thread', ordersThread)
   .get('/browser/orders/:id', order)
   .get('/browser/convo', convo)
   .get('/browser/convo/thread', convoThread)

@@ -237,7 +237,14 @@ export const orderCard = ({ order, href }) => {
   </article>`;
 
   return href
-    ? `<a href="${escapeAttribute(href)}" class="block active:scale-[0.99]" aria-label="View order for ${escapeAttribute(order.product_name)}">${card}</a>`
+    ? (
+      `<a
+        target="_top"
+        href="${escapeAttribute(href)}"
+        class="block active:scale-[0.99]"
+        aria-label="View order for ${escapeAttribute(order.product_name)}"
+      >${card}</a>`
+    )
     : card;
 };
 

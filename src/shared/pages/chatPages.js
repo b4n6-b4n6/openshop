@@ -143,8 +143,7 @@ export const chatsPage = ({
     animate: false,
     content: (
       `<iframe
-        data-chat-frame
-        title="Messages"
+        title="Chats"
         src="/shop/convos/thread"
         class="live-frame h-full w-full border-0 bg-base"
       ></iframe>`
@@ -237,17 +236,24 @@ export const chatThreadPage = ({
   return document({
     title: 'Messages',
     scripts: ['messages.js'],
-    body: `<div class="thread-body flex gap-2.5 px-4 py-5" data-chat="${escapeAttribute(chatId)}" data-version="${escapeAttribute(version)}" data-last-incoming="${escapeAttribute(lastExtMessageVersion)}">
-      ${allExtMessages.length
-    ? allExtMessages.toReversed().map((event) => (
-      event.ext_message_type === 'CONVO'
-        ? messageBubble({
-          event, me, owner, imageBase,
-        })
-        : orderEventBubble({ event, orderBase })
-    )).join('')
-    : '<p data-thread-empty class="my-auto text-center text-[13px] text-faint">No messages yet. Say hello.</p>'}
-    </div>`,
+    body: (
+      `<div
+        class="thread-body flex gap-2.5 px-4 py-5"
+        data-chat="${escapeAttribute(chatId)}"
+        data-version="${escapeAttribute(version)}"
+        data-last-incoming="${escapeAttribute(lastExtMessageVersion)}"
+      >${(
+        allExtMessages.length
+          ? allExtMessages.toReversed().map((event) => (
+            event.ext_message_type === 'CONVO'
+              ? messageBubble({
+                event, me, owner, imageBase,
+              })
+              : orderEventBubble({ event, orderBase })
+          )).join('')
+          : '<p data-thread-empty class="my-auto text-center text-[13px] text-faint">No messages yet. Say hello.</p>'
+      )}</div>`
+    ),
     refresh,
   });
 };
