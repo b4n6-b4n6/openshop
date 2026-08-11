@@ -6,10 +6,8 @@
   * Improved `title` attribute behaviour
     * Add a script that would transform all HTML elements with title attribute into focusable and tappable tooltips
   * Improved UX
-    * for pages with image uploads - Add image upload indication
     * for all customer pages - Add message ting on order status changes
     * for all customer pages - Add message ting when chat unread status changes
-    * for all owner pages - Remove message ting
   * Refactor
     * remove product_description from Orders (including tests)
 

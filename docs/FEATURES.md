@@ -48,6 +48,12 @@
   * onion/internet connectivity indicator (display online or offline)
   * xmr wallet syncronisation indicator (display syncing or synced)
 
+<code style='color: cyan;'>[UI_Behaviour]</code> 4 pages with live updates
+  * orders list page (at all times)
+  * chats list page (at all times)
+  * order page (until order is confirmed)
+  * chat page (at all times)
+
 <code style='color: cyan;'>[UI_Behaviour]</code> Add note
   * State that this software is strictly prohibited from being used for illegal purposes.
 
