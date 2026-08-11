@@ -18,7 +18,7 @@ const editShopPage = ({
   banner_photo,
 }) => document({
   title: 'Edit Shop',
-  scripts: ['editor.js', 'owner.js', 'sound.js', 'owner-notifications.js'],
+  scripts: ['editor.js', 'owner.js', 'sound.js'],
   body: appFrame({
     title: 'Edit Shop',
     titleIcon: icon('store', 'size-4'),

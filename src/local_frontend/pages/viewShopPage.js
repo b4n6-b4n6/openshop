@@ -24,7 +24,7 @@ const viewShopPage = ({
   qr,
 }) => document({
   title: 'My Shop',
-  scripts: ['owner.js', 'copy.js', 'sound.js', 'owner-notifications.js', 'qr.js'],
+  scripts: ['owner.js', 'copy.js', 'sound.js', 'qr.js'],
   body: appFrame({
     title: 'My Shop',
     titleIcon: icon('store', 'size-4'),

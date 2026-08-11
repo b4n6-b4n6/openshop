@@ -17,7 +17,7 @@ import {
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import formatDate from '../../utils/formatDate.js';
 
-const ownerScripts = ['sound.js', 'owner-notifications.js'];
+const ownerScripts = ['sound.js'];
 
 export const ordersPage = ({ allOrders, owner = false, status = '' }) => {
   const root = owner ? '/shop/orders' : '/browser/orders';

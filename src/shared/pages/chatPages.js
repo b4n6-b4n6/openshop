@@ -132,7 +132,7 @@ const orderEventBubble = ({ event, orderBase }) => {
 
 export const chatsPage = ({ chats, version, status = '' }) => document({
   title: 'Chats',
-  scripts: ['sound.js', 'owner-notifications.js', 'chat-list.js'],
+  scripts: ['sound.js', 'chat-list.js'],
   body: appFrame({
     title: 'Chats',
     titleIcon: icon('message', 'size-4'),

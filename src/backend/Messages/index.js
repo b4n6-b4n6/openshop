@@ -88,33 +88,6 @@ class Messages {
     return rows[0]?.image_content;
   }
 
-  async getNotificationState(party) {
-    const { rows } = await this.pool.query(
-      `
-        SELECT
-          (
-            SELECT id
-            FROM messages
-            WHERE receiver = $1
-            ORDER BY created_at DESC, id DESC
-            LIMIT 1
-          ) AS latest_incoming_id,
-          ARRAY(
-            SELECT DISTINCT sender
-            FROM messages
-            WHERE receiver = $1 AND read_at IS NULL
-            ORDER BY sender
-          ) AS unread_chat_ids
-      `,
-      [party],
-    );
-
-    return {
-      latestIncomingId: rows[0].latest_incoming_id,
-      unreadChatIds: rows[0].unread_chat_ids,
-    };
-  }
-
   async markAllReceivedInConvo({ sender, receiver }) {
     await this.pool.query(
       `

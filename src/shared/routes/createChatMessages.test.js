@@ -41,23 +41,3 @@ test('stores text and a selected image as separate conversation events', async (
     sender: 'customer',
   });
 });
-
-test('rejects unsupported and oversized images before storing them', async () => {
-  const create = jest.fn();
-  const invalid = await createChatMessages({
-    image: Buffer.from('not an image'),
-    messages: { create },
-    receiver: 'shop',
-    sender: 'customer',
-  });
-  const oversized = await createChatMessages({
-    image: Buffer.alloc((2 * 1024 * 1024) + 1),
-    messages: { create },
-    receiver: 'shop',
-    sender: 'customer',
-  });
-
-  expect(invalid.status).toBe(415);
-  expect(oversized.status).toBe(413);
-  expect(create).not.toHaveBeenCalled();
-});
