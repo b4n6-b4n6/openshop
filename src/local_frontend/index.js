@@ -4,6 +4,7 @@ import routes from './routes/index.js';
 import adaptedBody from './middlewares/adaptedBody.js';
 import createBackendMw from '../shared/middlewares/backendMw.js';
 import createWalletSetupMw from './middlewares/walletSetupMw.js';
+import imageHashCacheMw from '../shared/middlewares/imageHashCacheMw.js';
 import thumbnailCacheMw from '../shared/middlewares/thumbnailCacheMw.js';
 import singularAccess from './middlewares/singularAccess.js';
 import exportBrowsedOnion from './middlewares/exportBrowsedOnion.js';
@@ -19,6 +20,7 @@ const app = new Koa();
 const server = app
   .use(adaptedBody())
   .use(backendMw)
+  .use(imageHashCacheMw())
   .use(thumbnailCacheMw())
   .use(onionSpinner())
   .use(walletSetupMw)

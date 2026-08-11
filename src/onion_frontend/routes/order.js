@@ -2,7 +2,7 @@ import QRCode from 'qrcode';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import { orderVersion } from '../../shared/utils/viewVersions.js';
 import orderPage from '../pages/orderPage.js';
-import { MY_SHOP_PRODUCT_THUMB_SIZE } from '../../const.js';
+import { MY_SHOP_PRODUCT_THUMB_SIZE, CACHE_CONTROL_DIRECTIVE } from '../../const.js';
 
 export default async (ctx) => {
   const {
@@ -20,12 +20,12 @@ export default async (ctx) => {
   if (!depositAddress) ctx.throw(503, 'Payment address unavailable');
 
   const version = orderVersion(order);
-  ctx.set('Cache-Control', 'no-store');
   ctx.set('ETag', `"${version}"`);
   if (ctx.get('if-none-match') === `"${version}"`) {
     ctx.status = 304;
     return;
   }
+  ctx.set('Cache-Control', CACHE_CONTROL_DIRECTIVE);
 
   const amount = (Number(order.deposit_amount) / 1e12).toFixed(12);
   const qr = await QRCode.toDataURL(

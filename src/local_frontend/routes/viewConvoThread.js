@@ -1,33 +1,38 @@
-import { CONVO_PAGE_REFRESH } from '../../const.js';
+import { CACHE_CONTROL_DIRECTIVE, CONVO_PAGE_REFRESH } from '../../const.js';
 import { chatThreadPage } from '../../shared/pages/chatPages.js';
 import getConversationView from '../../shared/routes/getConversationView.js';
+import getConvoAndOrders from '../../backend/utils/getConvoAndOrders.js';
+import { chatVersion } from '../../shared/utils/viewVersions.js';
 
 export default async (ctx) => {
   const {
     backend, params, thumbnailCache, onionSpinner,
   } = ctx;
   const { id } = params;
+  const { pool } = backend;
   const { onion } = onionSpinner;
 
-  await backend.messages.markAllReadInConvo({
-    sender: id,
-    receiver: onion,
-  });
-  const { allExtMessages, version } = await getConversationView({
-    backend,
-    customer: id,
-    thumbnailCache,
-  });
+  const allExtMessages = await getConvoAndOrders({ pool, customer: id });
+  const version = chatVersion(allExtMessages);
 
-  ctx.set('Cache-Control', 'no-store');
   ctx.set('ETag', `"${version}"`);
   if (ctx.get('if-none-match') === `"${version}"`) {
     ctx.status = 304;
     return;
   }
+  ctx.set('Cache-Control', CACHE_CONTROL_DIRECTIVE);
+
+  await backend.messages.markAllReadInConvo({
+    sender: id,
+    receiver: onion,
+  });
 
   ctx.body = chatThreadPage({
-    allExtMessages,
+    allExtMessages: await getConversationView({
+      backend,
+      allExtMessages,
+      thumbnailCache,
+    }),
     me: onion,
     chatId: id,
     imageBase: '/shop/convos/images',

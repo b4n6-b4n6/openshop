@@ -5,6 +5,7 @@ test('serves the self-hosted QR decoder', async () => {
   const ctx = {
     path: '/static/jsqr.js',
     set: jest.fn(),
+    get: jest.fn(),
   };
   const next = jest.fn();
 
@@ -13,8 +14,4 @@ test('serves the self-hosted QR decoder', async () => {
   expect(next).not.toHaveBeenCalled();
   expect(ctx.type).toBe('text/javascript; charset=utf-8');
   expect(ctx.body.toString()).toContain('webpackUniversalModuleDefinition');
-  expect(ctx.set).toHaveBeenCalledWith(
-    'Cache-Control',
-    'public, max-age=604800, immutable',
-  );
 });

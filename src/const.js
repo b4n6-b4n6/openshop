@@ -37,3 +37,5 @@ export const UPLOAD_FORM_MAX_SIZE = 8 * 1024 * 1024;
 export const MY_SHOP_PROFILE_PHOTO_SIZE = 72;
 export const MY_SHOP_BANNER_PHOTO_SIZE = 480;
 export const MY_SHOP_PRODUCT_THUMB_SIZE = 64;
+
+export const CACHE_CONTROL_DIRECTIVE = 'private';
