@@ -19,7 +19,9 @@ import formatDate from '../../utils/formatDate.js';
 
 const ownerScripts = ['sound.js'];
 
-export const ordersPage = ({ allOrders, owner = false, status = '' }) => {
+export const ordersPage = ({
+  allOrders, owner = false, status = '', refresh,
+}) => {
   const root = owner ? '/shop/orders' : '/browser/orders';
 
   return document({
@@ -33,10 +35,12 @@ export const ordersPage = ({ allOrders, owner = false, status = '' }) => {
       animate: false,
       content: allOrders.length
         ? `<div class="flex flex-col gap-2.5 px-5 py-5">
-          ${allOrders.map((order) => orderCard({
-    order,
-    href: `${root}/${encodeURIComponent(order.id)}`,
-  })).join('')}
+          ${(
+    allOrders.map((order) => orderCard({
+      order,
+      href: `${root}/${encodeURIComponent(order.id)}`,
+    })).join('')
+  )}
         </div>`
         : emptyState({
           emptyIcon: 'receipt',
@@ -46,6 +50,7 @@ export const ordersPage = ({ allOrders, owner = false, status = '' }) => {
             : 'Your purchases will appear here.',
         }),
     }),
+    refresh,
   });
 };
 
