@@ -48,6 +48,7 @@ button:disabled,
 [type="button"]:disabled,
 [type="submit"]:disabled,
 [type="reset"]:disabled,
+[type="file"]:disabled,
 :disabled {
   cursor: not-allowed;
 }
@@ -58,6 +59,11 @@ button:disabled,
   height: 30px;
   width: 88px;
 }
+
+.attachment-picker:has([type="file"].disabled) {
+  cursor: not-allowed;
+  opacity: 0.5;
+} 
 
 [data-rich-editor] > div:focus-within,
 [data-rich-editor].drag-over > div,
@@ -332,16 +338,14 @@ button:disabled,
   border-radius: 0.875rem;
   overflow: hidden;
   position: relative;
-  width: 280px;
-  height: 210px;
-  /* TODO define 280px and 210px as a constant */
+  width: calc(var(--image-thumb-width) * 1px);
+  height: calc(var(--image-thumb-height) * 1px);
 }
 
 .chat-image-placeholder,
 .chat-image-loaded {
   align-items: center;
-  aspect-ratio: 4 / 3;
-  /* TODO define 4 / 3 as a constant */
+  aspect-ratio: var(--image-thumb-width) / var(--image-thumb-height);
   background: var(--color-surface-2);
   border: 0;
   display: flex;

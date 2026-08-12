@@ -28,25 +28,26 @@
       const eventNode = loadButton.closest('[data-event-key]');
       const image = eventNode?.querySelector('[data-chat-image-content]');
       const source = image?.dataset.src;
-      if (!eventNode || !image || !source) {
-        showError('image', 'This image cannot be downloaded.');
+
+      if (source) {
+        window.parent.postMessage({
+          type: 'openshop:view-image',
+          source,
+        }, window.location.origin);
+
         return;
       }
-
-      window.parent.postMessage({
-        type: 'openshop:view-image',
-        source,
-      }, window.location.origin);
-      return;
     }
 
     const viewerButton = event.target.closest('[data-chat-image]');
-    const source = viewerButton?.querySelector('img')?.src;
-    if (source) {
-      window.parent.postMessage({
-        type: 'openshop:view-image',
-        source,
-      }, window.location.origin);
+    if (viewerButton) {
+      const source = viewerButton.querySelector('img')?.dataset.src;
+      if (source) {
+        window.parent.postMessage({
+          type: 'openshop:view-image',
+          source,
+        }, window.location.origin);
+      }
     }
   });
 

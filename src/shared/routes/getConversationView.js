@@ -1,7 +1,7 @@
 import { MY_SHOP_PRODUCT_THUMB_SIZE } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 
-const CONVO_IMAGE_PREVIEW_SIZE = 16;
+const CONVO_IMAGE_PREVIEW_BLUR_SIZE = 16;
 
 export default async ({
   backend, thumbnailCache, allExtMessages,
@@ -11,9 +11,9 @@ export default async ({
 
     if (payload.image_content_exists) {
       const preview = await thumbnailCache.genThumb(
-        `message-preview:${event.id}`,
+        `message-preview-blur:${event.id}`,
         () => backend.messages.getImageContent(event.id),
-        CONVO_IMAGE_PREVIEW_SIZE,
+        CONVO_IMAGE_PREVIEW_BLUR_SIZE,
       );
 
       return {

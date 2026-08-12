@@ -3,6 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CACHE_CONTROL_FOREVER } from '../../const.js';
 
+const { BYPASS_STATIC_FILES_CACHE } = process.env;
+
 const PUBLIC_PATH = fileURLToPath(new URL('../public/', import.meta.url));
 const STATIC_ALIASES = new Map([
   [
@@ -32,10 +34,16 @@ export default () => async (ctx, next) => {
   }
 
   try {
-    let file = cache.get(resolved);
-    if (!file) {
+    let file;
+
+    if (!BYPASS_STATIC_FILES_CACHE) {
+      let file = cache.get(resolved);
+      if (!file) {
+        file = await fs.readFile(resolved);
+        cache.set(resolved, file);
+      }
+    } else {
       file = await fs.readFile(resolved);
-      cache.set(resolved, file);
     }
 
     ctx.type = TYPES[path.extname(resolved)] ?? 'application/octet-stream';

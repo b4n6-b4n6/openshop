@@ -88,6 +88,19 @@ class Messages {
     return rows[0]?.image_content;
   }
 
+  async getImageContentExists(id) {
+    const { rows } = await this.pool.query(
+      `
+        SELECT image_content IS NOT NULL AS image_content_exists
+        FROM messages
+        WHERE id = $1
+      `,
+      [id],
+    );
+
+    return rows[0]?.image_content_exists;
+  }
+
   async markAllReceivedInConvo({ sender, receiver }) {
     await this.pool.query(
       `

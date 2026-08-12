@@ -10,19 +10,25 @@ import order from './order.js';
 import orders from './orders.js';
 import ordersThread from './ordersThread.js';
 import downloadImage from '../../shared/routes/downloadImage.js';
+import previewImageThumb from '../../shared/routes/previewImageThumb.js';
 
 const router = new Router();
 router
   .get('/browser/', shop)
+
   .get('/browser/products', products)
   .get('/browser/products/:id', product)
   .post('/browser/products/:id', productPost)
+
   .get('/browser/orders', orders)
   .get('/browser/orders/thread', ordersThread)
   .get('/browser/orders/:id', order)
+
   .get('/browser/convo', convo)
-  .get('/browser/convo/thread', convoThread)
   .post('/browser/convo', convoPost)
+  .get('/browser/convo/thread', convoThread)
+
+  .get('/browser/convo/images/:id/thumb', previewImageThumb)
   .get('/browser/convo/images/:id', downloadImage);
 
 export default () => router.routes();

@@ -30,6 +30,7 @@ import viewConvo from './viewConvo.js';
 import viewConvoThread from './viewConvoThread.js';
 import viewConvoPost from './viewConvoPost.js';
 import downloadImage from '../../shared/routes/downloadImage.js';
+import previewImageThumb from '../../shared/routes/previewImageThumb.js';
 
 import selfTest from './selfTest.js';
 import syncStatus from './syncStatus.js';
@@ -65,6 +66,7 @@ router
   .get('/shop/convos/thread', viewConvosThread)
   .get('/shop/convos/:id/thread', viewConvoThread)
   .get('/shop/convos/:id', viewConvo)
+  .get('/shop/convos/images/:id/thumb', previewImageThumb)
   .get('/shop/convos/images/:id', downloadImage)
   .post('/shop/convos/:id', viewConvoPost)
 

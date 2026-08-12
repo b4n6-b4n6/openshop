@@ -1,6 +1,7 @@
 /* global document, window */
 (() => {
   const UPLOAD_FILE_MAX_SIZE = 10 * 1024 * 1024;
+  let submitting = false;
 
   const form = document.querySelector('[data-chat-form]');
   if (!form) return;
@@ -48,6 +49,9 @@
     document.body.append(viewer);
   }
 
+  fileInput.addEventListener('click', (event) => {
+    if (submitting) { event.preventDefault(); }
+  });
   fileInput.addEventListener('change', () => {
     clearError();
     const [file] = fileInput.files;
@@ -87,5 +91,7 @@
 
     sendButton.disabled = true;
     sendButton.textContent = '…';
+    fileInput.classList.add('disabled');
+    submitting = true;
   });
 })();

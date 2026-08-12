@@ -12,6 +12,7 @@ import {
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import formatUserId from '../../utils/formatUserId.js';
 import formatDate from '../../utils/formatDate.js';
+import { CONVO_IMAGE_THUMB_HEIGHT, CONVO_IMAGE_THUMB_WIDTH } from '../../const.js';
 
 const formatTime = (value) => new Intl.DateTimeFormat('en', {
   hour: '2-digit',
@@ -51,43 +52,105 @@ const messageBubble = ({
   const own = payload.sender === me;
   const imageHref = `${imageBase}/${encodeURIComponent(event.id)}`;
   const imageSource = escapeAttribute(`${imageHref}?inline=1`);
+  const imagePreviewSource = escapeAttribute(`${imageHref}/thumb`);
   const time = `<span title="${escapeAttribute(new Date(payload.created_at))}">${escapeHtml(formatTime(payload.created_at))}</span>`;
 
   if (payload.image_content_exists) {
     const image = own
-      ? `<button type="button" data-chat-image class="chat-image-loaded" aria-label="Open image viewer">
-          <img data-chat-image-content src="${imageSource}" alt="Image attachment">
+      ? (
+        `<button
+          type="button"
+          data-chat-image
+          class="chat-image-loaded"
+          aria-label="Open image viewer"
+        >
+          <img
+            data-chat-image-content
+            decoding="sync"
+            loading="lazy"
+            width="${CONVO_IMAGE_THUMB_WIDTH}"
+            height="${CONVO_IMAGE_THUMB_HEIGHT}"
+            src="${imagePreviewSource}"
+            data-src="${imageSource}"
+            alt="Image attachment"
+          >
         </button>`
-      : `<button type="button" data-chat-image-load class="chat-image-placeholder" aria-label="Download and display image">
-          ${payload.image_blur_preview
-    ? `<img src="${escapeAttribute(payload.image_blur_preview)}" alt="" aria-hidden="true">`
-    : `<span class="text-faint">${icon('image', 'size-8')}</span>`}
+      )
+      : (
+        `<button
+          type="button"
+          data-chat-image-load
+          class="chat-image-placeholder"
+          aria-label="Download and display image"
+        >${(payload.image_blur_preview
+          ? (
+            `<img
+              width="${CONVO_IMAGE_THUMB_WIDTH}"
+              height="${CONVO_IMAGE_THUMB_HEIGHT}"
+              src="${payload.image_blur_preview}"
+              alt=""
+              aria-hidden="true"
+            >`
+          )
+          : `<span class="text-faint">${icon('image', 'size-8')}</span>`)}
           <span class="chat-image-download">${icon('image', 'size-5')}</span>
         </button>
-        <button type="button" data-chat-image class="chat-image-loaded" aria-label="Open image viewer" hidden>
-          <img data-chat-image-content data-src="${imageSource}" alt="Image attachment">
-        </button>`;
 
-    return `<div data-event-key="${escapeAttribute(eventKey(event))}" class="flex ${own ? 'justify-end' : 'justify-start'}">
-      <div class="chat-image-message">
-        ${image}
-        <span class="chat-image-meta" title="${escapeAttribute(new Date(payload.created_at))}">
+        <button 
+          type="button"
+          data-chat-image
+          class="chat-image-loaded"
+          aria-label="Open image viewer"
+          hidden
+        >
+          <img
+            data-chat-image-content
+            data-src="${imageSource}"
+            alt="Image attachment"
+          >
+        </button>`
+      );
+
+    return (
+      `<div 
+        data-event-key="${escapeAttribute(eventKey(event))}"
+        class="flex ${own ? 'justify-end' : 'justify-start'}"
+      >
+        <div class="chat-image-message">
+          ${image}
+          <span
+            class="chat-image-meta"
+            title="${escapeAttribute(new Date(payload.created_at))}"
+          >
+            ${time}
+            ${own ? receipt({ payload, owner }) : ''}
+          </span>
+        </div>
+      </div>`
+    );
+  }
+
+  return (
+    `<div
+      data-event-key="${escapeAttribute(eventKey(event))}"
+      class="flex ${own ? 'justify-end' : 'justify-start'}"
+    >
+      <div
+        class="max-w-[82%] rounded-2xl px-3 py-2 ${own ? 'bg-accent text-on-accent' : 'border border-border bg-surface text-text'}"
+      >
+        <p
+          class="whitespace-pre-wrap break-words text-[14px]"
+        >${escapeHtml(payload.text_content)}</p>
+
+        <span
+          class="mt-1 flex items-center justify-end gap-1 text-[10px] ${own ? 'text-on-accent/70' : 'text-faint'}"
+        >
           ${time}
           ${own ? receipt({ payload, owner }) : ''}
         </span>
       </div>
-    </div>`;
-  }
-
-  return `<div data-event-key="${escapeAttribute(eventKey(event))}" class="flex ${own ? 'justify-end' : 'justify-start'}">
-    <div class="max-w-[82%] rounded-2xl px-3 py-2 ${own ? 'bg-accent text-on-accent' : 'border border-border bg-surface text-text'}">
-      <p class="whitespace-pre-wrap break-words text-[14px]">${escapeHtml(payload.text_content)}</p>
-      <span class="mt-1 flex items-center justify-end gap-1 text-[10px] ${own ? 'text-on-accent/70' : 'text-faint'}">
-        ${time}
-        ${own ? receipt({ payload, owner }) : ''}
-      </span>
-    </div>
-  </div>`;
+    </div>`
+  );
 };
 
 const ORDER_EVENTS = {
@@ -156,27 +219,51 @@ export const chatsThreadPage = ({
 }) => document({
   title: 'Chats',
   scripts: ['sound.js'],
-  body: `<div data-chat-list data-version="${escapeAttribute(version)}">
-      ${chats.length
-    ? `<div class="flex flex-col gap-2.5 px-5 py-5">${chats.map((chat) => (
-      `<a href="/shop/convos/${encodeURIComponent(chat.id)}" class="block text-left active:scale-[0.99]">
-        <article class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4">
-          <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted">${icon('message', 'size-5')}</div>
-          <div class="min-w-0 flex-1">
-            <p class="truncate font-mono text-[13px] text-text">${escapeHtml(formatUserIdOrShopAddress(chat.id))}</p>
-            <p title="${escapeAttribute(chat.last_message_at)}" class="text-[12px] text-faint">${escapeHtml(formatDate(chat.last_message_at))}</p>
-          </div>
-          <span data-unread-dot data-chat-id="${escapeAttribute(chat.id)}" class="${chat.unread ? 'block' : 'hidden'} size-2.5 shrink-0 rounded-full bg-accent" aria-label="Unread messages"></span>
-          <span class="text-faint">${icon('chevronRight', 'size-4')}</span>
-        </article>
-      </a>`
-    )).join('')}</div>`
-    : emptyState({
-      emptyIcon: 'message',
-      title: 'No chats yet',
-      description: 'Conversations with customers appear here.',
-    })}
-    </div>`,
+  body: (
+    `<div data-chat-list data-version="${escapeAttribute(version)}">
+      ${(chats.length
+      ? (
+        `<div class="flex flex-col gap-2.5 px-5 py-5">${(
+          chats.map((chat) => (
+            `<a
+              href="/shop/convos/${encodeURIComponent(chat.id)}"
+              class="block text-left active:scale-[0.99]"
+              target="_top"
+            >
+              <article class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4">
+                <div
+                  class="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted"
+                >${icon('message', 'size-5')}</div>
+                <div class="min-w-0 flex-1">
+                  <p
+                    class="truncate font-mono text-[13px] text-text"
+                  >${escapeHtml(formatUserIdOrShopAddress(chat.id))}</p>
+                  <p
+                    title="${escapeAttribute(chat.last_message_at)}"
+                    class="text-[12px] text-faint"
+                  >${escapeHtml(formatDate(chat.last_message_at))}</p>
+                </div>
+                <span
+                  data-unread-dot
+                  data-chat-id="${escapeAttribute(chat.id)}"
+                  class="${chat.unread ? 'block' : 'hidden'}
+                  size-2.5 shrink-0 rounded-full bg-accent" aria-label="Unread messages"
+                ></span>
+                <span
+                  class="text-faint"
+                >${icon('chevronRight', 'size-4')}</span>
+              </article>
+            </a>`
+          )).join('')
+        )}</div>`
+      )
+      : emptyState({
+        emptyIcon: 'message',
+        title: 'No chats yet',
+        description: 'Conversations with customers appear here.',
+      }))}
+    </div>`
+  ),
   refresh,
 });
 
@@ -197,22 +284,74 @@ export const chatPage = ({
     back,
     status,
     animate: false,
-    content: `${error ? `<div role="alert" class="mx-4 mt-4 rounded-xl border border-danger/35 bg-danger/10 p-3 text-[13px] text-danger">${escapeHtml(error)}</div>` : ''}
-      <iframe data-chat-frame title="Messages" src="${escapeAttribute(thread)}" class="live-frame h-full w-full border-0 bg-base"></iframe>`,
-    bottom: `<div data-chat-error role="alert" class="mb-2 hidden rounded-xl border border-danger/35 bg-danger/10 px-3 py-2 text-[12px] text-danger"></div>
-      <div data-chat-attachment class="mb-2 hidden items-center gap-2 rounded-xl border border-border bg-surface-2 p-2">
-        <img data-chat-attachment-preview alt="" class="size-10 shrink-0 rounded-lg object-cover">
-        <span data-chat-attachment-name class="min-w-0 flex-1 truncate text-[12px] text-muted"></span>
-        <button type="button" data-chat-attachment-remove class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-surface" aria-label="Remove image attachment">×</button>
+    content: (
+      `${error
+        ? `<div
+            role="alert"
+            class="mx-4 mt-4 rounded-xl border border-danger/35 bg-danger/10 p-3 text-[13px] text-danger"
+          >${escapeHtml(error)}</div>`
+        : ''}
+      <iframe 
+        data-chat-frame
+        title="Messages"
+        src="${escapeAttribute(thread)}"
+        class="live-frame h-full w-full border-0 bg-base"
+      ></iframe>`
+    ),
+    bottom: (
+      `<div
+        data-chat-error
+        role="alert"
+        class="mb-2 hidden rounded-xl border border-danger/35 bg-danger/10 px-3 py-2 text-[12px] text-danger"
+      ></div>
+      <div
+        data-chat-attachment
+        class="mb-2 hidden items-center gap-2 rounded-xl border border-border bg-surface-2 p-2"
+      >
+        <img
+          data-chat-attachment-preview
+          alt=""
+          class="size-10 shrink-0 rounded-lg object-cover"
+        >
+        <span
+          data-chat-attachment-name
+          class="min-w-0 flex-1 truncate text-[12px] text-muted"
+        ></span>
+        <button
+          type="button"
+          data-chat-attachment-remove
+          class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-surface"
+          aria-label="Remove image attachment"
+        >×</button>
       </div>
       <div class="flex items-center gap-2">
-        <input name="text" maxlength="5000" placeholder="Text message" class="h-11 min-w-0 flex-1 rounded-xl border border-border bg-surface-2 px-4 text-[15px] text-text placeholder:text-faint outline-none focus:border-accent focus:ring-2 focus:ring-accent/30">
-        <label class="inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl text-muted hover:bg-surface-2" aria-label="Attach image">
-          ${icon('image', 'size-5')}
-          <input data-chat-file type="file" name="image" accept="image/png,image/jpeg,image/webp,image/gif" class="hidden">
-        </label>
-        <button data-chat-send type="submit" class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-accent text-on-accent hover:bg-accent-hover disabled:opacity-50" aria-label="Send message">${icon('send', 'size-5')}</button>
-      </div>`,
+        <input
+          name="text"
+          maxlength="5000"
+          placeholder="Text message"
+          class="h-11 min-w-0 flex-1 rounded-xl border border-border bg-surface-2 px-4 text-[15px] text-text placeholder:text-faint outline-none focus:border-accent focus:ring-2 focus:ring-accent/30"
+        >
+          <label
+            class="attachment-picker inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl text-muted hover:bg-surface-2"
+            aria-label="Attach image"
+          >
+            ${icon('image', 'size-5')}
+            <input
+              data-chat-file
+              type="file"
+              name="image"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              class="hidden"
+            >
+          </label>
+        <button
+          data-chat-send
+          type="submit"
+          class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-accent text-on-accent hover:bg-accent-hover disabled:opacity-50"
+          aria-label="Send message"
+        >${icon('send', 'size-5')}</button>
+      </div>`
+    ),
   })}
   </form>`,
 });
@@ -242,6 +381,9 @@ export const chatThreadPage = ({
         data-chat="${escapeAttribute(chatId)}"
         data-version="${escapeAttribute(version)}"
         data-last-incoming="${escapeAttribute(lastExtMessageVersion)}"
+        style="${(''
+          + `--image-thumb-width: ${CONVO_IMAGE_THUMB_WIDTH};`
+          + ` --image-thumb-height: ${CONVO_IMAGE_THUMB_HEIGHT};`)}"
       >${(
         allExtMessages.length
           ? allExtMessages.toReversed().map((event) => (

@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 
 const KEY_COOKIE_NAME = 'sak';
 const KEY_FILE_NAME = '.sak';
-const { ENABLE_SAK_BYPASS } = process.env;
+const { BYPASS_SAK } = process.env;
 
 const generateRandomKey = () => (
   crypto.randomBytes(32).toString('hex')
@@ -27,7 +27,7 @@ const prepareSingularAccessKey = async () => {
 };
 
 export default () => async (ctx, next) => {
-  if (ENABLE_SAK_BYPASS) {
+  if (BYPASS_SAK) {
     await next();
     return;
   }
