@@ -1,10 +1,10 @@
 <code style='color: cyan;'>[UI]</code>
-  * add owner-onlyp per-order metadata field that can be modified
   * reduce quantity in purchase flow
   * implement order timing out in purchase flow
   * os specific notifications
     * per convo message
     * per order status change
+  * add owner-onlyp per-order metadata field that can be modified
 
 <code style='color: cyan;'>[UI]</code>
   * Improve aesthetic

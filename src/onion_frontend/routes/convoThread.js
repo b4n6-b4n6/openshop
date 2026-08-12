@@ -1,4 +1,4 @@
-import { CONVO_PAGE_REFRESH, CACHE_CONTROL_DIRECTIVE } from '../../const.js';
+import { CONVO_PAGE_REFRESH, CACHE_CONTROL_LIVE } from '../../const.js';
 import { chatThreadPage } from '../../shared/pages/chatPages.js';
 import getConversationView from '../../shared/routes/getConversationView.js';
 import getConvoAndOrders from '../../backend/utils/getConvoAndOrders.js';
@@ -19,7 +19,7 @@ export default async (ctx) => {
     ctx.status = 304;
     return;
   }
-  ctx.set('Cache-Control', CACHE_CONTROL_DIRECTIVE);
+  ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
 
   await backend.messages.markAllReadInConvo({
     sender: myOnion,

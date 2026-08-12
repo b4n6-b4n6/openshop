@@ -4,7 +4,7 @@ import createInvoiceUri from '../../utils/createInvoiceUri.js';
 import picoToXmr from '../../utils/picoToXmr.js';
 import { orderVersion } from '../../shared/utils/viewVersions.js';
 import viewOrderPage from '../pages/viewOrderPage.js';
-import { MY_SHOP_PRODUCT_THUMB_SIZE, CACHE_CONTROL_DIRECTIVE } from '../../const.js';
+import { MY_SHOP_PRODUCT_THUMB_SIZE, CACHE_CONTROL_LIVE } from '../../const.js';
 
 export default async (ctx) => {
   const { params, backend, thumbnailCache } = ctx;
@@ -23,7 +23,7 @@ export default async (ctx) => {
     ctx.status = 304;
     return;
   }
-  ctx.set('Cache-Control', CACHE_CONTROL_DIRECTIVE);
+  ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
 
   const amount = picoToXmr(order.deposit_amount);
   const qr = await QRCode.toDataURL(

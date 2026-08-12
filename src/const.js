@@ -39,4 +39,5 @@ export const MY_SHOP_PROFILE_PHOTO_SIZE = 72;
 export const MY_SHOP_BANNER_PHOTO_SIZE = 480;
 export const MY_SHOP_PRODUCT_THUMB_SIZE = 64;
 
-export const CACHE_CONTROL_DIRECTIVE = 'private';
+export const CACHE_CONTROL_LIVE = 'no-cache';
+export const CACHE_CONTROL_FOREVER = 'public, max-age=31536000, immutable';

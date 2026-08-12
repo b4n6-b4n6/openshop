@@ -1,5 +1,5 @@
 import {
-  CACHE_CONTROL_DIRECTIVE,
+  CACHE_CONTROL_LIVE,
   MY_SHOP_PRODUCT_THUMB_SIZE,
 } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
@@ -33,7 +33,7 @@ export default async (ctx) => {
     ctx.status = 304;
     return;
   }
-  ctx.set('Cache-Control', CACHE_CONTROL_DIRECTIVE);
+  ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
 
   ctx.body = viewOrdersThreadPage({ allOrders });
 };

@@ -1,36 +1,17 @@
 /* eslint-disable import/no-unresolved */
 import { fileTypeFromBuffer } from 'file-type';
-import { CACHE_CONTROL_DIRECTIVE } from '../../const.js';
+import { CACHE_CONTROL_FOREVER } from '../../const.js';
 
 export default async (ctx) => {
-  const { backend, params, imageHashCache } = ctx;
+  const { backend, params } = ctx;
   const { messages } = backend;
   const { id } = params;
-  let imageContent;
 
-  let version = await imageHashCache.get(id);
-  if (!version) {
-    imageContent = await messages.getImageContent(id);
-
-    if (!imageContent) {
-      ctx.body = '';
-      return;
-    }
-
-    version = await imageHashCache.genDigest(
-      id,
-      imageContent,
-    );
-  }
-
-  ctx.set('ETag', `"${version}"`);
-  if (ctx.get('if-none-match') === `"${version}"`) {
-    ctx.status = 304;
+  const imageContent = await messages.getImageContent(id);
+  if (!imageContent) {
+    ctx.body = '';
     return;
   }
-  ctx.set('Cache-Control', CACHE_CONTROL_DIRECTIVE);
-
-  if (!imageContent) { imageContent = await messages.getImageContent(id); }
 
   const fileType = await fileTypeFromBuffer(imageContent);
   if (!fileType) {
@@ -46,5 +27,7 @@ export default async (ctx) => {
   } else {
     ctx.attachment(filename);
   }
+  ctx.set('Cache-Control', CACHE_CONTROL_FOREVER);
+
   ctx.body = imageContent;
 };

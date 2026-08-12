@@ -1,4 +1,4 @@
-import { CACHE_CONTROL_DIRECTIVE, CONVOS_PAGE_REFRESH } from '../../const.js';
+import { CACHE_CONTROL_LIVE, CONVOS_PAGE_REFRESH } from '../../const.js';
 import { chatsVersion } from '../../shared/utils/viewVersions.js';
 import { chatsThreadPage } from '../../shared/pages/chatPages.js';
 
@@ -13,7 +13,7 @@ export default async (ctx) => {
     ctx.status = 304;
     return;
   }
-  ctx.set('Cache-Control', CACHE_CONTROL_DIRECTIVE);
+  ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
 
   ctx.body = chatsThreadPage({
     chats: allConvos,
