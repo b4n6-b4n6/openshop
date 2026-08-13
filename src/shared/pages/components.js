@@ -71,7 +71,9 @@ export const qrView = ({
       ${artwork(Number(size))}
     </button>
     <div data-qr-modal class="qr-modal" role="dialog" aria-modal="true" aria-label="QR code" hidden>
-      <button type="button" data-qr-close class="qr-modal-close" aria-label="Close QR code">×</button>
+      <button type="button" data-qr-close class="qr-modal-close" aria-label="Close QR code">${
+  icon('close')
+}</button>
       <div class="qr-modal-panel">
         <div class="qr-large">${artwork(240)}</div>
         ${caption ? `<p class="qr-caption">${escapeHtml(caption)}</p>` : ''}
