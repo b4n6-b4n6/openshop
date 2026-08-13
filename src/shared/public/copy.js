@@ -34,6 +34,7 @@
         control.setAttribute('aria-label', 'Copy failed');
         control.classList.add('text-danger');
         showFeedback('Could not copy to clipboard', true);
+        alert(`Could not copy - try this instead: ${control.dataset.copy}`);
       }
       globalThis.setTimeout(() => {
         control.setAttribute('aria-label', original);
