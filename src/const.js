@@ -43,4 +43,4 @@ export const CONVO_IMAGE_THUMB_HEIGHT = 210;
 export const CONVO_IMAGE_PREVIEW_SIZE = 140;
 
 export const CACHE_CONTROL_LIVE = 'no-cache';
-export const CACHE_CONTROL_FOREVER = 'max-age=31536000, immutable';
+export const CACHE_CONTROL_FOREVER = 'private, max-age=31536000, immutable';
