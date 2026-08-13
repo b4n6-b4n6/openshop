@@ -4,17 +4,26 @@
     const modal = view.querySelector('[data-qr-modal]');
     const saveError = view.querySelector('[data-qr-save-error]');
     const close = () => { modal.hidden = true; };
+    const open = () => { modal.hidden = false; };
 
     view.querySelector('[data-qr-open]').addEventListener('click', () => {
       saveError.classList.add('hidden');
-      modal.hidden = false;
+      open();
     });
     view.querySelector('[data-qr-close]').addEventListener('click', close);
     modal.addEventListener('click', (event) => {
-      if (event.target === modal) close();
+      if (event.target === modal) { close(); }
     });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') close();
+      if (event.key === 'Escape') { close(); }
+    });
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin
+        || event.source !== messagesFrame.contentWindow
+        || event.data?.type !== 'openshop:open-qr'
+        || typeof event.data.source !== 'string') return;
+
+      open();
     });
 
     view.querySelector('[data-qr-save]').addEventListener('click', async () => {

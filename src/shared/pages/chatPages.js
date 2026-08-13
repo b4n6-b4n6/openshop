@@ -272,7 +272,7 @@ export const chatPage = ({
   status = '',
 }) => document({
   title,
-  scripts: ['sound.js', 'chat.js'],
+  scripts: ['sound.js', 'icon.js', 'chat.js'],
   body: `<form method="post" action="${escapeAttribute(action)}" enctype="multipart/form-data" class="contents" data-chat-form>
     ${appFrame({
     title: formatUserIdOrShopAddress(title),

@@ -6,6 +6,7 @@ import onionErrorPage from './onionErrorPage.js';
 import validateProductInput from '../utils/validateProductInput.js';
 import syncStatusResult from './syncStatusResult.js';
 import viewConvosPage from './viewConvosPage.js';
+import { chatsThreadPage } from '../../shared/pages/chatPages.js';
 import viewProductPage from './viewProductPage.js';
 import viewProductsPage from './viewProductsPage.js';
 import viewShopPage from './viewShopPage.js';
@@ -156,8 +157,8 @@ test('product list and chats render empty and populated states', () => {
   expect(viewProductsPage({ allProducts: [] })).toContain('No products yet');
   expect(viewProductsPage({ allProducts: [product] })).toContain('12.50');
 
-  const chats = viewConvosPage({
-    allConvos: [{
+  const chats = chatsThreadPage({
+    chats: [{
       id: 'buyer-123',
       last_message_at: new Date(),
       last_message_sender: 'buyer-123',
@@ -166,7 +167,7 @@ test('product list and chats render empty and populated states', () => {
   });
   expect(chats).toContain('href="/shop/convos/buyer-123"');
   expect(chats).toContain('aria-label="Unread messages"');
-  expect(viewConvosPage({ allConvos: [] })).toContain('No chats yet');
+  expect(chatsThreadPage({ chats: [] })).toContain('No chats yet');
 });
 
 test('wallet status reports waiting, syncing, and synchronized states', () => {

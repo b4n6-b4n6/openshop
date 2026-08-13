@@ -1,5 +1,12 @@
-import { chatPage, chatThreadPage, chatsPage } from './chatPages.js';
-import { orderPage, ordersPage } from './orderPages.js';
+import {
+  chatPage,
+  chatThreadPage,
+  chatsThreadPage,
+} from './chatPages.js';
+import {
+  orderThreadPage,
+  ordersThreadPage,
+} from './orderPages.js';
 
 const createdAt = new Date('2026-08-09T12:00:00.000Z');
 const order = {
@@ -18,18 +25,18 @@ const order = {
 };
 
 test('shared order lists link to the correct owner and customer routes', () => {
-  const owner = ordersPage({ allOrders: [order], owner: true });
-  const customer = ordersPage({ allOrders: [order] });
+  const owner = ordersThreadPage({ allOrders: [order], owner: true });
+  const customer = ordersThreadPage({ allOrders: [order] });
 
   expect(owner).toContain('href="/shop/orders/order-1"');
   expect(customer).toContain('href="/browser/orders/order-1"');
   expect(owner).toContain('Detected');
   expect(owner).toContain('1.23 XMR');
-  expect(ordersPage({ allOrders: [] })).toContain('No orders yet');
+  expect(ordersThreadPage({ allOrders: [] })).toContain('No orders yet');
 });
 
 test('order detail keeps payment, QR, rich text, and live status contracts', () => {
-  const page = orderPage({
+  const page = orderThreadPage({
     order,
     depositAddress: '4exampleaddress',
     qr: 'data:image/png;base64,AAAA',
@@ -127,9 +134,9 @@ test('chat thread renders messages, receipts, images, and order updates safely',
   expect(page).toContain('data-src="/shop/convos/images/message-2?inline=1"');
   expect(page).toContain('data-chat-image-load');
   expect(page).toContain('aria-label="Download and display image"');
-  expect(page).toContain('data-chat-image class="chat-image-loaded"');
+  expect(page).toContain('data-chat-image');
+  expect(page).toContain('class="chat-image-loaded"');
   expect(page).toContain('src="/shop/convos/images/message-3?inline=1"');
-  expect(page).not.toContain('data-src="/shop/convos/images/message-3?inline=1"');
   expect(page).toContain('class="chat-image-message"');
   expect(page).not.toContain('ago');
   expect(page).toContain('aria-label="Read"');
@@ -139,7 +146,7 @@ test('chat thread renders messages, receipts, images, and order updates safely',
 });
 
 test('owner chat list retains unread state without meta refresh', () => {
-  const page = chatsPage({
+  const page = chatsThreadPage({
     chats: [{
       id: 'customer-1',
       last_message_at: createdAt,

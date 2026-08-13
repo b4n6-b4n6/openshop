@@ -10,6 +10,13 @@
     });
   }
 
+  function tellParentToOpenImage(source) {
+    window.parent.postMessage({
+      type: 'openshop:view-image',
+      source,
+    }, window.location.origin);
+  }
+
   thread.addEventListener('click', (event) => {
     const loadButton = event.target.closest('[data-chat-image-load]');
     if (loadButton) {
@@ -18,11 +25,7 @@
       const source = image?.dataset.src;
 
       if (source) {
-        window.parent.postMessage({
-          type: 'openshop:view-image',
-          source,
-        }, window.location.origin);
-
+        tellParentToOpenImage(source);
         return;
       }
     }
@@ -31,10 +34,7 @@
     if (viewerButton) {
       const source = viewerButton.querySelector('img')?.dataset.src;
       if (source) {
-        window.parent.postMessage({
-          type: 'openshop:view-image',
-          source,
-        }, window.location.origin);
+        tellParentToOpenImage(source);
       }
     }
   });
