@@ -109,7 +109,7 @@ export default (ctx) => new Promise((resolve) => {
     ctx.status = 502;
     ctx.body = browserErrorPage({
       message: err.message,
-      autoRetry: ctx.headers['sec-fetch-dest'] === 'iframe',
+      autoRetry: browsePath.endsWith('/thread'),
     });
 
     resolve();
