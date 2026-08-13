@@ -7,12 +7,27 @@ const promisifyClose = (cp) => new Promise((resolve) => {
   cp.on('close', resolve);
 });
 
-const convert = async (imageData, maxDimension) => {
+const convert = async (imageData, compressionParams) => {
+  let maxDimension; let
+    quality;
+
+  if (Array.isArray(compressionParams)) {
+    [maxDimension, quality] = compressionParams;
+  } else {
+    maxDimension = compressionParams;
+  }
+
   const fileType = await fileTypeFromBuffer(imageData);
   const imageFormat = fileType.ext;
   const cp = spawn(
     'convert',
-    `- -resize ${maxDimension}x${maxDimension}> ${imageFormat}:-`.split(' '),
+    [
+      '-',
+      ...(quality ? ['-quality', `${quality}`] : []),
+      '-resize',
+      `${maxDimension}x${maxDimension}>`,
+      `${imageFormat}:-`,
+    ],
   );
   cp.stdin.end(imageData);
 

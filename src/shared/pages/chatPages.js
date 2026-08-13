@@ -52,7 +52,6 @@ const messageBubble = ({
   const own = payload.sender === me;
   const imageHref = `${imageBase}/${encodeURIComponent(event.id)}`;
   const imageSource = escapeAttribute(`${imageHref}?inline=1`);
-  const imagePreviewSource = escapeAttribute(`${imageHref}/thumb`);
   const time = `<span title="${escapeAttribute(new Date(payload.created_at))}">${escapeHtml(formatTime(payload.created_at))}</span>`;
 
   if (payload.image_content_exists) {
@@ -70,7 +69,7 @@ const messageBubble = ({
             loading="lazy"
             width="${CONVO_IMAGE_THUMB_WIDTH}"
             height="${CONVO_IMAGE_THUMB_HEIGHT}"
-            src="${imagePreviewSource}"
+            src="${payload.image_preview}"
             data-src="${imageSource}"
             alt="Image attachment"
           >
@@ -82,17 +81,14 @@ const messageBubble = ({
           data-chat-image-load
           class="chat-image-placeholder"
           aria-label="Download and display image"
-        >${(payload.image_blur_preview
-          ? (
-            `<img
-              width="${CONVO_IMAGE_THUMB_WIDTH}"
-              height="${CONVO_IMAGE_THUMB_HEIGHT}"
-              src="${payload.image_blur_preview}"
-              alt=""
-              aria-hidden="true"
-            >`
-          )
-          : `<span class="text-faint">${icon('image', 'size-8')}</span>`)}
+        >
+          <img
+            width="${CONVO_IMAGE_THUMB_WIDTH}"
+            height="${CONVO_IMAGE_THUMB_HEIGHT}"
+            src="${payload.image_blur_preview}"
+            alt=""
+            aria-hidden="true"
+          >
           <span class="chat-image-download">${icon('image', 'size-5')}</span>
         </button>
 

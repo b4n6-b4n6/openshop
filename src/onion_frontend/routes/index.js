@@ -10,7 +10,6 @@ import order from './order.js';
 import orders from './orders.js';
 import ordersThread from './ordersThread.js';
 import downloadImage from '../../shared/routes/downloadImage.js';
-import previewImageThumb from '../../shared/routes/previewImageThumb.js';
 
 const router = new Router();
 router
@@ -28,7 +27,6 @@ router
   .post('/browser/convo', convoPost)
   .get('/browser/convo/thread', convoThread)
 
-  .get('/browser/convo/images/:id/thumb', previewImageThumb)
   .get('/browser/convo/images/:id', downloadImage);
 
 export default () => router.routes();

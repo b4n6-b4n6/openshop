@@ -32,6 +32,7 @@ export default async (ctx) => {
       backend,
       allExtMessages,
       thumbnailCache,
+      me: onion,
     }),
     me: onion,
     chatId: id,

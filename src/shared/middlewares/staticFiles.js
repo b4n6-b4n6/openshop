@@ -46,8 +46,17 @@ export default () => async (ctx, next) => {
       file = await fs.readFile(resolved);
     }
 
+    const { v } = ctx.query;
+    if (v) {
+      ctx.set('ETag', `"${v}"`);
+      if (ctx.get('if-none-match') === `"${v}"`) {
+        ctx.status = 304;
+        return;
+      }
+      ctx.set('Cache-Control', CACHE_CONTROL_FOREVER);
+    }
+
     ctx.type = TYPES[path.extname(resolved)] ?? 'application/octet-stream';
-    ctx.set('Cache-Control', CACHE_CONTROL_FOREVER);
     ctx.body = file;
   } catch (error) {
     if (error.code === 'ENOENT' || error.code === 'EISDIR') {

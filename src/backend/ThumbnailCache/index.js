@@ -23,12 +23,14 @@ class ThumbnailCache {
     await this.redis.del(KEY(key));
   }
 
-  async genThumb(key, getValue, maxDimension) { // TODO is this okay in handling race conditinos?
+  async genThumb(key, getValue, compressionParams) {
+    // TODO is this okay in handling race conditinos?
+
     const cached = await this.get(key);
     if (cached) { return cached; }
 
     const value = await (getValue instanceof Function ? getValue() : getValue);
-    const thumbnail = await convert(value, maxDimension);
+    const thumbnail = await convert(value, compressionParams);
     await this.set(key, thumbnail);
 
     return thumbnail;

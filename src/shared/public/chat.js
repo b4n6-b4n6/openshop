@@ -40,7 +40,10 @@
   function openImage(source) {
     const viewer = document.createElement('div');
     viewer.className = 'image-viewer';
-    viewer.innerHTML = '<button type="button" aria-label="Close image preview">×</button><img alt="Image attachment preview">';
+    viewer.innerHTML = (
+      `<button type="button" aria-label="Close image preview">×</button>
+      <img decoding="sync" loading="lazy" alt="Image attachment preview">`
+    );
     viewer.querySelector('img').src = source;
     const close = () => viewer.remove();
     viewer.addEventListener('click', close);

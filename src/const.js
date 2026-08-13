@@ -40,7 +40,7 @@ export const MY_SHOP_BANNER_PHOTO_SIZE = 480;
 export const MY_SHOP_PRODUCT_THUMB_SIZE = 64;
 export const CONVO_IMAGE_THUMB_WIDTH = 280;
 export const CONVO_IMAGE_THUMB_HEIGHT = 210;
-export const CONVO_IMAGE_PREVIEW_SIZE = 140;
+export const CONVO_IMAGE_PREVIEW_SIZE = [280, 35];
 
 export const CACHE_CONTROL_LIVE = 'no-cache';
-export const CACHE_CONTROL_FOREVER = 'private, max-age=31536000, immutable';
+export const CACHE_CONTROL_FOREVER = 'immutable';
