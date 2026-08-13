@@ -28,6 +28,7 @@ export default [
     },
     rules: {
       'no-console': 'off',
+      'no-alert': 'off',
       'camelcase': 'off',
       'no-plusplus': 'off',
       'import/extensions': ['error', 'always', {

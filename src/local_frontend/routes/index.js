@@ -21,6 +21,7 @@ import viewProduct from './viewProduct.js';
 import viewProductPost from './viewProductPost.js';
 
 import viewOrder from './viewOrder.js';
+import viewOrderThread from './viewOrderThread.js';
 import viewOrders from './viewOrders.js';
 import viewOrdersThread from './viewOrdersThread.js';
 
@@ -58,8 +59,10 @@ router
   .post('/shop/products/:id', viewProductPost)
 
   .get('/shop/orders/thread', viewOrdersThread)
-  .get('/shop/orders/:id', viewOrder)
   .get('/shop/orders', viewOrders)
+  .get('/shop/orders/:id', viewOrder)
+  .get('/shop/orders/:id', viewOrder)
+  .get('/shop/orders/:id/thread', viewOrderThread)
 
   .get('/shop/convos', viewConvos)
   .get('/shop/convos/thread', viewConvosThread)

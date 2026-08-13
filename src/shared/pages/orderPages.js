@@ -49,7 +49,8 @@ export const ordersThreadPage = ({
     title: 'Orders',
     scripts: [],
     body: (
-      allOrders.length
+      `<div class="live-body">
+        ${(allOrders.length
         ? (
           `<div class="flex flex-col gap-2.5 px-5 py-5">${(
             allOrders.map((order) => orderCard({
@@ -66,7 +67,8 @@ export const ordersThreadPage = ({
               ? 'Customer purchases will appear here.'
               : 'Your purchases will appear here.',
           })
-        )
+        ))}
+      </div>`
     ),
     refresh,
   });
@@ -93,13 +95,68 @@ const transactionDetails = (order) => (
 );
 
 export const orderPage = ({
+  thread,
+  owner = false,
+  status = '',
+  back,
+  chat,
+}) => document({
+  title: 'Order',
+  scripts: [
+    owner ? 'owner.js' : 'customer.js',
+    ...(owner ? ownerScripts : []),
+    'copy.js',
+    'qr.js',
+  ],
+  body: appFrame({
+    title: 'Order',
+    titleIcon: icon('receipt', 'size-4'),
+    back,
+    status,
+    content: (
+      `<iframe
+          title="Order"
+          src="${escapeAttribute(thread)}"
+          class="live-frame h-full w-full border-0 bg-base"
+        ></iframe>`
+    ),
+    bottom: (
+      `<div class="flex flex-col gap-2.5">
+          ${(owner
+        ? `${button({
+          label: 'Chat with customer',
+          href: chat,
+          variant: 'secondary',
+          buttonIcon: icon('message', 'size-4'),
+        })}${button({
+          label: 'View all orders',
+          href: back,
+          variant: 'secondary',
+          buttonIcon: icon('receipt', 'size-4'),
+        })}`
+        : '')}
+          ${(!owner
+        ? (
+          button({
+            label: 'View my orders',
+            href: back,
+            variant: 'secondary',
+            buttonIcon: icon('receipt', 'size-4'),
+          })
+        )
+        : '')}
+        </div>`
+    ),
+  }),
+});
+
+export const orderThreadPage = ({
   order,
   depositAddress,
   qr,
   version,
   refresh,
-  owner = false,
-  status = '',
+  owner,
 }) => {
   const currentStatus = orderStatus(order);
   const complete = Boolean(order.deposit_confirmed_at);
@@ -109,7 +166,6 @@ export const orderPage = ({
   } else if (currentStatus.label === 'Detected') {
     statusTone = 'border-warning/30 bg-warning/15 text-warning';
   }
-  const root = owner ? '/shop/orders' : '/browser/orders';
   const scripts = [
     owner ? 'owner.js' : 'customer.js',
     ...(owner ? ownerScripts : []),
@@ -120,12 +176,8 @@ export const orderPage = ({
   return document({
     title: 'Order',
     scripts,
-    body: appFrame({
-      title: 'Order',
-      titleIcon: icon('receipt', 'size-4'),
-      back: root,
-      status,
-      content: `<div data-order-live data-version="${escapeAttribute(version)}" data-complete="${complete}" class="space-y-4 px-5 py-6">
+    body: (
+      `<div class="live-body space-y-4 px-5 py-6" data-order-live data-version="${escapeAttribute(version)}" data-complete="${complete}">
         <div class="flex items-center gap-3">
           ${thumb(order.product_photo, 64)}
           <div class="min-w-0 flex-1">
@@ -142,12 +194,14 @@ export const orderPage = ({
           </div>
           <p class="text-[13px] text-faint">≈ ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
 
-          ${qrView({
-    qr,
-    caption: depositAddress,
-    fileName: `openshop-order-${order.id}.png`,
-    size: 168,
-  })}
+              ${
+      (qrView({
+        qr,
+        caption: depositAddress,
+        fileName: `openshop-order-${order.id}.png`,
+        size: 168,
+      }))
+      }
 
           <div class="w-full text-left">
             <p class="mb-1 text-[12px] font-semibold uppercase tracking-wide text-muted">Pay to this address</p>
@@ -181,40 +235,13 @@ export const orderPage = ({
 
         <div data-order-txid>${transactionDetails(order)}</div>
 
-        <p class="text-center text-[12px] leading-relaxed text-faint">Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>
-      </div>`,
-      bottom: (
-        `<div class="flex flex-col gap-2.5">
-          ${
-        owner
-          ? `${button({
-            label: 'Chat with customer',
-            href: `/shop/convos/${order.customer}`,
-            variant: 'secondary',
-            buttonIcon: icon('message', 'size-4'),
-          })}${button({
-            label: 'View all orders',
-            href: root,
-            variant: 'secondary',
-            buttonIcon: icon('receipt', 'size-4'),
-          })}`
-          : ''
-        }
-          ${
-        !owner
-          ? (
-            button({
-              label: 'View my orders',
-              href: root,
-              variant: 'secondary',
-              buttonIcon: icon('receipt', 'size-4'),
-            })
-          )
-          : ''
-        }
-        </div>`
-      ),
-    }),
+        ${!order.deposit_txid
+        ? `<p
+              class="text-center text-[12px]leading-relaxed text-faint"
+            >Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>`
+        : ''}
+      </div>`
+    ),
     refresh: !order.deposit_confirmed_at ? refresh : null,
   });
 };

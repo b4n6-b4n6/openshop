@@ -273,7 +273,7 @@ button:disabled,
   display: block;
 }
 
-.thread-body {
+.live-body {
   bottom: 0;
   left: 0;
   overflow-y: auto;
@@ -283,11 +283,14 @@ button:disabled,
   scrollbar-width: none;
   top: 0;
   -webkit-overflow-scrolling: touch;
-  flex-direction: column-reverse;
 }
 
 .thread-body::-webkit-scrollbar {
   display: none;
+}
+
+.thread-body {
+  flex-direction: column-reverse;
 }
 
 .notification-error {

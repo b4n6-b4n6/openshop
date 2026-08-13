@@ -216,7 +216,7 @@ export const chatsThreadPage = ({
   title: 'Chats',
   scripts: ['sound.js'],
   body: (
-    `<div data-chat-list data-version="${escapeAttribute(version)}">
+    `<div class='live-body' data-chat-list data-version="${escapeAttribute(version)}">
       ${(chats.length
       ? (
         `<div class="flex flex-col gap-2.5 px-5 py-5">${(
@@ -373,7 +373,7 @@ export const chatThreadPage = ({
     scripts: ['messages.js'],
     body: (
       `<div
-        class="thread-body flex gap-2.5 px-4 py-5"
+        class="live-body thread-body flex gap-2.5 px-4 py-5"
         data-chat="${escapeAttribute(chatId)}"
         data-version="${escapeAttribute(version)}"
         data-last-incoming="${escapeAttribute(lastExtMessageVersion)}"
