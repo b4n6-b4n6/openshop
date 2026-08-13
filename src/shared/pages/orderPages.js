@@ -5,7 +5,8 @@ import {
   orderCard,
   orderStatus,
   orderStatusBadge,
-  qrView,
+  qrViewButtonCrossFrame,
+  qrViewModalCrossFrame,
   thumb,
 } from './components.js';
 import {
@@ -100,6 +101,9 @@ export const orderPage = ({
   status = '',
   back,
   chat,
+  qr,
+  qrCaption,
+  qrFileName,
 }) => document({
   title: 'Order',
   scripts: [
@@ -115,10 +119,16 @@ export const orderPage = ({
     status,
     content: (
       `<iframe
-          title="Order"
-          src="${escapeAttribute(thread)}"
-          class="live-frame h-full w-full border-0 bg-base"
-        ></iframe>`
+        title="Order"
+        src="${escapeAttribute(thread)}"
+        class="live-frame h-full w-full border-0 bg-base"
+      ></iframe>
+      ${qrViewModalCrossFrame({
+        qr,
+        caption: qrCaption,
+        fileName: qrFileName,
+        size: 168,
+      })}`
     ),
     bottom: (
       `<div class="flex flex-col gap-2.5">
@@ -194,14 +204,10 @@ export const orderThreadPage = ({
           </div>
           <p class="text-[13px] text-faint">≈ ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
 
-              ${
-      (qrView({
+          ${qrViewButtonCrossFrame({
         qr,
-        caption: depositAddress,
-        fileName: `openshop-order-${order.id}.png`,
         size: 168,
-      }))
-      }
+      })}
 
           <div class="w-full text-left">
             <p class="mb-1 text-[12px] font-semibold uppercase tracking-wide text-muted">Pay to this address</p>
@@ -214,7 +220,10 @@ export const orderThreadPage = ({
           </div>
         </section>
 
-        <div data-order-status-message class="rounded-xl border px-3 py-2 text-center text-[12px] font-semibold ${statusTone}">
+        <div
+          data-order-status-message
+          class="rounded-xl border px-3 py-2 text-center text-[12px] font-semibold ${statusTone}"
+        >
           ${escapeHtml(statusMessage(order))}
         </div>
 
@@ -225,11 +234,16 @@ export const orderThreadPage = ({
           </div>
           <div>
             <p class="text-faint">Purchase price</p>
-            <p class="mt-1 font-semibold text-text">${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
+            <p
+              class="mt-1 font-semibold text-text"
+            >${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
           </div>
           <div style="grid-column:1/-1" class="border-t border-border pt-2.5">
             <p class="text-faint">Created at</p>
-            <p title="${escapeAttribute(order.created_at)}" class="mt-1 text-text">${escapeHtml(formatDate(order.created_at))}</p>
+            <p
+              title="${escapeAttribute(order.created_at)}"
+              class="mt-1 text-text"
+            >${escapeHtml(formatDate(order.created_at))}</p>
           </div>
         </div>
 
@@ -238,7 +252,7 @@ export const orderThreadPage = ({
         ${!order.deposit_txid
         ? `<p
               class="text-center text-[12px]leading-relaxed text-faint"
-            >Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>`
+            >Send exactly this amount in Monero. The order updates automatically when the payment is detected.</p>`
         : ''}
       </div>`
     ),

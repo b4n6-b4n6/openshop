@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const icon = (name, classes = 'size-5') => {
   const paths = {
     arrowLeft: '<path d="m15 18-6-6 6-6"/>',

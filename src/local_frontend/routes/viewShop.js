@@ -1,9 +1,9 @@
-import QRCode from 'qrcode';
 import {
   THUMB_CACHE_KEY,
   THUMB_CACHE_SIZE,
 } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
+import genQr from '../../utils/genQr.js';
 import viewShopPage from '../pages/viewShopPage.js';
 
 export default async (ctx) => {
@@ -37,12 +37,7 @@ export default async (ctx) => {
       : null,
   );
 
-  const qr = await QRCode.toDataURL(address, {
-    color: { dark: '#0f1115', light: '#ffffff' },
-    errorCorrectionLevel: 'H',
-    margin: 1,
-    width: 240,
-  });
+  const qr = await genQr(address);
 
   ctx.body = viewShopPage({
     ...shop,

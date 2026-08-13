@@ -1,4 +1,4 @@
-import QRCode from 'qrcode';
+import genQr from '../../utils/genQr.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import createInvoiceUri from '../../utils/createInvoiceUri.js';
 import picoToXmr from '../../utils/picoToXmr.js';
@@ -30,15 +30,7 @@ export default async (ctx) => {
   ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
 
   const amount = picoToXmr(order.deposit_amount);
-  const qr = await QRCode.toDataURL(
-    createInvoiceUri({ depositAddress, amount }),
-    {
-      color: { dark: '#0f1115', light: '#ffffff' },
-      errorCorrectionLevel: 'H',
-      margin: 1,
-      width: 240,
-    },
-  );
+  const qr = await genQr(createInvoiceUri({ depositAddress, amount }));
 
   const productPhoto = bufferToImageDataURI(
     order.product_photo_exists

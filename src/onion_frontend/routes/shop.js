@@ -1,8 +1,8 @@
-import QRCode from 'qrcode';
 import checkOpenShopBrowser from '../utils/checkOpenShopBrowser.js';
 import shopPage from '../pages/shopPage.js';
 import { THUMB_CACHE_SIZE, THUMB_CACHE_KEY } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
+import genQr from '../../utils/genQr.js';
 
 export default async (ctx) => {
   const { myOnion, backend, thumbnailCache } = ctx;
@@ -35,12 +35,7 @@ export default async (ctx) => {
       : null,
   );
 
-  const qr = await QRCode.toDataURL(myOnion, {
-    color: { dark: '#0f1115', light: '#ffffff' },
-    errorCorrectionLevel: 'H',
-    margin: 1,
-    width: 240,
-  });
+  const qr = await genQr(myOnion);
 
   ctx.body = shopPage({
     enableBackButton: checkOpenShopBrowser(ctx),

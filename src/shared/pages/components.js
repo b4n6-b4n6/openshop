@@ -91,6 +91,23 @@ export const qrView = ({
   ${qrViewModal({ qr, caption })}
 </div>`);
 
+export const qrViewButtonCrossFrame = ({
+  qr,
+  size = 64,
+}) => (`<div data-qr-view>
+  <button type="button" data-qr-open-cross-frame class="qr-trigger" aria-label="Enlarge QR code">
+    ${qrArtwork({ size: Number(size), qr })}
+  </button>
+</div>`);
+
+export const qrViewModalCrossFrame = ({
+  qr,
+  caption = '',
+  fileName = 'openshop-qr.png',
+}) => (`<div data-qr-view data-file-name="${escapeAttribute(fileName)}">
+  ${qrViewModal({ qr, caption })}
+</div>`);
+
 export const hubLink = ({
   href,
   label,

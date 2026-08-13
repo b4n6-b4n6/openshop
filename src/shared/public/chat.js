@@ -1,4 +1,4 @@
-/* global document, window */
+/* global document, window, icon */
 /* eslint-disable no-constant-binary-expression */
 (() => {
   const UPLOAD_FILE_MAX_SIZE = 10 * 1024 * 1024;

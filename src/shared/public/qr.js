@@ -1,16 +1,26 @@
-/* global document */
+/* global document, window */
+/* eslint-disable no-constant-binary-expression */
 (() => {
   document.querySelectorAll('[data-qr-view]').forEach((view) => {
+    view.querySelector('[data-qr-open-cross-frame]')?.addEventListener('click', () => {
+      window.parent.postMessage({
+        type: 'openshop:open-qr',
+      }, window.location.origin);
+    });
+
     const modal = view.querySelector('[data-qr-modal]');
-    const saveError = view.querySelector('[data-qr-save-error]');
+    if (!modal) { return; }
+
+    const saveError = modal.querySelector('[data-qr-save-error]');
     const close = () => { modal.hidden = true; };
     const open = () => { modal.hidden = false; };
 
-    view.querySelector('[data-qr-open]').addEventListener('click', () => {
+    view.querySelector('[data-qr-open]')?.addEventListener('click', () => {
       saveError.classList.add('hidden');
       open();
     });
-    view.querySelector('[data-qr-close]').addEventListener('click', close);
+
+    modal.querySelector('[data-qr-close]').addEventListener('click', close);
     modal.addEventListener('click', (event) => {
       if (event.target === modal) { close(); }
     });
@@ -18,10 +28,11 @@
       if (event.key === 'Escape') { close(); }
     });
     window.addEventListener('message', (event) => {
-      if (event.origin !== window.location.origin
-        || event.source !== messagesFrame.contentWindow
+      if (
+        false
+        || event.origin !== window.location.origin
         || event.data?.type !== 'openshop:open-qr'
-        || typeof event.data.source !== 'string') return;
+      ) return;
 
       open();
     });
