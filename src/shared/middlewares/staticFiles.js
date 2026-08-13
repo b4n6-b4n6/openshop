@@ -37,7 +37,7 @@ export default () => async (ctx, next) => {
     let file;
 
     if (!BYPASS_STATIC_FILES_CACHE) {
-      let file = cache.get(resolved);
+      file = cache.get(resolved);
       if (!file) {
         file = await fs.readFile(resolved);
         cache.set(resolved, file);
