@@ -12,6 +12,7 @@
     * save and restore scroll position across reloads (probably save when user triggers scroll and load on new page load event)
   * Improve aesthetic
     * Make primary color (everything orange) dynamic - derive a new color from the profile photo
+    * Add cute profile pictures to each chat (generated from name uuid)
   * Improved `title` attribute behaviour
     * Add a script that would transform all HTML elements with title attribute into focusable and tappable tooltips
   * Improved UX
