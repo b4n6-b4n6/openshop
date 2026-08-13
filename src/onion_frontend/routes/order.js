@@ -4,7 +4,7 @@ import createInvoiceUri from '../../utils/createInvoiceUri.js';
 import picoToXmr from '../../utils/picoToXmr.js';
 import { orderVersion } from '../../shared/utils/viewVersions.js';
 import orderPage from '../pages/orderPage.js';
-import { MY_SHOP_PRODUCT_THUMB_SIZE, CACHE_CONTROL_LIVE } from '../../const.js';
+import { CACHE_CONTROL_LIVE, THUMB_CACHE_KEY, THUMB_CACHE_SIZE } from '../../const.js';
 
 export default async (ctx) => {
   const {
@@ -44,9 +44,9 @@ export default async (ctx) => {
     bufferToImageDataURI(
       order.product_photo_exists
         ? await thumbnailCache.genThumb(
-          `order:${order.id}`,
+          `${THUMB_CACHE_KEY.ORDER}:${order.id}`,
           () => orders.getPhoto(order.id),
-          MY_SHOP_PRODUCT_THUMB_SIZE,
+          THUMB_CACHE_SIZE.ORDER,
         )
         : null,
     ),

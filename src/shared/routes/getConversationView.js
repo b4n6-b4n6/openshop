@@ -1,10 +1,5 @@
-import {
-  CONVO_IMAGE_PREVIEW_SIZE,
-  MY_SHOP_PRODUCT_THUMB_SIZE,
-} from '../../const.js';
+import { THUMB_CACHE_KEY, THUMB_CACHE_SIZE } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
-
-const CONVO_IMAGE_PREVIEW_BLUR_SIZE = [24, 15];
 
 export default async ({
   backend, thumbnailCache, allExtMessages, me,
@@ -16,9 +11,9 @@ export default async ({
     if (payload.image_content_exists) {
       if (own) {
         const preview = await thumbnailCache.genThumb(
-          `message-preview:${event.id}`,
+          `${THUMB_CACHE_KEY.MESSAGE}:${event.id}`,
           () => backend.messages.getImageContent(event.id),
-          CONVO_IMAGE_PREVIEW_SIZE,
+          THUMB_CACHE_SIZE.MESSAGE,
         );
 
         return {
@@ -30,9 +25,9 @@ export default async ({
         };
       }
       const preview = await thumbnailCache.genThumb(
-        `message-preview-blur:${event.id}`,
+        `${THUMB_CACHE_KEY.MESSAGE_BLUR}:${event.id}`,
         () => backend.messages.getImageContent(event.id),
-        CONVO_IMAGE_PREVIEW_BLUR_SIZE,
+        THUMB_CACHE_SIZE.MESSAGE_BLUR,
       );
 
       return {
@@ -44,9 +39,9 @@ export default async ({
       };
     } if (payload.product_photo_exists) {
       const photo = await thumbnailCache.genThumb(
-        `order:${event.id}`,
+        `${THUMB_CACHE_KEY.ORDER}:${event.id}`,
         () => backend.orders.getPhoto(event.id),
-        MY_SHOP_PRODUCT_THUMB_SIZE,
+        THUMB_CACHE_SIZE.ORDER,
       );
 
       return {

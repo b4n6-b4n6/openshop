@@ -1,6 +1,7 @@
 import {
   CACHE_CONTROL_LIVE,
-  MY_SHOP_PRODUCT_THUMB_SIZE,
+  THUMB_CACHE_SIZE,
+  THUMB_CACHE_KEY,
 } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import { ordersVersion } from '../../shared/utils/viewVersions.js';
@@ -17,9 +18,9 @@ export default async (ctx) => {
         product_photo: await bufferToImageDataURI(
           order.product_photo_exists
             ? await thumbnailCache.genThumb(
-              `order:${order.id}`,
+              `${THUMB_CACHE_KEY.ORDER}:${order.id}`,
               () => orders.getPhoto(order.id),
-              MY_SHOP_PRODUCT_THUMB_SIZE,
+              THUMB_CACHE_SIZE.ORDER,
             )
             : null,
         ),

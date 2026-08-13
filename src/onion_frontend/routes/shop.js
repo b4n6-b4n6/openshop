@@ -1,10 +1,7 @@
 import QRCode from 'qrcode';
 import checkOpenShopBrowser from '../utils/checkOpenShopBrowser.js';
 import shopPage from '../pages/shopPage.js';
-import {
-  MY_SHOP_BANNER_PHOTO_SIZE,
-  MY_SHOP_PROFILE_PHOTO_SIZE,
-} from '../../const.js';
+import { THUMB_CACHE_SIZE, THUMB_CACHE_KEY } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 
 export default async (ctx) => {
@@ -14,40 +11,36 @@ export default async (ctx) => {
   const shop = await shops.get(myOnion);
   if (!shop) ctx.throw(404, 'Shop not found');
 
-  shop.profile_photo = (
+  const profilePhoto = bufferToImageDataURI(
     shop.profile_photo_exists
       ? (
         await thumbnailCache.genThumb(
-          'profile_photo',
+          THUMB_CACHE_KEY.PROFILE,
           () => shops.getProfilePhoto(myOnion),
-          MY_SHOP_PROFILE_PHOTO_SIZE,
+          THUMB_CACHE_SIZE.PROFILE,
         )
       )
-      : null
+      : null,
   );
 
-  shop.banner_photo = (
+  const bannerPhoto = bufferToImageDataURI(
     shop.banner_photo_exists
       ? (
         await thumbnailCache.genThumb(
-          'banner_photo',
+          THUMB_CACHE_KEY.BANNER,
           () => shops.getBannerPhoto(myOnion),
-          MY_SHOP_BANNER_PHOTO_SIZE,
+          THUMB_CACHE_SIZE.BANNER,
         )
       )
-      : null
+      : null,
   );
 
-  const [profilePhoto, bannerPhoto, qr] = await Promise.all([
-    bufferToImageDataURI(shop.profile_photo),
-    bufferToImageDataURI(shop.banner_photo),
-    QRCode.toDataURL(myOnion, {
-      color: { dark: '#0f1115', light: '#ffffff' },
-      errorCorrectionLevel: 'H',
-      margin: 1,
-      width: 240,
-    }),
-  ]);
+  const qr = await QRCode.toDataURL(myOnion, {
+    color: { dark: '#0f1115', light: '#ffffff' },
+    errorCorrectionLevel: 'H',
+    margin: 1,
+    width: 240,
+  });
 
   ctx.body = shopPage({
     enableBackButton: checkOpenShopBrowser(ctx),

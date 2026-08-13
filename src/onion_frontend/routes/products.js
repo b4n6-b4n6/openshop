@@ -1,6 +1,4 @@
-import {
-  MY_SHOP_PRODUCT_THUMB_SIZE,
-} from '../../const.js';
+import { THUMB_CACHE_SIZE, THUMB_CACHE_KEY } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import productsPage from '../pages/productsPage.js';
 
@@ -13,9 +11,9 @@ export default async (ctx) => {
       (await products.getAll()).map(async (product) => {
         const photo = product.photo_exists
           ? await thumbnailCache.genThumb(
-            `product:${product.id}`,
+            `${THUMB_CACHE_KEY.PRODUCT}:${product.id}`,
             () => products.getPhoto(product.id),
-            MY_SHOP_PRODUCT_THUMB_SIZE,
+            THUMB_CACHE_SIZE.PRODUCT,
           )
           : null;
 

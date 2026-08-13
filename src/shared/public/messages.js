@@ -46,6 +46,9 @@
   if (lastIncomingVer === null || lastIncomingVer !== currentIncomingVer) {
     sessionStorage.setItem(key, currentIncomingVer);
 
+    console.log('Scrolling to bottom');
     scrollToBottom();
   }
+
+  console.log('Hello from messages.js');
 })();

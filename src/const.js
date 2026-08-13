@@ -35,12 +35,26 @@ export const CURRENCIES = [
 export const UPLOAD_FILE_MAX_SIZE = 10 * 1024 * 1024;
 export const UPLOAD_FORM_MAX_SIZE = 8 * 1024 * 1024;
 
-export const MY_SHOP_PROFILE_PHOTO_SIZE = 72;
-export const MY_SHOP_BANNER_PHOTO_SIZE = 480;
-export const MY_SHOP_PRODUCT_THUMB_SIZE = 64;
 export const CONVO_IMAGE_THUMB_WIDTH = 280;
 export const CONVO_IMAGE_THUMB_HEIGHT = 210;
-export const CONVO_IMAGE_PREVIEW_SIZE = [280, 35];
 
 export const CACHE_CONTROL_LIVE = 'no-cache';
 export const CACHE_CONTROL_FOREVER = 'immutable';
+
+export const THUMB_CACHE_KEY = {
+  PROFILE: 'PROFILE',
+  BANNER: 'BANNER',
+  ORDER: 'ORDER',
+  PRODUCT: 'PRODUCT',
+  MESSAGE: 'MESSAGE',
+  MESSAGE_BLUR: 'MESSAGE_BLUR',
+};
+
+export const THUMB_CACHE_SIZE = {
+  PROFILE: 72,
+  BANNER: 480,
+  ORDER: 64,
+  PRODUCT: 64,
+  MESSAGE: [280, 35],
+  MESSAGE_BLUR: [24, 15],
+};

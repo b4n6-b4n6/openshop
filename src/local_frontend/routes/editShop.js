@@ -1,7 +1,4 @@
-import {
-  MY_SHOP_BANNER_PHOTO_SIZE,
-  MY_SHOP_PROFILE_PHOTO_SIZE,
-} from '../../const.js';
+import { THUMB_CACHE_SIZE, THUMB_CACHE_KEY } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import editShopPage from '../pages/editShopPage.js';
 
@@ -15,16 +12,16 @@ export default async (ctx) => {
   const [profilePhoto, bannerPhoto] = await Promise.all([
     shop.profile_photo_exists
       ? thumbnailCache.genThumb(
-        'profile_photo',
+        THUMB_CACHE_KEY.PROFILE,
         () => shops.getProfilePhoto(address),
-        MY_SHOP_PROFILE_PHOTO_SIZE,
+        THUMB_CACHE_SIZE.PROFILE,
       )
       : null,
     shop.banner_photo_exists
       ? thumbnailCache.genThumb(
-        'banner_photo',
+        THUMB_CACHE_KEY.BANNER,
         () => shops.getBannerPhoto(address),
-        MY_SHOP_BANNER_PHOTO_SIZE,
+        THUMB_CACHE_SIZE.BANNER,
       )
       : null,
   ]);
