@@ -80,6 +80,8 @@ export default (ctx) => new Promise((resolve) => {
   proxyReq.on('error', () => {
     ctx.status = 500;
     ctx.body = selfTestResult({ result: false });
+
+    agent.destroy();
     resolve();
   });
 
