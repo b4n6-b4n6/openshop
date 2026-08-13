@@ -10,18 +10,6 @@
     });
   }
 
-  function showError(kind, message) {
-    let notice = thread.querySelector(`[data-${kind}-error]`);
-    if (!notice) {
-      notice = document.createElement('div');
-      notice.dataset[`${kind}Error`] = '';
-      notice.className = 'sticky top-2 z-10 rounded-xl border border-danger/35 bg-danger/10 px-3 py-2 text-center text-[12px] text-danger';
-      notice.setAttribute('role', 'alert');
-      thread.prepend(notice);
-    }
-    notice.textContent = message;
-  }
-
   thread.addEventListener('click', (event) => {
     const loadButton = event.target.closest('[data-chat-image-load]');
     if (loadButton) {
@@ -49,14 +37,6 @@
         }, window.location.origin);
       }
     }
-  });
-
-  async function poll() {
-    window.location.reload();
-  }
-
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) { poll(); }
   });
 
   const key = `openshop-last-message:${thread.dataset.chat ?? ''}`;
