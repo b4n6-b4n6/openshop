@@ -1,4 +1,4 @@
-<code style='color: cyan;'>[UI]</code>
+<code style='color: cyan;'>[Core]</code>
   * reduce quantity in purchase flow
   * implement order expiration in purchase flow
   * os specific notifications
