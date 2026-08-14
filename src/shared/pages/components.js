@@ -1,37 +1,14 @@
 import { CURRENCIES } from '../../const.js';
 import formatDate from '../../utils/formatDate.js';
 import { renderBbcode } from '../utils/bbcode.js';
+import formatFiat from '../utils/formatFiat.js';
+import formatXmr from '../utils/formatXmr.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import { button, icon } from './layout.js';
 
 const dataImage = (value) => (
   typeof value === 'string' && /^data:image\/(?:gif|jpeg|png|webp);base64,/i.test(value)
 );
-
-export const truncateMiddle = (value, head = 10, tail = 10) => {
-  const text = String(value ?? '');
-  return text.length <= head + tail + 1
-    ? text
-    : `${text.slice(0, head)}…${text.slice(-tail)}`;
-};
-
-export const formatFiat = (amount, currency) => {
-  try {
-    return new Intl.NumberFormat('en', {
-      currency: String(currency).toUpperCase(),
-      maximumFractionDigits: 2,
-      style: 'currency',
-    }).format(Number(amount));
-  } catch {
-    return `${Number(amount).toFixed(2)} ${String(currency ?? '').toUpperCase()}`;
-  }
-};
-
-export const formatXmr = (amount) => {
-  const value = Number(amount) / 1e12;
-  if (!Number.isFinite(value)) return '0';
-  return value.toFixed(12).replace(/0+$/, '').replace(/\.$/, '');
-};
 
 export const richText = (description) => (
   `<div class="rich-text">${renderBbcode(description)}</div>`

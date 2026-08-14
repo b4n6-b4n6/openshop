@@ -6,7 +6,7 @@ import onionErrorPage from './onionErrorPage.js';
 import validateProductInput from '../utils/validateProductInput.js';
 import syncStatusResult from './syncStatusResult.js';
 import viewConvosPage from './viewConvosPage.js';
-import { chatsThreadPage } from '../../shared/pages/chatPages.js';
+import { chatsThreadPage } from '../../shared/pages/chatsPage.js';
 import viewProductPage from './viewProductPage.js';
 import viewProductsPage from './viewProductsPage.js';
 import viewShopPage from './viewShopPage.js';

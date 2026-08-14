@@ -4,7 +4,6 @@ import {
   qrView,
   richText,
   shopBanner,
-  truncateMiddle,
 } from '../../shared/pages/components.js';
 import {
   appFrame,
@@ -13,6 +12,7 @@ import {
   icon,
 } from '../../shared/pages/layout.js';
 import { escapeAttribute, escapeHtml } from '../../shared/utils/html.js';
+import truncateMiddle from '../../shared/utils/truncateMiddle.js';
 import indicators from './indicators.js';
 
 const viewShopPage = ({

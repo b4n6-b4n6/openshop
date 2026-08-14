@@ -1,8 +1,5 @@
-import {
-  chatPage,
-  chatThreadPage,
-  chatsThreadPage,
-} from './chatPages.js';
+import { chatPage, chatThreadPage } from './chatPage.js';
+import { chatsThreadPage } from './chatsPage.js';
 import {
   orderThreadPage,
   ordersThreadPage,
@@ -45,8 +42,7 @@ test('order detail keeps payment, QR, rich text, and live status contracts', () 
 
   expect(page).toContain('1.23');
   expect(page).toContain('4exampleaddress');
-  expect(page).toContain('data-qr-open');
-  expect(page).toContain('data-qr-save');
+  expect(page).toContain('data-qr-open-cross-frame');
   expect(page).toContain('Incoming transaction detected');
   expect(page).toContain('abc123');
   expect(page).toContain('data-order-live');

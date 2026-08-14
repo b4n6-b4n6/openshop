@@ -1,6 +1,6 @@
 import { CACHE_CONTROL_LIVE, CONVOS_PAGE_REFRESH } from '../../const.js';
 import { chatsVersion } from '../../shared/utils/viewVersions.js';
-import { chatsThreadPage } from '../../shared/pages/chatPages.js';
+import { chatsThreadPage } from '../../shared/pages/chatsPage.js';
 
 export default async (ctx) => {
   const { backend, onionSpinner } = ctx;

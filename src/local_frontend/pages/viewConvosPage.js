@@ -1,4 +1,4 @@
-import { chatsPage } from '../../shared/pages/chatPages.js';
+import { chatsPage } from '../../shared/pages/chatsPage.js';
 import indicators from './indicators.js';
 
 export default () => chatsPage({

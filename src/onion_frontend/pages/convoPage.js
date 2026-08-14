@@ -1,5 +1,5 @@
-import { chatPage } from '../../shared/pages/chatPages.js';
-import { truncateMiddle } from '../../shared/pages/components.js';
+import { chatPage } from '../../shared/pages/chatPage.js';
+import truncateMiddle from '../../shared/utils/truncateMiddle.js';
 
 export default ({ shopAddress, error = '' }) => chatPage({
   title: truncateMiddle(shopAddress),

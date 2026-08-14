@@ -6,6 +6,7 @@ test('serves the self-hosted QR decoder', async () => {
     path: '/static/jsqr.js',
     set: jest.fn(),
     get: jest.fn(),
+    query: {},
   };
   const next = jest.fn();
 

@@ -1,7 +1,5 @@
 import {
   emptyState,
-  formatFiat,
-  formatXmr,
   orderCard,
   orderStatus,
   orderStatusBadge,
@@ -17,6 +15,8 @@ import {
 } from './layout.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import formatDate from '../../utils/formatDate.js';
+import formatFiat from '../utils/formatFiat.js';
+import formatXmr from '../utils/formatXmr.js';
 
 const ownerScripts = ['sound.js'];
 

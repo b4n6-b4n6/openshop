@@ -1,5 +1,4 @@
 import {
-  formatFiat,
   productPhoto,
   richText,
 } from '../../shared/pages/components.js';
@@ -10,6 +9,7 @@ import {
   icon,
 } from '../../shared/pages/layout.js';
 import { escapeAttribute, escapeHtml } from '../../shared/utils/html.js';
+import formatFiat from '../../shared/utils/formatFiat.js';
 
 const productPage = ({
   id,

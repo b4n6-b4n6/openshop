@@ -1,4 +1,4 @@
-import { chatPage } from '../../shared/pages/chatPages.js';
+import { chatPage } from '../../shared/pages/chatPage.js';
 import formatUserId from '../../utils/formatUserId.js';
 import indicators from './indicators.js';
 

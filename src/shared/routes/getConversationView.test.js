@@ -6,7 +6,7 @@ test('embeds only a tiny blurred preview for chat image messages', async () => {
   const getImageContent = jest.fn().mockResolvedValue(image);
   const genThumb = jest.fn(async (key, getValue, size) => {
     expect(key).toBe('MESSAGE_BLUR:message-1');
-    expect(size).toEqual([24, 15]);
+    expect(size).toEqual([24, 15, 'jpeg']);
     await getValue();
     return image;
   });

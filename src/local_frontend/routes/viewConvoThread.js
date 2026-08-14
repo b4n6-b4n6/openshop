@@ -1,5 +1,5 @@
 import { CACHE_CONTROL_LIVE, CONVO_PAGE_REFRESH } from '../../const.js';
-import { chatThreadPage } from '../../shared/pages/chatPages.js';
+import { chatThreadPage } from '../../shared/pages/chatPage.js';
 import getConversationView from '../../shared/routes/getConversationView.js';
 import getConvoAndOrders from '../../backend/utils/getConvoAndOrders.js';
 import { chatVersion } from '../../shared/utils/viewVersions.js';
