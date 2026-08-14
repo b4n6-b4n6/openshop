@@ -1,4 +1,4 @@
-import assertImage from '../utils/assertImage.js';
+import assertImage from '../../utils/assertImage.js';
 import viewProductPage from '../pages/viewProductPage.js';
 import validateProductInput from '../utils/validateProductInput.js';
 

@@ -250,9 +250,7 @@ export const orderThreadPage = ({
         <div data-order-txid>${transactionDetails(order)}</div>
 
         ${!order.deposit_txid
-        ? `<p
-              class="text-center text-[12px]leading-relaxed text-faint"
-            >Send exactly this amount in Monero. The order updates automatically when the payment is detected.</p>`
+        ? '<p class="text-center text-[12px] leading-relaxed text-faint">Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>'
         : ''}
       </div>`
     ),

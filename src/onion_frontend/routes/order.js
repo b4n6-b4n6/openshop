@@ -1,15 +1,10 @@
-import QRCode from 'qrcode';
-import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import createInvoiceUri from '../../utils/createInvoiceUri.js';
 import picoToXmr from '../../utils/picoToXmr.js';
-import { orderVersion } from '../../shared/utils/viewVersions.js';
+import genQr from '../../utils/genQr.js';
 import orderPage from '../pages/orderPage.js';
-import { CACHE_CONTROL_LIVE, THUMB_CACHE_KEY, THUMB_CACHE_SIZE } from '../../const.js';
 
 export default async (ctx) => {
-  const {
-    params, backend, state, thumbnailCache,
-  } = ctx;
+  const { params, backend, state } = ctx;
   const { orders } = backend;
   const { id } = params;
 
@@ -19,47 +14,15 @@ export default async (ctx) => {
   }
 
   const depositAddress = ctx.walletHandler.address;
-  if (!depositAddress) ctx.throw(503, 'Payment address unavailable');
-
-  const version = orderVersion(order);
-  ctx.set('ETag', `"${version}"`);
-  if (ctx.get('if-none-match') === `"${version}"`) {
-    ctx.status = 304;
-    return;
-  }
-  ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
+  if (!depositAddress) { ctx.throw(503, 'Payment address unavailable'); }
 
   const amount = picoToXmr(order.deposit_amount);
-
-  const [qr, productPhoto] = await Promise.all([
-    QRCode.toDataURL(
-      createInvoiceUri({ depositAddress, amount }),
-      {
-        color: { dark: '#0f1115', light: '#ffffff' },
-        errorCorrectionLevel: 'H',
-        margin: 1,
-        width: 240,
-      },
-    ),
-    bufferToImageDataURI(
-      order.product_photo_exists
-        ? await thumbnailCache.genThumb(
-          `${THUMB_CACHE_KEY.ORDER}:${order.id}`,
-          () => orders.getPhoto(order.id),
-          THUMB_CACHE_SIZE.ORDER,
-        )
-        : null,
-    ),
-  ]);
+  const qr = await genQr(createInvoiceUri({ depositAddress, amount }));
 
   ctx.body = orderPage({
-    order: {
-      ...order,
-      product_photo: productPhoto,
-      id,
-    },
-    depositAddress,
+    id,
+    customer: order.customer,
+    qrCaption: depositAddress,
     qr,
-    version,
   });
 };

@@ -1,3 +1,4 @@
+import assertImage from '../../utils/assertImage.js';
 import createChatMessages from '../../shared/routes/createChatMessages.js';
 import viewConvoPage from '../pages/viewConvoPage.js';
 
@@ -10,6 +11,9 @@ export default async (ctx) => {
   const asyncRequest = ctx.get('x-openshop-async') === '1';
 
   try {
+    const image = request.files?.image?.[0]?.buffer;
+    if (image) { await assertImage(image); }
+
     const result = await createChatMessages({
       messages: backend.messages,
       sender: onion,

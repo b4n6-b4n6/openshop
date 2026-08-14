@@ -55,6 +55,6 @@ export const THUMB_CACHE_SIZE = {
   BANNER: 480,
   ORDER: 64,
   PRODUCT: 64,
-  MESSAGE: [280, 35],
-  MESSAGE_BLUR: [24, 15],
+  MESSAGE: [280, 35, 'jpeg'],
+  MESSAGE_BLUR: [24, 15, 'jpeg'],
 };

@@ -1,7 +1,12 @@
-import { ORDER_PAGE_REFRESH } from '../../const.js';
 import { orderPage } from '../../shared/pages/orderPages.js';
 
-export default (options) => orderPage({
-  ...options,
-  refresh: ORDER_PAGE_REFRESH,
-});
+export default ({ id, qr, qrCaption }) => (
+  orderPage({
+    thread: `/browser/orders/${id}/thread`,
+    owner: false,
+    back: '/browser/orders',
+    qr,
+    qrCaption,
+    qrFileName: `openshop-order-${id}.png`,
+  })
+);

@@ -8,17 +8,21 @@ import {
   THUMB_CACHE_SIZE,
   THUMB_CACHE_KEY,
 } from '../../const.js';
-import viewOrderThreadPage from '../pages/viewOrderThreadPage.js';
+import orderThreadPage from '../pages/orderThreadPage.js';
 
 export default async (ctx) => {
-  const { params, backend, thumbnailCache } = ctx;
+  const {
+    params, backend, state, thumbnailCache,
+  } = ctx;
   const { orders } = backend;
   const { id } = params;
 
   const order = await orders.get(id);
-  if (!order) { ctx.throw(404, 'Order not found'); }
+  if (!order || order.customer !== state.user.userId) {
+    ctx.throw(404, 'Order not found');
+  }
 
-  const depositAddress = ctx.walletSetup.address;
+  const depositAddress = ctx.walletHandler.address;
   if (!depositAddress) ctx.throw(503, 'Payment address unavailable');
 
   const version = orderVersion(order);
@@ -41,7 +45,7 @@ export default async (ctx) => {
       : null,
   );
 
-  ctx.body = viewOrderThreadPage({
+  ctx.body = orderThreadPage({
     order: {
       ...order,
       product_photo: productPhoto,

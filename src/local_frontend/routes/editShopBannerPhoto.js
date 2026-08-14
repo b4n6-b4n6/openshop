@@ -1,4 +1,4 @@
-import assertImage from '../utils/assertImage.js';
+import assertImage from '../../utils/assertImage.js';
 
 export default async (ctx) => {
   const { onionSpinner, backend, thumbnailCache } = ctx;
