@@ -175,35 +175,6 @@ export const productPhoto = (src, alt = '') => (
   </div>`
 );
 
-export const productCard = ({
-  product,
-  actionHref,
-  actionLabel = 'Edit',
-}) => {
-  const quantity = Number(product.available_quantity);
-  const out = quantity <= 0;
-  const purchase = actionLabel === 'Purchase';
-
-  return `<article class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4 ${out ? 'opacity-60' : ''}">
-    ${thumb(product.photo)}
-    <div class="min-w-0 flex-1">
-      <p class="truncate text-[15px] font-semibold text-text">${escapeHtml(product.name)}</p>
-      <p class="text-[13px] text-muted">${escapeHtml(formatFiat(product.price, product.currency))}</p>
-      <div class="mt-1">${out
-    ? '<span class="inline-flex rounded-full bg-danger/15 px-2 py-0.5 text-[11px] font-semibold text-danger">Out of stock</span>'
-    : `<span class="text-[12px] text-faint">${quantity} in stock</span>`}
-      </div>
-    </div>
-    <div class="shrink-0">${button({
-    label: actionLabel,
-    href: purchase && out ? undefined : actionHref,
-    variant: purchase ? 'primary' : 'secondary',
-    classes: 'h-9 px-3 text-[13px]',
-    attributes: purchase && out ? 'disabled aria-label="Out of stock"' : '',
-  })}</div>
-  </article>`;
-};
-
 export const orderStatus = (order) => {
   if (order.deposit_confirmed_at) {
     return { label: 'Confirmed', classes: 'bg-success/15 text-success' };

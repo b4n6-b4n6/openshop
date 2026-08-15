@@ -1,29 +1,6 @@
-import {
-  emptyState,
-  productCard,
-} from '../../shared/pages/components.js';
-import { appFrame, document, icon } from '../../shared/pages/layout.js';
+import { productsPage } from '../../shared/pages/productsPage.js';
 
-const productsPage = ({ allProducts }) => document({
-  title: 'Products',
-  body: appFrame({
-    title: 'Products',
-    titleIcon: icon('boxes', 'size-4'),
-    back: '/browser/',
-    content: allProducts.length
-      ? `<div class="flex flex-col gap-2.5 px-5 py-5">
-        ${allProducts.map((product) => productCard({
-    product,
-    actionHref: `/browser/products/${product.id}`,
-    actionLabel: 'Purchase',
-  })).join('')}
-      </div>`
-      : emptyState({
-        emptyIcon: 'boxes',
-        title: 'No products',
-        description: 'This shop has not listed any products yet.',
-      }),
-  }),
+export default ({ allProducts }) => productsPage({
+  allProducts,
+  owner: false,
 });
-
-export default productsPage;
