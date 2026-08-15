@@ -14,6 +14,7 @@ export default async (ctx) => {
       { expires: new Date('9999-12-31T23:59:59.999Z') },
     );
 
+    ctx.status = 303;
     ctx.redirect('/browser/');
   } else {
     ctx.status = 400;

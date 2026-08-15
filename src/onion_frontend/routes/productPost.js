@@ -41,5 +41,6 @@ export default async (ctx) => {
     purchase_quantity,
   });
 
+  ctx.status = 303;
   ctx.redirect(`/browser/orders/${orderId}`);
 };

@@ -20,6 +20,7 @@ export default async (ctx) => {
       image_content,
     });
 
+    ctx.status = 303;
     ctx.redirect('/browser/convo');
   } catch (error) {
     console.error(error);

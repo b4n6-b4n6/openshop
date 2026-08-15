@@ -8,5 +8,6 @@ export default async (ctx) => {
 
   await shops.update({ address, name, description });
 
+  ctx.status = 303;
   ctx.redirect('/shop');
 };
