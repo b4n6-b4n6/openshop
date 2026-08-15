@@ -1,19 +1,13 @@
-<code style='color: cyan;'>[Refactor]</code>
-  * remove product_description from Orders (including tests)
-  * mainly spacing of shit in pages needs to be fixed
-  * review all front-end .js files
-
 <code style='color: cyan;'>[Core]</code>
-  * reduce quantity in purchase flow
-  * implement order expiration in purchase flow
-  * os specific notifications
+  * reduce quantity in purchase flow❗
+  * implement order expiration in purchase flow❗
+  * os specific notifications❗
     * per convo message
     * per order status change
   * add owner-only per-order metadata field that can be modified in owners order page
-  * use 302 or 303 for post responses?
 
 <code style='color: cyan;'>[UI]</code>
-  * Improve live chat
+  * Improve live chat❗
     * reveal new message once a new message appears
     * save and restore scroll position across reloads (probably save when user triggers scroll and load on new page load event)
   * Improve aesthetic
@@ -30,3 +24,9 @@
   * Release 2 versions
     * tor snowflake auto-configured version
     * regular version
+
+<code style='color: cyan;'>[Refactor]</code>
+  * remove product_description from Orders (including tests)
+  * mainly spacing of shit in pages needs to be fixed
+  * review all front-end .js files
+  * review whether the inclusion of the frontend .js files should be modernised?
