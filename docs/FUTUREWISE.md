@@ -12,6 +12,7 @@
     * per convo message
     * per order status change
   * add owner-only per-order metadata field that can be modified in owners order page
+  * use 302 or 303 for post responses?
 
 <code style='color: cyan;'>[UI]</code>
   * Improve live chat
