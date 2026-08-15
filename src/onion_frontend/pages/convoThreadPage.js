@@ -1,7 +1,7 @@
 import { CONVO_PAGE_REFRESH } from '../../const.js';
 import { chatThreadPage } from '../../shared/pages/chatPage.js';
 
-export default async ({
+export default ({
   allExtMessages,
   version,
   me,

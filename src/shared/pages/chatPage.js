@@ -229,7 +229,7 @@ export const chatPage = ({
           data-chat-attachment-remove
           class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-surface"
           aria-label="Remove image attachment"
-        >×</button>
+        >${icon('close', 'size-3.5')}</button>
       </div>
       <div class="flex items-center gap-2">
         <input

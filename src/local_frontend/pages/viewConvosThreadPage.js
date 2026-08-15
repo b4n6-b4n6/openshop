@@ -1,7 +1,7 @@
 import { CONVOS_PAGE_REFRESH } from '../../const.js';
 import { chatsThreadPage } from '../../shared/pages/chatsPage.js';
 
-export default async ({ allConvos, version }) => (
+export default ({ allConvos, version }) => (
   chatsThreadPage({
     allConvos,
     version,

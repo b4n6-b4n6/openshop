@@ -1,25 +1,26 @@
-import { CACHE_CONTROL_FOREVER, CACHE_CONTROL_LIVE } from '../../const';
+/* eslint-disable consistent-return */
+import { CACHE_CONTROL_FOREVER, CACHE_CONTROL_LIVE } from '../../const.js';
 
 export default () => {
-  const redirectWith303 = (url) => {
-    ctx.status = 303;
-    ctx.redirect(url);
+  const redirectWith303 = function (url) {
+    this.status = 303;
+    this.redirect(url);
   };
-  const tryCacheEntity = (version) => {
-    ctx.set('ETag', `"${version}"`);
-    if (ctx.get('if-none-match') === `"${version}"`) {
-      ctx.status = 304;
+  const tryCacheEntity = function (version) {
+    this.set('ETag', `"${version}"`);
+    if (this.get('if-none-match') === `"${version}"`) {
+      this.status = 304;
       return true;
     }
-    ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
+    this.set('Cache-Control', CACHE_CONTROL_LIVE);
   };
-  const tryCachePermanentEntity = (version) => {
-    ctx.set('ETag', `"${version}"`);
-    if (ctx.get('if-none-match') === `"${version}"`) {
-      ctx.status = 304;
+  const tryCachePermanentEntity = function (version) {
+    this.set('ETag', `"${version}"`);
+    if (this.get('if-none-match') === `"${version}"`) {
+      this.status = 304;
       return true;
     }
-    ctx.set('Cache-Control', CACHE_CONTROL_FOREVER);
+    this.set('Cache-Control', CACHE_CONTROL_FOREVER);
   };
 
   return async (ctx, next) => {
