@@ -1,34 +1,17 @@
 import {
   CACHE_CONTROL_LIVE,
-  THUMB_CACHE_SIZE,
-  THUMB_CACHE_KEY,
 } from '../../const.js';
-import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import { ordersVersion } from '../../shared/utils/viewVersions.js';
 import viewOrdersThreadPage from '../pages/viewOrdersThreadPage.js';
+import enhanceOrders from '../../backend/utils/enhanceOrders.js';
 
 export default async (ctx) => {
   const { backend, thumbCache } = ctx;
   const { orders } = backend;
 
-  const allOrders = (
-    await Promise.all(
-      (await orders.getAllForShop()).map(async (order) => ({
-        ...order,
-        product_photo: await bufferToImageDataURI(
-          order.product_photo_exists
-            ? await thumbCache.genThumb(
-              `${THUMB_CACHE_KEY.ORDER}:${order.id}`,
-              () => orders.getPhoto(order.id),
-              THUMB_CACHE_SIZE.ORDER,
-            )
-            : null,
-        ),
-      })),
-    )
-  );
-
+  const allOrders = await orders.getAllForShop();
   const version = ordersVersion(allOrders);
+
   ctx.set('ETag', `"${version}"`);
   if (ctx.get('if-none-match') === `"${version}"`) {
     ctx.status = 304;
@@ -36,5 +19,7 @@ export default async (ctx) => {
   }
   ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
 
-  ctx.body = viewOrdersThreadPage({ allOrders });
+  ctx.body = viewOrdersThreadPage({
+    allOrders: await enhanceOrders({ allOrders, orders, thumbCache }),
+  });
 };

@@ -53,7 +53,7 @@ export default async ({
         ...event,
         ext_message_payload: {
           ...payload,
-          product_photo: await bufferToImageDataURI(photo),
+          product_photo: bufferToImageDataURI(photo),
         },
       };
     }

@@ -1,14 +1,10 @@
 import genQr from '../../utils/genQr.js';
-import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import createInvoiceUri from '../../utils/createInvoiceUri.js';
 import picoToXmr from '../../utils/picoToXmr.js';
 import { orderVersion } from '../../shared/utils/viewVersions.js';
-import {
-  CACHE_CONTROL_LIVE,
-  THUMB_CACHE_SIZE,
-  THUMB_CACHE_KEY,
-} from '../../const.js';
+import { CACHE_CONTROL_LIVE } from '../../const.js';
 import orderThreadPage from '../pages/orderThreadPage.js';
+import enhanceOrder from '../../backend/utils/enhanceOrder.js';
 
 export default async (ctx) => {
   const {
@@ -35,20 +31,10 @@ export default async (ctx) => {
 
   const amount = picoToXmr(order.deposit_amount);
   const qr = await genQr(createInvoiceUri({ depositAddress, amount }));
-  const productPhoto = bufferToImageDataURI(
-    order.product_photo_exists
-      ? await thumbCache.genThumb(
-        `${THUMB_CACHE_KEY.ORDER}:${order.id}`,
-        () => orders.getPhoto(order.id),
-        THUMB_CACHE_SIZE.ORDER,
-      )
-      : null,
-  );
 
   ctx.body = orderThreadPage({
     order: {
-      ...order,
-      product_photo: productPhoto,
+      ...await enhanceOrder({ order, orders, thumbCache }),
       id,
     },
     depositAddress,

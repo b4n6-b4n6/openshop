@@ -21,7 +21,7 @@ export default async (ctx) => {
   ctx.body = productPage({
     id,
     name,
-    photo: await bufferToImageDataURI(photo),
+    photo: bufferToImageDataURI(photo),
     description,
     price,
     currency,
