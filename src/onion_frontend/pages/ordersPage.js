@@ -1,5 +1,5 @@
 import { ORDERS_PAGE_REFRESH } from '../../const.js';
-import { ordersPage } from '../../shared/pages/orderPages.js';
+import { ordersPage } from '../../shared/pages/ordersPage.js';
 
 export default ({ allOrders }) => ordersPage({
   allOrders,

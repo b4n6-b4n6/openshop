@@ -1,4 +1,4 @@
-import { orderPage } from '../../shared/pages/orderPages.js';
+import { orderPage } from '../../shared/pages/orderPage.js';
 
 export default ({ id, qr, qrCaption }) => (
   orderPage({

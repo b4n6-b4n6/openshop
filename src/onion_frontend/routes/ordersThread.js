@@ -4,7 +4,7 @@ import {
   ORDERS_PAGE_REFRESH,
   THUMB_CACHE_KEY,
 } from '../../const.js';
-import { ordersThreadPage } from '../../shared/pages/orderPages.js';
+import { ordersThreadPage } from '../../shared/pages/ordersPage.js';
 import { ordersVersion } from '../../shared/utils/viewVersions.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 

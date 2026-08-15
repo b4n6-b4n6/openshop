@@ -1,4 +1,4 @@
-import { ordersPage } from '../../shared/pages/orderPages.js';
+import { ordersPage } from '../../shared/pages/ordersPage.js';
 import indicators from './indicators.js';
 
 export default () => ordersPage({

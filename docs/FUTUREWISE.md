@@ -1,3 +1,10 @@
+<code style='color: cyan;'>[Refactor]</code>
+  * remove product_description from Orders (including tests)
+  * review all routes and pages - make all of them consistent
+  * remove files from shared/routes that are not routes
+  * mainly spacing of shit in pages needs to be fixed
+  * review all front-end .js files
+
 <code style='color: cyan;'>[Core]</code>
   * reduce quantity in purchase flow
   * implement order expiration in purchase flow
@@ -18,9 +25,6 @@
   * Improved UX
     * for all customer pages - Add message ting on order status changes
     * for all customer pages - Add message ting for every new message that arrives
-
-<code style='color: cyan;'>[Refactor]</code>
-  * remove product_description from Orders (including tests)
 
 <code style='color: cyan;'>[Android]</code>
   * Ask user to disable battery optimisations

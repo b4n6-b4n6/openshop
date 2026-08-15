@@ -1,9 +1,7 @@
 import { chatPage, chatThreadPage } from './chatPage.js';
 import { chatsThreadPage } from './chatsPage.js';
-import {
-  orderThreadPage,
-  ordersThreadPage,
-} from './orderPages.js';
+import { orderThreadPage } from './orderPage.js';
+import { ordersThreadPage } from './ordersPage.js';
 
 const createdAt = new Date('2026-08-09T12:00:00.000Z');
 const order = {
