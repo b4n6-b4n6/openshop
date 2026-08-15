@@ -5,7 +5,8 @@
     const decrease = form.querySelector('[data-quantity-decrease]');
     const increase = form.querySelector('[data-quantity-increase]');
     const submit = document.querySelector(`[form="${form.id}"]`);
-    if (!input || !decrease || !increase || !submit) return;
+    if (!input || !decrease || !increase || !submit) { return; }
+
     const min = Number(input.min);
     const max = Number(input.max);
     const price = Number(form.dataset.unitPrice);

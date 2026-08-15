@@ -7,7 +7,7 @@
   const fileInput = document.querySelector('[data-qr-file]');
   const onionInput = document.querySelector('input[name="browsed_onion_address"]');
   const error = document.querySelector('[data-qr-error]');
-  if (!form || !submit || !trigger || !fileInput || !onionInput || !error) return;
+  if (!form || !submit || !trigger || !fileInput || !onionInput || !error) { return; }
 
   form.addEventListener('submit', () => {
     form.classList.add('submitting');

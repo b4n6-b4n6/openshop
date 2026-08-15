@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-
-const icon = (name, classes = 'size-5') => {
+/* global window */
+window.icon = (name, classes = 'size-5') => {
   const paths = {
     arrowLeft: '<path d="m15 18-6-6 6-6"/>',
     bold: '<path d="M6 4h8a4 4 0 0 1 0 8H6z"/><path d="M6 12h9a4 4 0 0 1 0 8H6z"/>',

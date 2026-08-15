@@ -86,6 +86,7 @@
       const external = form.id
         ? document.querySelectorAll(`button[form="${form.id}"]`)
         : [];
+
       [...form.querySelectorAll('button[type="submit"]'), ...external]
         .forEach((control) => {
           const submitButton = control;
