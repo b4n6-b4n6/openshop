@@ -21,8 +21,7 @@ export default async (ctx) => {
       image_content,
     });
 
-    ctx.status = 303;
-    ctx.redirect(`/shop/convos/${encodeURIComponent(id)}`);
+    ctx.redirectWith303(`/shop/convos/${encodeURIComponent(id)}`);
   } catch (error) {
     console.error(error);
     ctx.body = viewConvoPage({

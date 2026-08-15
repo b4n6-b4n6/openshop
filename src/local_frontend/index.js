@@ -10,6 +10,7 @@ import exportBrowsedOnion from './middlewares/exportBrowsedOnion.js';
 import onionSpinner from './middlewares/onionSpinner.js';
 import requireOnion from './middlewares/requireOnion.js';
 import staticFiles from '../shared/middlewares/staticFiles.js';
+import utilsMw from '../shared/middlewares/utilsMw.js';
 
 const walletSetupMw = await createWalletSetupMw();
 const backendMw = await createBackendMw();
@@ -17,6 +18,7 @@ const backendMw = await createBackendMw();
 const app = new Koa();
 
 const server = app
+  .use(utilsMw())
   .use(adaptedBody())
   .use(backendMw)
   .use(thumbCacheMw())

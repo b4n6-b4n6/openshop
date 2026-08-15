@@ -21,6 +21,7 @@ import staticFiles from '../shared/middlewares/staticFiles.js';
 import preRoutes from './routes/pre.js';
 import browserPathRedirect from './middlewares/browserPathRedirect.js';
 import routes from './routes/index.js';
+import utilsMw from '../shared/middlewares/utilsMw.js';
 
 await waitForFile(MY_SHOP_ONION_PATH);
 await waitForFile(MY_SHOP_WALLET_PATH);
@@ -31,6 +32,7 @@ const backendMw = await createBackendMw();
 const app = new Koa();
 
 const server = app
+  .use(utilsMw())
   .use(body())
   .use(backendMw)
   .use(thumbCacheMw())

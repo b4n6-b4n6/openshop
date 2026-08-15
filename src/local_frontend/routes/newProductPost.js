@@ -39,6 +39,5 @@ export default async (ctx) => {
     available_quantity,
   });
 
-  ctx.status = 303;
-  ctx.redirect('/shop/products');
+  ctx.redirectWith303('/shop/products');
 };

@@ -12,6 +12,5 @@ export default async (ctx) => {
     });
   }
 
-  ctx.status = 303;
-  ctx.redirect('/wallet-setup');
+  ctx.redirectWith303('/wallet-setup');
 };
