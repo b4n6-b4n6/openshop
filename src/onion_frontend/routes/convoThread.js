@@ -1,5 +1,5 @@
-import { CONVO_PAGE_REFRESH, CACHE_CONTROL_LIVE } from '../../const.js';
-import { chatThreadPage } from '../../shared/pages/chatPage.js';
+import { CACHE_CONTROL_LIVE } from '../../const.js';
+import chatThreadPage from '../pages/convoThreadPage.js';
 import enhanceExtMessages from '../../backend/utils/enhanceExtMessages.js';
 import getExtMessages from '../../backend/utils/getExtMessages.js';
 import { chatVersion } from '../../shared/utils/viewVersions.js';
@@ -26,19 +26,19 @@ export default async (ctx) => {
     receiver: userId,
   });
 
+  const me = userId;
+  const chatId = myOnion;
+
   ctx.body = chatThreadPage({
     allExtMessages: await enhanceExtMessages({
       allExtMessages,
       thumbCache,
       messages,
       orders,
-      me: userId,
+      me,
     }),
-    me: userId,
-    chatId: myOnion,
-    imageBase: '/browser/convo/images',
-    orderBase: '/browser/orders',
+    me,
+    chatId,
     version,
-    refresh: CONVO_PAGE_REFRESH,
   });
 };

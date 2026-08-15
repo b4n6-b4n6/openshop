@@ -1,6 +1,6 @@
-import { CACHE_CONTROL_LIVE, CONVOS_PAGE_REFRESH } from '../../const.js';
+import { CACHE_CONTROL_LIVE } from '../../const.js';
 import { chatsVersion } from '../../shared/utils/viewVersions.js';
-import { chatsThreadPage } from '../../shared/pages/chatsPage.js';
+import viewConvosThreadPage from '../pages/viewConvosThreadPage.js';
 
 export default async (ctx) => {
   const { backend, onionSpinner } = ctx;
@@ -15,9 +15,8 @@ export default async (ctx) => {
   }
   ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
 
-  ctx.body = chatsThreadPage({
+  ctx.body = viewConvosThreadPage({
     allConvos,
     version,
-    refresh: CONVOS_PAGE_REFRESH,
   });
 };

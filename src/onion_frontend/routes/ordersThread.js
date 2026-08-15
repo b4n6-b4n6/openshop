@@ -1,9 +1,6 @@
 import enhanceOrders from '../../backend/utils/enhanceOrders.js';
-import {
-  CACHE_CONTROL_LIVE,
-  ORDERS_PAGE_REFRESH,
-} from '../../const.js';
-import { ordersThreadPage } from '../../shared/pages/ordersPage.js';
+import { CACHE_CONTROL_LIVE } from '../../const.js';
+import ordersThreadPage from '../pages/ordersThreadPage.js';
 import { ordersVersion } from '../../shared/utils/viewVersions.js';
 
 export default async (ctx) => {
@@ -23,6 +20,5 @@ export default async (ctx) => {
 
   ctx.body = ordersThreadPage({
     allOrders: await enhanceOrders({ allOrders, orders, thumbCache }),
-    refresh: ORDERS_PAGE_REFRESH,
   });
 };
