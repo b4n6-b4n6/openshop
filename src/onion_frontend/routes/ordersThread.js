@@ -9,7 +9,7 @@ import { ordersVersion } from '../../shared/utils/viewVersions.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 
 export default async (ctx) => {
-  const { backend, state, thumbnailCache } = ctx;
+  const { backend, state, thumbCache } = ctx;
   const { orders } = backend;
   const { userId } = state.user;
 
@@ -19,7 +19,7 @@ export default async (ctx) => {
         ...order,
         product_photo: await bufferToImageDataURI(
           order.product_photo_exists
-            ? await thumbnailCache.genThumb(
+            ? await thumbCache.genThumb(
               `${THUMB_CACHE_KEY.ORDER}:${order.id}`,
               () => orders.getPhoto(order.id),
               THUMB_CACHE_SIZE.ORDER,

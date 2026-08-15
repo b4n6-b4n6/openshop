@@ -5,7 +5,7 @@ import isTest from '../../utils/isTest.js';
 const TTL = isTest ? 15 : 60 * 60 * 24 * 7;
 const KEY = (key) => `thumbnail_cache:${key}`;
 
-class ThumbnailCache {
+class ThumbCache {
   constructor() {
     this.redis = new Redis();
   }
@@ -41,4 +41,4 @@ class ThumbnailCache {
   }
 }
 
-export default ThumbnailCache;
+export default ThumbCache;

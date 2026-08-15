@@ -12,7 +12,7 @@ import orderThreadPage from '../pages/orderThreadPage.js';
 
 export default async (ctx) => {
   const {
-    params, backend, state, thumbnailCache,
+    params, backend, state, thumbCache,
   } = ctx;
   const { orders } = backend;
   const { id } = params;
@@ -37,7 +37,7 @@ export default async (ctx) => {
   const qr = await genQr(createInvoiceUri({ depositAddress, amount }));
   const productPhoto = bufferToImageDataURI(
     order.product_photo_exists
-      ? await thumbnailCache.genThumb(
+      ? await thumbCache.genThumb(
         `${THUMB_CACHE_KEY.ORDER}:${order.id}`,
         () => orders.getPhoto(order.id),
         THUMB_CACHE_SIZE.ORDER,

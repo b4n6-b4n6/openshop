@@ -6,7 +6,7 @@ import { chatVersion } from '../../shared/utils/viewVersions.js';
 
 export default async (ctx) => {
   const {
-    state, backend, thumbnailCache, myOnion,
+    state, backend, thumbCache, myOnion,
   } = ctx;
   const { userId } = state.user;
 
@@ -30,7 +30,7 @@ export default async (ctx) => {
     allExtMessages: await getConversationView({
       backend,
       allExtMessages,
-      thumbnailCache,
+      thumbCache,
       me: userId,
     }),
     me: userId,

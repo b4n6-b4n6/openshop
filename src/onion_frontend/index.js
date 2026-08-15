@@ -14,7 +14,7 @@ import createUser from './middlewares/createUser.js';
 import validateUser from './middlewares/validateUser.js';
 import receiveMessages from './middlewares/receiveMessages.js';
 import createBackendMw from '../shared/middlewares/backendMw.js';
-import thumbnailCacheMw from '../shared/middlewares/thumbnailCacheMw.js';
+import thumbCacheMw from '../shared/middlewares/thumbCacheMw.js';
 import createMyOnion from './middlewares/myOnion.js';
 import staticFiles from '../shared/middlewares/staticFiles.js';
 
@@ -33,7 +33,7 @@ const app = new Koa();
 const server = app
   .use(body())
   .use(backendMw)
-  .use(thumbnailCacheMw())
+  .use(thumbCacheMw())
   .use(myOnion)
   .use(walletHandlerMw())
   .use(onionFilter())

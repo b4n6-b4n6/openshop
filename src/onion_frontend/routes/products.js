@@ -3,14 +3,14 @@ import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import productsPage from '../pages/productsPage.js';
 
 export default async (ctx) => {
-  const { backend, thumbnailCache } = ctx;
+  const { backend, thumbCache } = ctx;
   const { products } = backend;
 
   const allProducts = (
     await Promise.all(
       (await products.getAll()).map(async (product) => {
         const photo = product.photo_exists
-          ? await thumbnailCache.genThumb(
+          ? await thumbCache.genThumb(
             `${THUMB_CACHE_KEY.PRODUCT}:${product.id}`,
             () => products.getPhoto(product.id),
             THUMB_CACHE_SIZE.PRODUCT,

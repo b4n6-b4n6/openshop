@@ -33,7 +33,7 @@ test('embeds only a tiny blurred preview for chat image messages', async () => {
   const allExtMessagesEnhanced = await getConversationView({
     backend,
     allExtMessages,
-    thumbnailCache: { genThumb },
+    thumbCache: { genThumb },
   });
 
   expect(getImageContent).toHaveBeenCalledWith('message-1');

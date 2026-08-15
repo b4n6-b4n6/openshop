@@ -4,7 +4,7 @@ import validateProductInput from '../utils/validateProductInput.js';
 
 export default async (ctx) => {
   const {
-    request, backend, params, thumbnailCache,
+    request, backend, params, thumbCache,
   } = ctx;
   const { products } = backend;
   const { id } = params;
@@ -45,7 +45,7 @@ export default async (ctx) => {
     available_quantity: available_quantity || '0',
   });
 
-  if (photo) { await thumbnailCache.clear(`product:${id}`); }
+  if (photo) { await thumbCache.clear(`product:${id}`); }
 
   ctx.redirect('/shop/products');
 };

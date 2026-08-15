@@ -5,7 +5,7 @@ import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 import genQr from '../../utils/genQr.js';
 
 export default async (ctx) => {
-  const { myOnion, backend, thumbnailCache } = ctx;
+  const { myOnion, backend, thumbCache } = ctx;
   const { shops } = backend;
 
   const shop = await shops.get(myOnion);
@@ -13,14 +13,14 @@ export default async (ctx) => {
 
   const [profilePhoto, bannerPhoto] = (await Promise.all([
     shop.profile_photo_exists
-      ? thumbnailCache.genThumb(
+      ? thumbCache.genThumb(
         THUMB_CACHE_KEY.PROFILE,
         () => shops.getProfilePhoto(myOnion),
         THUMB_CACHE_SIZE.PROFILE,
       )
       : null,
     shop.banner_photo_exists
-      ? thumbnailCache.genThumb(
+      ? thumbCache.genThumb(
         THUMB_CACHE_KEY.BANNER,
         () => shops.getBannerPhoto(myOnion),
         THUMB_CACHE_SIZE.BANNER,

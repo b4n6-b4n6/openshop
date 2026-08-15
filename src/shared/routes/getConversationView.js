@@ -2,7 +2,7 @@ import { THUMB_CACHE_KEY, THUMB_CACHE_SIZE } from '../../const.js';
 import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
 
 export default async ({
-  backend, thumbnailCache, allExtMessages, me,
+  backend, thumbCache, allExtMessages, me,
 }) => (
   Promise.all(allExtMessages.map(async (event) => {
     const payload = event.ext_message_payload;
@@ -10,7 +10,7 @@ export default async ({
 
     if (payload.image_content_exists) {
       if (own) {
-        const preview = await thumbnailCache.genThumb(
+        const preview = await thumbCache.genThumb(
           `${THUMB_CACHE_KEY.MESSAGE}:${event.id}`,
           () => backend.messages.getImageContent(event.id),
           THUMB_CACHE_SIZE.MESSAGE,
@@ -24,7 +24,7 @@ export default async ({
           },
         };
       }
-      const preview = await thumbnailCache.genThumb(
+      const preview = await thumbCache.genThumb(
         `${THUMB_CACHE_KEY.MESSAGE_BLUR}:${event.id}`,
         () => backend.messages.getImageContent(event.id),
         THUMB_CACHE_SIZE.MESSAGE_BLUR,
@@ -38,7 +38,7 @@ export default async ({
         },
       };
     } if (payload.product_photo_exists) {
-      const photo = await thumbnailCache.genThumb(
+      const photo = await thumbCache.genThumb(
         `${THUMB_CACHE_KEY.ORDER}:${event.id}`,
         () => backend.orders.getPhoto(event.id),
         THUMB_CACHE_SIZE.ORDER,

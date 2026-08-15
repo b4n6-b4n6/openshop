@@ -8,7 +8,7 @@ import { ordersVersion } from '../../shared/utils/viewVersions.js';
 import viewOrdersThreadPage from '../pages/viewOrdersThreadPage.js';
 
 export default async (ctx) => {
-  const { backend, thumbnailCache } = ctx;
+  const { backend, thumbCache } = ctx;
   const { orders } = backend;
 
   const allOrders = (
@@ -17,7 +17,7 @@ export default async (ctx) => {
         ...order,
         product_photo: await bufferToImageDataURI(
           order.product_photo_exists
-            ? await thumbnailCache.genThumb(
+            ? await thumbCache.genThumb(
               `${THUMB_CACHE_KEY.ORDER}:${order.id}`,
               () => orders.getPhoto(order.id),
               THUMB_CACHE_SIZE.ORDER,
