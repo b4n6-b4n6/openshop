@@ -8,7 +8,7 @@ export default async (ctx) => {
   const { shops } = backend;
 
   const shop = await shops.get(myOnion);
-  if (!shop) ctx.throw(404, 'Shop not found');
+  if (!shop) { ctx.throw(404, 'Shop not found'); }
 
   const enhancedShop = await enhanceShop({
     shop,

@@ -1,11 +1,12 @@
 /* eslint-disable import/no-unresolved */
 import { fileTypeFromBuffer } from 'file-type';
-import { CACHE_CONTROL_FOREVER } from '../../const.js';
 
 export default async (ctx) => {
   const { backend, params } = ctx;
   const { messages } = backend;
   const { id } = params;
+
+  if (ctx.tryCacheEntity(id, true)) { return; }
 
   const imageContent = await messages.getImageContent(id);
   if (!imageContent) {
@@ -27,7 +28,6 @@ export default async (ctx) => {
   } else {
     ctx.attachment(filename);
   }
-  ctx.set('Cache-Control', CACHE_CONTROL_FOREVER);
 
   ctx.body = imageContent;
 };

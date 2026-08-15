@@ -14,7 +14,7 @@ export default async (ctx) => {
   }
 
   const depositAddress = ctx.walletHandler.address;
-  if (!depositAddress) { ctx.throw(503, 'Payment address unavailable'); }
+  if (!depositAddress) { ctx.throw(500, 'Payment address unavailable'); }
 
   const amount = picoToXmr(order.deposit_amount);
   const qr = await genQr(createInvoiceUri({ depositAddress, amount }));

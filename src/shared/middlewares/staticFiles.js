@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { CACHE_CONTROL_FOREVER } from '../../const.js';
 
 const { BYPASS_STATIC_FILES_CACHE } = process.env;
 
@@ -34,6 +33,11 @@ export default () => async (ctx, next) => {
   }
 
   try {
+    const { v } = ctx.query;
+    if (v) {
+      if (ctx.tryCacheEntity(v, true)) { return; }
+    }
+
     let file;
 
     if (!BYPASS_STATIC_FILES_CACHE) {
@@ -44,16 +48,6 @@ export default () => async (ctx, next) => {
       }
     } else {
       file = await fs.readFile(resolved);
-    }
-
-    const { v } = ctx.query;
-    if (v) {
-      ctx.set('ETag', `"${v}"`);
-      if (ctx.get('if-none-match') === `"${v}"`) {
-        ctx.status = 304;
-        return;
-      }
-      ctx.set('Cache-Control', CACHE_CONTROL_FOREVER);
     }
 
     ctx.type = TYPES[path.extname(resolved)] ?? 'application/octet-stream';

@@ -7,7 +7,7 @@ export default async (ctx) => {
   const { id } = params;
 
   const product = await products.get(id);
-  if (!product) { throw new Error('no product'); }
+  if (!product) { ctx.throw(404, 'Product not found'); }
 
   const {
     name,

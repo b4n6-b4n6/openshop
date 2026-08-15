@@ -33,7 +33,7 @@ const spinUp = ({
   });
   p.stderr.pipe(process.stderr);
   p.on('close', (code) => {
-    p.emit('error', new Error(`tor closed with status code of ${code}`));
+    p.emit('error', new Error(`Tor closed with status code of ${code}`));
   });
   p.on('error', (error) => { onError(error); });
 };

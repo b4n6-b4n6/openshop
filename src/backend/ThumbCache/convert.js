@@ -39,7 +39,7 @@ const convert = async (imageData, compressionParams) => {
   ]);
 
   if (code !== 0) {
-    throw new Error(`convert failed with ${code} and '${err.replace(/\n$/, '')}'`);
+    throw new Error(`Convert failed with ${code} and '${err.replace(/\n$/, '')}'`);
   }
 
   return out;

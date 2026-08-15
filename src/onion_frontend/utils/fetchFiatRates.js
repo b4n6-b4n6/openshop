@@ -1,4 +1,3 @@
-/* eslint-disable preserve-caught-error */
 import { CoinGeckoClient } from 'coingecko-api-v3';
 import {
   CURRENCIES,
@@ -44,7 +43,7 @@ const fetchFiatRates = async () => {
     );
   } catch (err) {
     console.error(err);
-    throw new Error('failed to fetch fiat prices');
+    return null;
   }
 };
 

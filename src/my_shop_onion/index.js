@@ -22,6 +22,6 @@ ipcTrack(MY_SHOP_ONION_LAUNCH_IPC, (launch) => {
       },
     });
   } else {
-    throw new Error('unsupported');
+    throw new Error('Unsupported');
   }
 });

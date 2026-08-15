@@ -2,7 +2,6 @@ import genQr from '../../utils/genQr.js';
 import createInvoiceUri from '../../utils/createInvoiceUri.js';
 import picoToXmr from '../../utils/picoToXmr.js';
 import { orderVersion } from '../../shared/utils/viewVersions.js';
-import { CACHE_CONTROL_LIVE } from '../../const.js';
 import orderThreadPage from '../pages/orderThreadPage.js';
 import enhanceOrder from '../../backend/utils/enhanceOrder.js';
 
@@ -19,15 +18,12 @@ export default async (ctx) => {
   }
 
   const depositAddress = ctx.walletHandler.address;
-  if (!depositAddress) ctx.throw(503, 'Payment address unavailable');
+  if (!depositAddress) {
+    ctx.throw(500, 'Payment address unavailable');
+  }
 
   const version = orderVersion(order);
-  ctx.set('ETag', `"${version}"`);
-  if (ctx.get('if-none-match') === `"${version}"`) {
-    ctx.status = 304;
-    return;
-  }
-  ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
+  if (ctx.tryCacheEntity(version)) { return; }
 
   const amount = picoToXmr(order.deposit_amount);
   const qr = await genQr(createInvoiceUri({ depositAddress, amount }));

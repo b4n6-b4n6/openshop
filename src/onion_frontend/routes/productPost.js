@@ -11,23 +11,35 @@ export default async (ctx) => {
   const { userId } = state.user;
 
   const { purchase_quantity } = request.body;
-  if (!(Number(purchase_quantity) > 0)) { throw new Error('no purchase_quantity'); }
+  if (!(Number(purchase_quantity) > 0)) {
+    ctx.throw(400, 'No quantity specified');
+  }
 
   const product = await products.get(id);
-  if (!product) { throw new Error('no product'); }
+  if (!product) {
+    ctx.throw(404, 'Product not found');
+  }
 
   const { available_quantity } = product;
-  if (!(available_quantity - purchase_quantity >= 0)) { throw new Error('no available quantity'); }
+  if (!(available_quantity - purchase_quantity >= 0)) {
+    ctx.throw(400, 'Specified quantity is not available');
+  }
 
   const fiatRates = await fetchFiatRates();
   const fiatRate = fiatRates[product.currency];
-  if (!fiatRate) { throw new Error('no fiat rate'); }
+  if (!fiatRate) {
+    ctx.throw(500, 'Faield to acquire current market rate');
+  }
 
   const purchase_price = Number(product.price) * Number(purchase_quantity);
-  if (!purchase_price) { throw new Error('no purchase price'); }
+  if (!purchase_price) {
+    ctx.throw(500, 'Faield to calculate order price in fiat');
+  }
 
   const deposit_amount = floatingXmrToPico(purchase_price / fiatRate);
-  if (!deposit_amount) { throw new Error('no deposit amount'); }
+  if (!deposit_amount) {
+    ctx.throw(500, 'Faield to calculate order deposit amount in xmr');
+  }
   const deposit_amount_noisy = deposit_amount + genPicoNoise();
 
   const orderId = await orders.create({
@@ -41,6 +53,5 @@ export default async (ctx) => {
     purchase_quantity,
   });
 
-  ctx.status = 303;
-  ctx.redirect(`/browser/orders/${orderId}`);
+  ctx.redirectWith303(`/browser/orders/${orderId}`);
 };

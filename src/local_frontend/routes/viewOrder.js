@@ -9,10 +9,10 @@ export default async (ctx) => {
   const { id } = params;
 
   const order = await orders.get(id);
-  if (!order) ctx.throw(404, 'Order not found');
+  if (!order) { ctx.throw(404, 'Order not found'); }
 
   const depositAddress = ctx.walletSetup.address;
-  if (!depositAddress) { ctx.throw(503, 'Payment address unavailable'); }
+  if (!depositAddress) { ctx.throw(500, 'Payment address unavailable'); }
 
   const amount = picoToXmr(order.deposit_amount);
   const qr = await genQr(createInvoiceUri({ depositAddress, amount }));

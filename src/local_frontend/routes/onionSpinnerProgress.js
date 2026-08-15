@@ -6,7 +6,7 @@ export default async (ctx) => {
 
   if (onionSpinner.progress === 100) {
     if (!onionSpinner.onion) {
-      ctx.status = 503;
+      ctx.status = 500;
       ctx.body = onionErrorPage();
       return;
     }

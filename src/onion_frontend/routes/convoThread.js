@@ -1,4 +1,3 @@
-import { CACHE_CONTROL_LIVE } from '../../const.js';
 import chatThreadPage from '../pages/convoThreadPage.js';
 import enhanceExtMessages from '../../backend/utils/enhanceExtMessages.js';
 import getExtMessages from '../../backend/utils/getExtMessages.js';
@@ -13,13 +12,7 @@ export default async (ctx) => {
 
   const allExtMessages = await getExtMessages({ pool, customer: userId });
   const version = chatVersion(allExtMessages);
-
-  ctx.set('ETag', `"${version}"`);
-  if (ctx.get('if-none-match') === `"${version}"`) {
-    ctx.status = 304;
-    return;
-  }
-  ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
+  if (ctx.tryCacheEntity(version)) { return; }
 
   await messages.markAllReadInConvo({
     sender: myOnion,
