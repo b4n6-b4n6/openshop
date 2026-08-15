@@ -30,7 +30,7 @@ const browserInputPage = ({ defaultOnionHostname }) => document({
     buttonIcon: icon('qr', 'size-4'),
     attributes: 'data-scan-qr',
   })}
-        <input data-qr-file type="file" accept="image/*" capture="environment" class="hidden">
+        <input data-qr-file type="file" accept="image/*;capture=camera" class="hidden">
         <p data-qr-error role="alert" class="hidden text-[13px] text-danger"></p>
       </div>
       <div class="browse-loading h-full flex-col items-center justify-center gap-6 px-6 pb-16 text-center">
