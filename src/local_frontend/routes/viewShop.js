@@ -13,29 +13,22 @@ export default async (ctx) => {
 
   const shop = await shops.getOrCreate(address);
 
-  const profilePhoto = bufferToImageDataURI(
+  const [profilePhoto, bannerPhoto] = (await Promise.all([
     shop.profile_photo_exists
-      ? (
-        await thumbnailCache.genThumb(
-          THUMB_CACHE_KEY.PROFILE,
-          () => shops.getProfilePhoto(address),
-          THUMB_CACHE_SIZE.PROFILE,
-        )
+      ? thumbnailCache.genThumb(
+        THUMB_CACHE_KEY.PROFILE,
+        () => shops.getProfilePhoto(address),
+        THUMB_CACHE_SIZE.PROFILE,
       )
       : null,
-  );
-
-  const bannerPhoto = bufferToImageDataURI(
     shop.banner_photo_exists
-      ? (
-        await thumbnailCache.genThumb(
-          THUMB_CACHE_KEY.BANNER,
-          () => shops.getBannerPhoto(address),
-          THUMB_CACHE_SIZE.BANNER,
-        )
+      ? thumbnailCache.genThumb(
+        THUMB_CACHE_KEY.BANNER,
+        () => shops.getBannerPhoto(address),
+        THUMB_CACHE_SIZE.BANNER,
       )
       : null,
-  );
+  ])).map(bufferToImageDataURI);
 
   const qr = await genQr(address);
 

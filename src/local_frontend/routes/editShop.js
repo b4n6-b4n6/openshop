@@ -9,7 +9,7 @@ export default async (ctx) => {
 
   const shop = await shops.getOrCreate(address);
 
-  const [profilePhoto, bannerPhoto] = await Promise.all([
+  const [profilePhoto, bannerPhoto] = (await Promise.all([
     shop.profile_photo_exists
       ? thumbnailCache.genThumb(
         THUMB_CACHE_KEY.PROFILE,
@@ -24,11 +24,11 @@ export default async (ctx) => {
         THUMB_CACHE_SIZE.BANNER,
       )
       : null,
-  ]);
+  ])).map(bufferToImageDataURI);
 
   ctx.body = editShopPage({
     ...shop,
-    profile_photo: await bufferToImageDataURI(profilePhoto),
-    banner_photo: await bufferToImageDataURI(bannerPhoto),
+    profile_photo: profilePhoto,
+    banner_photo: bannerPhoto,
   });
 };

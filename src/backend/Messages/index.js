@@ -30,7 +30,6 @@ class Messages {
   async create({
     image_content, text_content, sender, receiver,
   }) {
-    console.log({image_content, text_content, sender, receiver})
     const result = await this.pool.query(
       `
         INSERT INTO messages(image_content, text_content, sender, receiver)

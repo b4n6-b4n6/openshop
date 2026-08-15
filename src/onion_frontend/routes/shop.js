@@ -11,29 +11,22 @@ export default async (ctx) => {
   const shop = await shops.get(myOnion);
   if (!shop) ctx.throw(404, 'Shop not found');
 
-  const profilePhoto = bufferToImageDataURI(
+  const [profilePhoto, bannerPhoto] = (await Promise.all([
     shop.profile_photo_exists
-      ? (
-        await thumbnailCache.genThumb(
-          THUMB_CACHE_KEY.PROFILE,
-          () => shops.getProfilePhoto(myOnion),
-          THUMB_CACHE_SIZE.PROFILE,
-        )
+      ? thumbnailCache.genThumb(
+        THUMB_CACHE_KEY.PROFILE,
+        () => shops.getProfilePhoto(myOnion),
+        THUMB_CACHE_SIZE.PROFILE,
       )
       : null,
-  );
-
-  const bannerPhoto = bufferToImageDataURI(
     shop.banner_photo_exists
-      ? (
-        await thumbnailCache.genThumb(
-          THUMB_CACHE_KEY.BANNER,
-          () => shops.getBannerPhoto(myOnion),
-          THUMB_CACHE_SIZE.BANNER,
-        )
+      ? thumbnailCache.genThumb(
+        THUMB_CACHE_KEY.BANNER,
+        () => shops.getBannerPhoto(myOnion),
+        THUMB_CACHE_SIZE.BANNER,
       )
       : null,
-  );
+  ])).map(bufferToImageDataURI);
 
   const qr = await genQr(myOnion);
 
