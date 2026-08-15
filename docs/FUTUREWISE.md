@@ -1,7 +1,5 @@
 <code style='color: cyan;'>[Refactor]</code>
   * remove product_description from Orders (including tests)
-  * review all routes and pages - make all of them consistent
-  * remove files from shared/routes that are not routes
   * mainly spacing of shit in pages needs to be fixed
   * review all front-end .js files
 
