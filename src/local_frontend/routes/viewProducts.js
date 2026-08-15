@@ -1,29 +1,15 @@
-import { THUMB_CACHE_SIZE, THUMB_CACHE_KEY } from '../../const.js';
-import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
+import enhanceProducts from '../../backend/utils/enhanceProducts.js';
 import viewProductsPage from '../pages/viewProductsPage.js';
 
 export default async (ctx) => {
   const { backend, thumbCache } = ctx;
   const { products } = backend;
 
-  const allProducts = (
-    await Promise.all(
-      (await products.getAll()).map(async (product) => {
-        const photo = product.photo_exists
-          ? await thumbCache.genThumb(
-            `${THUMB_CACHE_KEY.PRODUCT}:${product.id}`,
-            () => products.getPhoto(product.id),
-            THUMB_CACHE_SIZE.PRODUCT,
-          )
-          : null;
-
-        return {
-          ...product,
-          photo: await bufferToImageDataURI(photo),
-        };
-      }),
-    )
-  );
-
-  ctx.body = viewProductsPage({ allProducts });
+  ctx.body = viewProductsPage({
+    allProducts: await enhanceProducts({
+      allProducts: await products.getAll(),
+      products,
+      thumbCache,
+    }),
+  });
 };
