@@ -1,4 +1,4 @@
-const getConvoAndOrders = async ({ pool, customer }) => {
+const getExtMessages = async ({ pool, customer }) => {
   const { rows } = await pool.query(
     `
       SELECT
@@ -73,4 +73,4 @@ const getConvoAndOrders = async ({ pool, customer }) => {
   return rows;
 };
 
-export default getConvoAndOrders;
+export default getExtMessages;

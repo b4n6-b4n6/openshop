@@ -26,16 +26,16 @@ export const chatsPage = ({
 });
 
 export const chatsThreadPage = ({
-  chats, version, refresh,
+  allConvos, version, refresh,
 }) => document({
   title: 'Chats',
   scripts: ['sound.js'],
   body: (
     `<div class='live-body' data-chat-list data-version="${escapeAttribute(version)}">
-      ${(chats.length
+      ${(allConvos.length
       ? (
         `<div class="flex flex-col gap-2.5 px-5 py-5">${(
-          chats.map((chat) => (
+          allConvos.map((chat) => (
             `<a
               href="/shop/convos/${encodeURIComponent(chat.id)}"
               class="block text-left active:scale-[0.99]"

@@ -2,7 +2,7 @@ import timers from 'node:timers/promises';
 import createPool from '../createPool.js';
 import createOrders from '../Orders/index.js';
 import createMessages from '../Messages/index.js';
-import getConvoAndOrders from './getConvoAndOrders.js';
+import getExtMessages from './getExtMessages.js';
 
 const SHOP_ADDRESS = '2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion';
 const CUSTOMER = '370c6cbe-8a6c-4d77-8070-bc21c32fc904';
@@ -12,7 +12,7 @@ test('can get none', async () => {
   await createOrders(pool);
   await createMessages(pool);
 
-  const allExtMessages = await getConvoAndOrders({ pool });
+  const allExtMessages = await getExtMessages({ pool });
   expect(allExtMessages).toEqual([]);
 
   await pool.end();
@@ -44,7 +44,7 @@ test('can get some', async () => {
     deposit_amount: 2000000000000,
   });
 
-  const allExtMessages = await getConvoAndOrders({ pool, customer: CUSTOMER });
+  const allExtMessages = await getExtMessages({ pool, customer: CUSTOMER });
   expect(allExtMessages).toMatchObject([
     {
       ext_message_type: 'NEW_ORDER_CREATED',
@@ -114,7 +114,7 @@ test('can get some with image', async () => {
     deposit_amount: 2000000000000,
   });
 
-  const allExtMessages = await getConvoAndOrders({ pool, customer: CUSTOMER });
+  const allExtMessages = await getExtMessages({ pool, customer: CUSTOMER });
   expect(allExtMessages).toMatchObject([
     {
       ext_message_type: 'NEW_ORDER_CREATED',

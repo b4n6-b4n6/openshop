@@ -16,7 +16,7 @@ export default async (ctx) => {
   ctx.set('Cache-Control', CACHE_CONTROL_LIVE);
 
   ctx.body = chatsThreadPage({
-    chats: allConvos,
+    allConvos,
     version,
     refresh: CONVOS_PAGE_REFRESH,
   });

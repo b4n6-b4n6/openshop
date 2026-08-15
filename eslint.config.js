@@ -27,6 +27,7 @@ export default [
       jest: jestPlugin,
     },
     rules: {
+      'no-else-return': 'off',
       'no-console': 'off',
       'no-alert': 'off',
       'camelcase': 'off',

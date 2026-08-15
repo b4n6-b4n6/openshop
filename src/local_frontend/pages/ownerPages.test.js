@@ -158,7 +158,7 @@ test('product list and chats render empty and populated states', () => {
   expect(viewProductsPage({ allProducts: [product] })).toContain('12.50');
 
   const chats = chatsThreadPage({
-    chats: [{
+    allConvos: [{
       id: 'buyer-123',
       last_message_at: new Date(),
       last_message_sender: 'buyer-123',
@@ -167,7 +167,7 @@ test('product list and chats render empty and populated states', () => {
   });
   expect(chats).toContain('href="/shop/convos/buyer-123"');
   expect(chats).toContain('aria-label="Unread messages"');
-  expect(chatsThreadPage({ chats: [] })).toContain('No chats yet');
+  expect(chatsThreadPage({ allConvos: [] })).toContain('No chats yet');
 });
 
 test('wallet status reports waiting, syncing, and synchronized states', () => {

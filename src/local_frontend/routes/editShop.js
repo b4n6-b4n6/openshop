@@ -1,5 +1,4 @@
-import { THUMB_CACHE_SIZE, THUMB_CACHE_KEY } from '../../const.js';
-import bufferToImageDataURI from '../../utils/bufferToImageDataURI.js';
+import enhanceShop from '../../backend/utils/enhanceShop.js';
 import editShopPage from '../pages/editShopPage.js';
 
 export default async (ctx) => {
@@ -8,27 +7,12 @@ export default async (ctx) => {
   const { shops } = backend;
 
   const shop = await shops.getOrCreate(address);
-
-  const [profilePhoto, bannerPhoto] = (await Promise.all([
-    shop.profile_photo_exists
-      ? thumbCache.genThumb(
-        THUMB_CACHE_KEY.PROFILE,
-        () => shops.getProfilePhoto(address),
-        THUMB_CACHE_SIZE.PROFILE,
-      )
-      : null,
-    shop.banner_photo_exists
-      ? thumbCache.genThumb(
-        THUMB_CACHE_KEY.BANNER,
-        () => shops.getBannerPhoto(address),
-        THUMB_CACHE_SIZE.BANNER,
-      )
-      : null,
-  ])).map(bufferToImageDataURI);
-
-  ctx.body = editShopPage({
-    ...shop,
-    profile_photo: profilePhoto,
-    banner_photo: bannerPhoto,
+  const enhancedShop = await enhanceShop({
+    shop,
+    shops,
+    thumbCache,
+    address,
   });
+
+  ctx.body = editShopPage(enhancedShop);
 };

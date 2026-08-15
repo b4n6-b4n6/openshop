@@ -141,7 +141,7 @@ test('chat thread renders messages, receipts, images, and order updates safely',
 
 test('owner chat list retains unread state without meta refresh', () => {
   const page = chatsThreadPage({
-    chats: [{
+    allConvos: [{
       id: 'customer-1',
       last_message_at: createdAt,
       unread: true,

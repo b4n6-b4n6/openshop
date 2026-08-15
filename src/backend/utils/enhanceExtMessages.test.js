@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import getConversationView from './getConversationView.js';
+import enhanceExtMessages from './enhanceExtMessages.js';
 
 test('embeds only a tiny blurred preview for chat image messages', async () => {
   const image = Buffer.from('89504e470d0a1a0a00000000', 'hex');
@@ -30,8 +30,8 @@ test('embeds only a tiny blurred preview for chat image messages', async () => {
     id: 'message-1',
   }];
 
-  const allExtMessagesEnhanced = await getConversationView({
-    backend,
+  const allExtMessagesEnhanced = await enhanceExtMessages({
+    ...backend,
     allExtMessages,
     thumbCache: { genThumb },
   });
