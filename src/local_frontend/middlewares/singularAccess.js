@@ -27,7 +27,7 @@ const prepareSingularAccessKey = async () => {
 };
 
 export default () => async (ctx, next) => {
-  if (BYPASS_SAK) {
+  if (BYPASS_SAK || ctx.path === '/openshop') {
     await next();
     return;
   }

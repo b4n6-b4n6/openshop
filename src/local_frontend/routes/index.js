@@ -34,10 +34,12 @@ import downloadImage from '../../shared/routes/downloadImage.js';
 
 import selfTest from './selfTest.js';
 import syncStatus from './syncStatus.js';
+import openshop from './openshop.js';
 
 const router = new Router();
 router
   .get('/', root)
+  .get('/openshop', openshop)
 
   .get('/browser-input', browserInput)
   .post('/browser-input', browserInputPost)
