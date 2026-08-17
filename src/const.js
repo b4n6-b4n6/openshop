@@ -22,6 +22,8 @@ export const ORDER_PAGE_REFRESH = 12;
 export const CONVO_PAGE_REFRESH = 4;
 export const BROWSER_ERROR_REFRESH = 16;
 
+export const ORDER_EXPIRATION_TIME_MS = 30 * 60 * 1000;
+
 export const MY_SHOP_ONION_LAUNCH_IPC = '.ipc/my_shop_onion_launch';
 export const MY_SHOP_ONION_PROGRESS_IPC = '.ipc/my_shop_onion_progress';
 export const MY_SHOP_WALLET_SYNC_STATUS_IPC = '.ipc/my_shop_wallet_sync_status_ipc';

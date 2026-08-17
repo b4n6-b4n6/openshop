@@ -1,8 +1,11 @@
 import { CURRENCIES } from '../../const.js';
 import formatDate from '../../utils/formatDate.js';
+import isOrderExpired from '../utils/isOrderExpired.js';
 import { renderBbcode } from '../utils/bbcode.js';
 import formatFiat from '../utils/formatFiat.js';
 import formatXmr from '../utils/formatXmr.js';
+
+export { isOrderExpired };
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import { button, icon } from './layout.js';
 
@@ -181,6 +184,9 @@ export const orderStatus = (order) => {
   }
   if (order.deposit_detected_at) {
     return { label: 'Detected', classes: 'bg-warning/15 text-warning' };
+  }
+  if (isOrderExpired(order)) {
+    return { label: 'Expired', classes: 'bg-danger/15 text-danger' };
   }
   return { label: 'Pending', classes: 'bg-surface-2 text-muted' };
 };

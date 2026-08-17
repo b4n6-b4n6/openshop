@@ -1,4 +1,5 @@
 import {
+  isOrderExpired,
   orderStatus,
   orderStatusBadge,
   qrViewButtonCrossFrame,
@@ -21,6 +22,7 @@ const ownerScripts = ['sound.js'];
 const statusMessage = (order) => {
   if (order.deposit_confirmed_at) return 'Incoming transaction confirmed';
   if (order.deposit_detected_at) return 'Incoming transaction detected';
+  if (isOrderExpired(order)) return 'Order expired - payment not received';
   return 'Waiting for incoming transaction';
 };
 
@@ -113,11 +115,14 @@ export const orderThreadPage = ({
 }) => {
   const currentStatus = orderStatus(order);
   const complete = Boolean(order.deposit_confirmed_at);
+  const expired = isOrderExpired(order);
   let statusTone = 'border-border bg-surface-2 text-muted';
   if (complete) {
     statusTone = 'border-success/30 bg-success/15 text-success';
   } else if (currentStatus.label === 'Detected') {
     statusTone = 'border-warning/30 bg-warning/15 text-warning';
+  } else if (expired) {
+    statusTone = 'border-danger/30 bg-danger/15 text-danger';
   }
   const scripts = [
     owner ? 'owner.js' : 'customer.js',
@@ -140,7 +145,22 @@ export const orderThreadPage = ({
           <div data-order-status-badge>${orderStatusBadge(order)}</div>
         </div>
 
-        <section class="flex flex-col items-center gap-4 rounded-2xl border border-border bg-surface p-4 text-center">
+        ${expired
+        ? `<section class="flex flex-col items-center gap-3 rounded-2xl border border-border bg-surface p-6 text-center">
+            <div class="flex size-14 items-center justify-center rounded-full bg-danger/15 text-danger">
+              ${icon('close', 'size-7')}
+            </div>
+            <div>
+              <p class="text-base font-bold text-text">Payment Window Expired</p>
+              <p class="mt-1 max-w-[280px] text-[13px] text-muted">No incoming transaction was detected before the payment deadline.</p>
+            </div>
+            <div class="mt-1 w-full rounded-xl border border-border bg-surface-2 p-3 text-center">
+              <p class="text-[11px] font-semibold uppercase tracking-wide text-faint">Expired Deposit Quote</p>
+              <p class="font-mono text-lg font-bold text-faint line-through">${escapeHtml(formatXmr(order.deposit_amount))} XMR</p>
+              <p class="mt-1 text-[12px] font-medium text-danger">⚠ Do not send Monero to this invoice</p>
+            </div>
+          </section>`
+        : `<section class="flex flex-col items-center gap-4 rounded-2xl border border-border bg-surface p-4 text-center">
           <div>
             <p class="font-mono text-3xl font-bold text-text">${escapeHtml(formatXmr(order.deposit_amount))}</p>
             <p class="mt-0.5 text-[13px] text-muted">XMR</p>
@@ -148,9 +168,9 @@ export const orderThreadPage = ({
           <p class="text-[13px] text-faint">≈ ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
 
           ${qrViewButtonCrossFrame({
-        qr,
-        size: 168,
-      })}
+          qr,
+          size: 168,
+        })}
 
           <div class="w-full text-left">
             <p class="mb-1 text-[12px] font-semibold uppercase tracking-wide text-muted">Pay to this address</p>
@@ -161,7 +181,7 @@ export const orderThreadPage = ({
               </button>
             </div>
           </div>
-        </section>
+        </section>`}
 
         <div
           data-order-status-message
@@ -192,11 +212,18 @@ export const orderThreadPage = ({
 
         <div data-order-txid>${transactionDetails(order)}</div>
 
-        ${!order.deposit_txid
-        ? '<p class="text-center text-[12px] leading-relaxed text-faint">Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>'
-        : ''}
+        ${expired
+        ? `<div class="rounded-2xl border border-border bg-surface-2/60 p-4 text-[12px] text-muted">
+            <p class="mb-1 font-semibold text-text">Sent payment late?</p>
+            <p class="leading-relaxed">
+              If funds were broadcast after the timer expired, copy your transaction hash and message ${owner ? 'the customer' : 'the shop owner'} in chat for assistance.
+            </p>
+          </div>`
+        : (!order.deposit_txid
+          ? '<p class="text-center text-[12px] leading-relaxed text-faint">Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>'
+          : '')}
       </div>`
     ),
-    refresh: !order.deposit_confirmed_at ? refresh : null,
+    refresh: (!complete && !expired) ? refresh : null,
   });
 };

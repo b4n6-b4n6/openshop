@@ -47,6 +47,29 @@ test('order detail keeps payment, QR, rich text, and live status contracts', () 
   expect(page).toContain('/static/copy.js');
 });
 
+test('order detail renders expired state safely when payment window has elapsed', () => {
+  const expiredOrder = {
+    ...order,
+    created_at: new Date(Date.now() - 60 * 60 * 1000), // 1 hour ago
+    deposit_detected_at: null,
+    deposit_confirmed_at: null,
+  };
+
+  const page = orderThreadPage({
+    order: expiredOrder,
+    depositAddress: '4exampleaddress',
+    qr: 'data:image/png;base64,AAAA',
+    version: 'order-version',
+  });
+
+  expect(page).toContain('Payment Window Expired');
+  expect(page).toContain('Expired Deposit Quote');
+  expect(page).toContain('Do not send Monero to this invoice');
+  expect(page).toContain('Expired');
+  expect(page).toContain('Order expired — payment not received');
+  expect(page).not.toContain('data-qr-open-cross-frame');
+});
+
 test('chat shell polls only its thread and exposes smooth image sending UI', () => {
   const page = chatPage({
     action: '/browser/convo',

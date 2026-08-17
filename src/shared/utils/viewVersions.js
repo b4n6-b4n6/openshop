@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import isOrderExpired from './isOrderExpired.js';
 
 const hash = (value) => createHash('sha256')
   .update(JSON.stringify(value))
@@ -19,10 +20,12 @@ export const orderVersion = (order) => hash({
   id: order.id,
   depositDetectedAt: order.deposit_detected_at,
   depositConfirmedAt: order.deposit_confirmed_at,
+  expired: isOrderExpired(order),
 });
 
 export const ordersVersion = (orders) => hash(orders.map((order) => ({
   id: order.id,
   depositDetectedAt: order.deposit_detected_at,
   depositConfirmedAt: order.deposit_confirmed_at,
+  expired: isOrderExpired(order),
 })));
