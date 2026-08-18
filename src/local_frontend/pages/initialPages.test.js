@@ -54,3 +54,14 @@ test('browse errors are escaped before rendering', () => {
   expect(page).toContain('&lt;script&gt;bad()&lt;/script&gt;');
   expect(page).not.toContain('<script>bad()</script>');
 });
+
+test('local pages include the EULA modal and script', () => {
+  const page = rootPage();
+
+  expect(page).toContain('id="eulaOverlay"');
+  expect(page).toContain('id="eulaCheckbox"');
+  expect(page).toContain('id="btnAcceptEula"');
+  expect(page).toContain('I will only use this software for legal purposes');
+  expect(page).toContain('/static/eula.js');
+  expect(page).toContain('openshop_eula_accepted');
+});

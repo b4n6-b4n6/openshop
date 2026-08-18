@@ -31,6 +31,48 @@ export const icon = (name, classes = 'size-5') => {
   return `<svg class="${escapeAttribute(classes)}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] ?? ''}</svg>`;
 };
 
+export const eulaModal = () => `<!-- ONE-TIME EULA / LEGAL DISCLOSURE OVERLAY -->
+<div id="eulaOverlay" class="eula-overlay">
+  <div class="eula-modal">
+    <div class="eula-icon-wrap">
+      <div class="eula-icon-glow"></div>
+      <svg class="eula-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent, #ff6600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="m9 12 2 2 4-4"/>
+      </svg>
+    </div>
+
+    <h2 class="eula-title">Legal Terms &amp; EULA</h2>
+    <p class="eula-desc">
+      OpenShop is an open-source, self-hosted, peer-to-peer marketplace protocol. You must acknowledge that this software is strictly intended for lawful commerce and research.
+    </p>
+
+    <div class="eula-notice-box">
+      <div class="eula-notice-item">
+        <span class="eula-notice-dot"></span>
+        <span>Zero tolerance for illicit trade, contraband, or unlawful conduct.</span>
+      </div>
+      <div class="eula-notice-item">
+        <span class="eula-notice-dot"></span>
+        <span>Self-hosted &amp; non-custodial; operators assume full jurisdictional responsibility.</span>
+      </div>
+    </div>
+
+    <label class="eula-checkbox-label" for="eulaCheckbox">
+      <input type="checkbox" id="eulaCheckbox" class="eula-checkbox">
+      <span class="eula-custom-check"></span>
+      <span class="eula-checkbox-text">
+        I confirm and agree that <strong>I will only use this software for legal purposes</strong>.
+      </span>
+    </label>
+
+    <button id="btnAcceptEula" class="eula-btn" type="button" disabled>
+      <span>Acknowledge &amp; Enter</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>`;
+
 export const document = ({
   title = 'OpenShop',
   body,
@@ -40,7 +82,8 @@ export const document = ({
   const refreshTag = refresh
     ? `<meta http-equiv="refresh" content="${escapeAttribute(refresh)}">`
     : '';
-  const scriptTags = scripts.map(
+  const allScripts = ['eula.js', ...scripts.filter((s) => s !== 'eula.js')];
+  const scriptTags = allScripts.map(
     (src) => `<script src="/static/${escapeAttribute(src)}?v=${ASSET_VERSION}" defer></script>`,
   ).join('');
 
@@ -55,9 +98,12 @@ export const document = ({
   <link rel="icon" href="/static/images/logo-orange.svg?v=${ASSET_VERSION}">
   <link rel="stylesheet" href="/static/app.css?v=${ASSET_VERSION}">
   <link rel="stylesheet" href="/static/ssr.css?v=${ASSET_VERSION}">
+  <script>
+    (function(){try{var a=localStorage.getItem('openshop_eula_accepted')==='1'||document.cookie.indexOf('openshop_eula_accepted=1')!==-1;if(!a){document.documentElement.classList.add('eula-pending');}else{document.documentElement.classList.add('eula-accepted');}}catch(e){document.documentElement.classList.add('eula-accepted');}})();
+  </script>
   ${scriptTags}
 </head>
-<body>${body}</body>
+<body>${eulaModal()}${body}</body>
 </html>`;
 };
 
