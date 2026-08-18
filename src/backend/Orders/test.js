@@ -108,6 +108,35 @@ test('can create an order and mark deposit as detected', async () => {
   await orders.destroy();
 });
 
+test('can create an order and mark deposit as detected and get notifiable', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+
+  expect(await orders.getAllNotifiableForShop()).toEqual([]);
+
+  await orders.markDepositDetected({
+    deposit_amount: 2000000000000,
+  });
+
+  const allOrders = await orders.getAllNotifiableForShop();
+  expect(allOrders.length).toBe(1);
+  expect(allOrders[0].deposit_detected_at).toBeTruthy();
+
+  await orders.destroy();
+});
+
 test('cannot create an order with negative price', async () => {
   const orders = await createOrders();
 

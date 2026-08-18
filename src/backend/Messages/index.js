@@ -79,6 +79,20 @@ class Messages {
     return rows;
   }
 
+  async getUnread(party) {
+    const { rows } = await this.pool.query(
+      `
+          SELECT TRUE
+          FROM messages
+          WHERE read_at IS NULL AND receiver = $1
+          LIMIT 1
+      `,
+      [party],
+    );
+
+    return Boolean(rows.length);
+  }
+
   async getImageContent(id) {
     const { rows } = await this.pool.query(
       'SELECT image_content FROM messages WHERE id = $1',

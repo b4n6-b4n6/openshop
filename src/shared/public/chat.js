@@ -37,6 +37,10 @@
     attachment.classList.remove('flex');
   }
 
+  function closeViewer() {
+    document.querySelector('.image-viewer')?.remove();
+  }
+
   function openImage(source) {
     const viewer = document.createElement('div');
     viewer.className = 'image-viewer';
@@ -45,12 +49,16 @@
       <img decoding="sync" loading="lazy" alt="Image attachment preview">`
     );
     viewer.querySelector('img').src = source;
-    const close = () => viewer.remove();
+    const close = () => { closeViewer(); };
     viewer.addEventListener('click', close);
     viewer.querySelector('img').addEventListener('click', (event) => event.stopPropagation());
     viewer.querySelector('button').addEventListener('click', close);
     document.body.append(viewer);
   }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') { closeViewer(); }
+  });
 
   fileInput.addEventListener('click', (event) => {
     if (submitting) { event.preventDefault(); }
@@ -85,6 +93,16 @@
     ) return;
 
     openImage(event.data.source);
+  });
+
+  window.addEventListener('message', (event) => {
+    if (
+      false
+      || event.origin !== window.location.origin
+      || event.data?.type !== 'openshop:close-image'
+    ) return;
+
+    closeViewer();
   });
 
   form.addEventListener('submit', async (event) => {

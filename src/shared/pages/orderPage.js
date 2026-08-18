@@ -229,7 +229,7 @@ export const orderThreadPage = ({
 
         <div data-order-txid>${transactionDetails(order)}</div>
 
-        ${!order.deposit_txid
+        ${!order.deposit_txid && !expire
         ? (
           `<p
             class="text-center text-[12px] leading-relaxed text-faint"

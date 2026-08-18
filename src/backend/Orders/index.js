@@ -98,6 +98,19 @@ class Orders {
     return rows.map(map);
   }
 
+  async getAllNotifiableForShop() {
+    const { rows } = await this.pool.query(
+      `
+        SELECT id, deposit_detected_at, deposit_confirmed_at
+        FROM orders
+        WHERE deposit_detected_at IS NOT NULL
+        ORDER BY created_at DESC
+      `,
+    );
+
+    return rows;
+  }
+
   async getAllForCustomer(customer) {
     const { rows } = await this.pool.query(
       `
@@ -239,7 +252,7 @@ class Orders {
           expired_at IS NULL AND
           created_at < NOW() - ($1 * INTERVAL '1 minute')
       `,
-      [maxAgeHours],
+      [maxAge],
     );
 
     return result.rowCount;

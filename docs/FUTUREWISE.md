@@ -27,6 +27,5 @@
 
 <code style='color: cyan;'>[Refactor]</code>
   * remove product_description from Orders (including tests)
-  * mainly spacing of shit in pages needs to be fixed
-  * review all front-end .js files
+  * mainly spacing of html in .js pages needs to be fixed
   * review whether the inclusion of the frontend .js files should be modernised?

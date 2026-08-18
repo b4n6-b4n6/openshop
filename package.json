@@ -15,6 +15,7 @@
     "koa-jwt": "^4.0.4",
     "koa-session": "^7.0.2",
     "monero-ts": "^0.11.10",
+    "node-notifier": "^10.0.1",
     "pg": "^8.22.0",
     "qrcode": "^1.5.4",
     "socks-proxy-agent": "^10.1.0"
@@ -26,6 +27,7 @@
     "local-frontend-dev": "NODE_ENV=development nodemon src/local_frontend",
     "my-shop-onion-launcher": "node src/my_shop_onion",
     "wallet-launcher": "node src/wallet",
+    "notifer": "node src/notifier",
     "tor-proxy": "tor -f torrc/proxy",
     "lint": "yarn eslint src",
     "lint-config": "yarn eslint eslint.config.js",

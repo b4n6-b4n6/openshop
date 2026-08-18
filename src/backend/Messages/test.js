@@ -91,6 +91,25 @@ test('can create a text message, mark it as read & get convo', async () => {
   await messages.destroy();
 });
 
+test('can create a text message, mark it as read & get unread', async () => {
+  const messages = await createMessages();
+
+  await messages.create({
+    text_content: 'hello', sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
+  await messages.create({
+    text_content: 'hello', sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
+
+  expect(await messages.getUnread(SHOP_ADDRESS)).toBeTruthy();
+  await messages.markAllReadInConvo({
+    sender: CUSTOMER_ID, receiver: SHOP_ADDRESS,
+  });
+  expect(await messages.getUnread(SHOP_ADDRESS)).toBeFalsy();
+
+  await messages.destroy();
+});
+
 test('can create a text messages, mark it as read, create another text message & get convo', async () => {
   const messages = await createMessages();
 

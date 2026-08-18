@@ -4,6 +4,7 @@ run
 - `yarn wallet-launcher`
 - `yarn my-shop-onion-launcher`
 - `yarn tor-proxy`
+- `yarn notifier`
 
 also needs to be configured!
 - postgres

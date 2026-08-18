@@ -17,6 +17,19 @@
     }, window.location.origin);
   }
 
+  function tellParentToCloseImage(source) {
+    window.parent.postMessage({
+      type: 'openshop:close-image',
+      source,
+    }, window.location.origin);
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      tellParentToCloseImage();
+    }
+  });
+
   thread.addEventListener('click', (event) => {
     const loadButton = event.target.closest('[data-chat-image-load]');
     if (loadButton) {

@@ -1,12 +1,11 @@
 /* eslint-disable no-constant-binary-expression */
-import { CURRENCIES } from '../../const.js';
+import { CURRENCIES, ASSET_VERSION } from '../../const.js';
 import formatDate from '../../utils/formatDate.js';
 import { renderBbcode } from '../utils/bbcode.js';
 import formatFiat from '../utils/formatFiat.js';
 import formatXmr from '../utils/formatXmr.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import { button, icon } from './layout.js';
-import { ASSET_VERSION } from '../../const.js';
 
 const dataImage = (value) => (
   typeof value === 'string' && /^data:image\/(?:gif|jpeg|png|webp);base64,/i.test(value)

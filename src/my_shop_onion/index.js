@@ -8,10 +8,13 @@ import spinUp from './utils/spinUp.js';
 
 await ipcWrite(MY_SHOP_ONION_PROGRESS_IPC, '');
 
+let launched = false;
 ipcTrack(MY_SHOP_ONION_LAUNCH_IPC, (launch) => {
-  if (!launch) { return; }
+  if (!launch || launched) { return; }
 
   if (launch === '1') {
+    launched = true;
+
     spinUp({
       torrcPath: MY_SHOP_TORRC_PATH,
       onBootstrapping: (progress) => {

@@ -9,7 +9,17 @@
     });
 
     const modal = view.querySelector('[data-qr-modal]');
-    if (!modal) { return; }
+    if (!modal) {
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          window.parent.postMessage({
+            type: 'openshop:close-qr',
+          }, window.location.origin);
+        }
+      });
+
+      return;
+    }
 
     const saveError = modal.querySelector('[data-qr-save-error]');
     const close = () => { modal.hidden = true; };
@@ -35,6 +45,15 @@
       ) return;
 
       open();
+    });
+    window.addEventListener('message', (event) => {
+      if (
+        false
+        || event.origin !== window.location.origin
+        || event.data?.type !== 'openshop:close-qr'
+      ) return;
+
+      close();
     });
 
     view.querySelector('[data-qr-save]').addEventListener('click', async () => {
