@@ -5,6 +5,7 @@ import newProductPost from '../routes/newProductPost.js';
 import onionErrorPage from './onionErrorPage.js';
 import validateProductInput from '../utils/validateProductInput.js';
 import syncStatusResult from './syncStatusResult.js';
+import selfTestResult from './selfTestResult.js';
 import viewConvosPage from './viewConvosPage.js';
 import { chatsThreadPage } from '../../shared/pages/chatsPage.js';
 import viewProductPage from './viewProductPage.js';
@@ -175,6 +176,23 @@ test('wallet status reports waiting, syncing, and synchronized states', () => {
   expect(syncStatusResult()).toContain('Wallet');
   expect(syncStatusResult({ height: 100, percent: 42.4 })).toContain('42%');
   expect(syncStatusResult({ height: 200, percent: 100 })).toContain('Synced');
+});
+
+test('onion connectivity status reports checking, online, and offline with onion icon', () => {
+  const checking = selfTestResult();
+  expect(checking).toContain('Checking…');
+  expect(checking).toContain('class="onion-icon"');
+  expect(checking).toContain('fill="#f6b23c"');
+
+  const online = selfTestResult({ result: true });
+  expect(online).toContain('Online');
+  expect(online).toContain('class="onion-icon"');
+  expect(online).toContain('fill="#34d39a"');
+
+  const offline = selfTestResult({ result: false });
+  expect(offline).toContain('Offline');
+  expect(offline).toContain('class="onion-icon"');
+  expect(offline).toContain('fill="#f25c54"');
 });
 
 test('onion startup failures are reported in the frontend', () => {
