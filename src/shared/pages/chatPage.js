@@ -2,8 +2,10 @@ import { thumb } from './components.js';
 import { appFrame, document, icon } from './layout.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import formatUserIdOrShopAddress from '../utils/formatUserIdOrShopAddress.js';
-import { CONVO_IMAGE_THUMB_HEIGHT, CONVO_IMAGE_THUMB_WIDTH } from '../../const.js';
 import formatFiat from '../utils/formatFiat.js';
+
+const CONVO_IMAGE_THUMB_WIDTH = 280;
+const CONVO_IMAGE_THUMB_HEIGHT = 210;
 
 const formatTime = (value) => new Intl.DateTimeFormat('en', {
   hour: '2-digit',
@@ -135,8 +137,8 @@ const messageBubble = ({
 };
 
 const ORDER_EVENTS = {
-  NEW_ORDER_CREATED: {
-    label: 'New order',
+  ORDER_CREATED: {
+    label: 'New order created',
     classes: 'border-accent/30 bg-accent-soft text-accent',
   },
   ORDER_DEPOSIT_DETECTED: {
@@ -146,6 +148,10 @@ const ORDER_EVENTS = {
   ORDER_DEPOSIT_CONFIRMED: {
     label: 'Incoming transaction confirmed',
     classes: 'border-success/30 bg-success/15 text-success',
+  },
+  ORDER_EXPIRED: {
+    label: 'Order expired',
+    classes: 'border-danger/30 bg-danger/15 text-danger',
   },
 };
 

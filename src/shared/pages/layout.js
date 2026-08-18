@@ -1,6 +1,5 @@
+import { ASSET_VERSION } from '../../const.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
-
-const ASSET_VERSION = '20260809-5';
 
 export const icon = (name, classes = 'size-5') => {
   const paths = {
@@ -53,7 +52,7 @@ export const document = ({
   <meta name="theme-color" content="#0f1115">
   ${refreshTag}
   <title>${escapeHtml(title)} · OpenShop</title>
-  <link rel="icon" href="/static/images/logo-orange.svg">
+  <link rel="icon" href="/static/images/logo-orange.svg?v=${ASSET_VERSION}">
   <link rel="stylesheet" href="/static/app.css?v=${ASSET_VERSION}">
   <link rel="stylesheet" href="/static/ssr.css?v=${ASSET_VERSION}">
   ${scriptTags}

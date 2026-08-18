@@ -107,12 +107,13 @@ test('new products return to the product list after creation', async () => {
       files: { photo: [] },
     },
     redirect: jest.fn(),
+    redirectWith303: jest.fn(),
   };
 
   await newProductPost(ctx);
 
   expect(create).toHaveBeenCalledTimes(1);
-  expect(ctx.redirect).toHaveBeenCalledWith('/shop/products');
+  expect(ctx.redirectWith303).toHaveBeenCalledWith('/shop/products');
 });
 
 test('product prices are bounded before PostgreSQL receives them', async () => {

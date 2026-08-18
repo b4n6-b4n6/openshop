@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 import {
   orderStatus,
   orderStatusBadge,
@@ -18,23 +19,40 @@ import formatXmr from '../utils/formatXmr.js';
 
 const ownerScripts = ['sound.js'];
 
-const statusMessage = (order) => {
-  if (order.deposit_confirmed_at) return 'Incoming transaction confirmed';
-  if (order.deposit_detected_at) return 'Incoming transaction detected';
-  return 'Waiting for incoming transaction';
-};
+const statusMessage = (order) => (
+  false
+  || (order.deposit_confirmed_at && 'Incoming transaction confirmed')
+  || (order.deposit_detected_at && 'Incoming transaction detected')
+  || (order.expired_at && 'Expired')
+  || 'Waiting for incoming transaction'
+);
 
 const transactionDetails = (order) => (
   order.deposit_txid
-    ? `<div class="rounded-xl border border-border bg-surface p-3">
-      <p class="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted">Deposit txid</p>
-      <div class="flex items-start gap-2">
-        <span class="min-w-0 flex-1 break-all font-mono text-[11px] text-text">${escapeHtml(order.deposit_txid)}</span>
-        <button type="button" data-copy="${escapeAttribute(order.deposit_txid)}" aria-label="Copy transaction ID" class="inline-flex size-10 shrink-0 items-center justify-center rounded-xl text-muted hover:bg-surface hover:text-text">
-          ${icon('copy', 'size-4')}
-        </button>
-      </div>
-    </div>`
+    ? (
+      `<div
+        class="rounded-xl border border-border bg-surface p-3"
+      >
+        <p
+          class="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted"
+        >Deposit txid</p>
+
+        <div class="flex items-start gap-2">
+          <span
+            class="min-w-0 flex-1 break-all font-mono text-[11px] text-text"
+          >${escapeHtml(order.deposit_txid)}</span>
+
+          <button
+            type="button"
+            data-copy="${escapeAttribute(order.deposit_txid)}"
+            aria-label="Copy transaction ID"
+            class="inline-flex size-10 shrink-0 items-center justify-center rounded-xl text-muted hover:bg-surface hover:text-text"
+          >
+            ${icon('copy', 'size-4')}
+          </button>
+        </div>
+      </div>`
+    )
     : ''
 );
 
@@ -103,6 +121,9 @@ export const orderPage = ({
   }),
 });
 
+const checkOrderComplete = (order) => Boolean(order.deposit_confirmed_at);
+const checkOrderExpire = (order) => Boolean(order.expired_at);
+
 export const orderThreadPage = ({
   order,
   depositAddress,
@@ -112,13 +133,9 @@ export const orderThreadPage = ({
   owner,
 }) => {
   const currentStatus = orderStatus(order);
-  const complete = Boolean(order.deposit_confirmed_at);
-  let statusTone = 'border-border bg-surface-2 text-muted';
-  if (complete) {
-    statusTone = 'border-success/30 bg-success/15 text-success';
-  } else if (currentStatus.label === 'Detected') {
-    statusTone = 'border-warning/30 bg-warning/15 text-warning';
-  }
+  const complete = checkOrderComplete(order);
+  const expire = checkOrderExpire(order);
+
   const scripts = [
     owner ? 'owner.js' : 'customer.js',
     ...(owner ? ownerScripts : []),
@@ -130,12 +147,23 @@ export const orderThreadPage = ({
     title: 'Order',
     scripts,
     body: (
-      `<div class="live-body space-y-4 px-5 py-6" data-order-live data-version="${escapeAttribute(version)}" data-complete="${complete}">
+      `<div
+        class="live-body space-y-4 px-5 py-6"
+        data-order-live
+        data-version="${escapeAttribute(version)}"
+        data-complete="${complete}"
+      >
         <div class="flex items-center gap-3">
           ${thumb(order.product_photo, 64)}
+
           <div class="min-w-0 flex-1">
-            <h2 class="truncate text-[15px] font-semibold text-text">${escapeHtml(order.product_name)}</h2>
-            <p class="text-[13px] text-muted">${Number(order.purchase_quantity)} × ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
+            <h2
+              class="truncate text-[15px] font-semibold text-text"
+            >${escapeHtml(order.product_name)}</h2>
+
+            <p
+              class="text-[13px] text-muted"
+            >${Number(order.purchase_quantity)} × ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
           </div>
           <div data-order-status-badge>${orderStatusBadge(order)}</div>
         </div>
@@ -145,18 +173,24 @@ export const orderThreadPage = ({
             <p class="font-mono text-3xl font-bold text-text">${escapeHtml(formatXmr(order.deposit_amount))}</p>
             <p class="mt-0.5 text-[13px] text-muted">XMR</p>
           </div>
-          <p class="text-[13px] text-faint">≈ ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
+          <p
+            class="text-[13px] text-faint"
+          >≈ ${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
 
-          ${qrViewButtonCrossFrame({
-        qr,
-        size: 168,
-      })}
+          ${qrViewButtonCrossFrame({ qr, size: 168 })}
 
           <div class="w-full text-left">
             <p class="mb-1 text-[12px] font-semibold uppercase tracking-wide text-muted">Pay to this address</p>
             <div class="flex items-center gap-2 rounded-xl border border-border bg-surface-2 p-3">
-              <span class="min-w-0 flex-1 break-all font-mono text-[12px] text-text">${escapeHtml(depositAddress)}</span>
-              <button type="button" data-copy="${escapeAttribute(depositAddress)}" aria-label="Copy payment address" class="inline-flex size-10 shrink-0 items-center justify-center rounded-xl text-muted hover:bg-surface hover:text-text">
+              <span
+                class="min-w-0 flex-1 break-all font-mono text-[12px] text-text"
+              >${escapeHtml(depositAddress)}</span>
+              <button
+                type="button"
+                data-copy="${escapeAttribute(depositAddress)}"
+                aria-label="Copy payment address"
+                class="inline-flex size-10 shrink-0 items-center justify-center rounded-xl text-muted hover:bg-surface hover:text-text"
+              >
                 ${icon('copy', 'size-4')}
               </button>
             </div>
@@ -165,7 +199,7 @@ export const orderThreadPage = ({
 
         <div
           data-order-status-message
-          class="rounded-xl border px-3 py-2 text-center text-[12px] font-semibold ${statusTone}"
+          class="rounded-xl border px-3 py-2 text-center text-[12px] font-semibold ${currentStatus.statusTone}"
         >
           ${escapeHtml(statusMessage(order))}
         </div>
@@ -181,7 +215,10 @@ export const orderThreadPage = ({
               class="mt-1 font-semibold text-text"
             >${escapeHtml(formatFiat(order.purchase_price, order.purchase_currency))}</p>
           </div>
-          <div style="grid-column:1/-1" class="border-t border-border pt-2.5">
+          <div
+            style="grid-column:1/-1"
+            class="border-t border-border pt-2.5"
+          >
             <p class="text-faint">Created at</p>
             <p
               title="${escapeAttribute(order.created_at)}"
@@ -193,10 +230,14 @@ export const orderThreadPage = ({
         <div data-order-txid>${transactionDetails(order)}</div>
 
         ${!order.deposit_txid
-        ? '<p class="text-center text-[12px] leading-relaxed text-faint">Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>'
+        ? (
+          `<p
+            class="text-center text-[12px] leading-relaxed text-faint"
+          >Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>`
+        )
         : ''}
       </div>`
     ),
-    refresh: !order.deposit_confirmed_at ? refresh : null,
+    refresh: (complete || expire) ? null : refresh,
   });
 };

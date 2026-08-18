@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 import { CURRENCIES } from '../../const.js';
 import formatDate from '../../utils/formatDate.js';
 import { renderBbcode } from '../utils/bbcode.js';
@@ -5,6 +6,7 @@ import formatFiat from '../utils/formatFiat.js';
 import formatXmr from '../utils/formatXmr.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import { button, icon } from './layout.js';
+import { ASSET_VERSION } from '../../const.js';
 
 const dataImage = (value) => (
   typeof value === 'string' && /^data:image\/(?:gif|jpeg|png|webp);base64,/i.test(value)
@@ -15,7 +17,10 @@ export const richText = (description) => (
 );
 
 export const avatar = (src, size = 72) => (
-  `<div style="width:${size}px;height:${size}px" class="flex items-center justify-center overflow-hidden rounded-full border-2 border-base bg-surface-2 text-faint">
+  `<div
+    style="width:${size}px;height:${size}px"
+    class="flex items-center justify-center overflow-hidden rounded-full border-2 border-base bg-surface-2 text-faint"
+  >
     ${dataImage(src)
     ? `<img src="${escapeAttribute(src)}" alt="" class="h-full w-full object-cover">`
     : icon('store', 'size-1/2')}
@@ -25,15 +30,15 @@ export const avatar = (src, size = 72) => (
 export const shopBanner = (src) => (
   `<div class="relative h-36 w-full overflow-hidden bg-surface-2">
     ${dataImage(src)
-    ? `<img src="${escapeAttribute(src)}" alt="" class="h-full w-full object-cover">`
+    ? `<img src="${escapeAttribute(src)}" class="h-full w-full object-cover" alt="">`
     : `<div class="flex h-full items-center justify-center text-faint">${icon('image', 'size-7')}</div>`}
   </div>`
 );
 
 const qrArtwork = ({ size, qr }) => `<span class="qr-art" style="--qr-size:${size}px">
-  <img data-qr-image src="${escapeAttribute(qr)}" alt="" width="${size}" height="${size}">
+  <img data-qr-image src="${escapeAttribute(qr)}" width="${size}" height="${size}" alt="">
   <span class="qr-watermark">
-    <img data-qr-logo src="/static/images/logo-orange.svg" alt="OpenShop">
+    <img data-qr-logo src="/static/images/logo-orange.svg?v=${ASSET_VERSION}" alt="OpenShop">
   </span>
 </span>`;
 
@@ -175,15 +180,16 @@ export const productPhoto = (src, alt = '') => (
   </div>`
 );
 
-export const orderStatus = (order) => {
-  if (order.deposit_confirmed_at) {
-    return { label: 'Confirmed', classes: 'bg-success/15 text-success' };
-  }
-  if (order.deposit_detected_at) {
-    return { label: 'Detected', classes: 'bg-warning/15 text-warning' };
-  }
-  return { label: 'Pending', classes: 'bg-surface-2 text-muted' };
-};
+export const orderStatus = (order) => (
+  false
+  || (order.deposit_confirmed_at
+    && { label: 'Confirmed', classes: 'bg-success/15 text-success', statusTone: 'border-success/30 bg-success/15 text-success' })
+  || (order.deposit_detected_at
+    && { label: 'Detected', classes: 'bg-warning/15 text-warning', statusTone: 'border-warning/30 bg-warning/15 text-warning' })
+  || (order.expired_at
+    && { label: 'Expired', classes: 'bg-danger/15 text-danger', statusTone: 'border-danger/30 bg-danger/15 text-danger' })
+  || { label: 'Pending', classes: 'bg-surface-2 text-muted', statusTone: 'border-border bg-surface-2 text-muted' }
+);
 
 export const orderStatusBadge = (order) => {
   const status = orderStatus(order);

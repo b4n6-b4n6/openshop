@@ -34,7 +34,8 @@ class Orders {
 
           created_at TIMESTAMP NOT NULL DEFAULT now(),
           deposit_detected_at TIMESTAMP,
-          deposit_confirmed_at TIMESTAMP
+          deposit_confirmed_at TIMESTAMP,
+          expired_at TIMESTAMP
         )
       `,
     );
@@ -43,7 +44,7 @@ class Orders {
         CREATE UNIQUE INDEX
         IF NOT EXISTS orders_deposit_amount_idx
         ON orders (deposit_amount)
-        WHERE deposit_txid IS NULL
+        WHERE deposit_txid IS NULL OR expired_at IS NULL
       `,
     );
 
@@ -88,7 +89,7 @@ class Orders {
           product_name, product_photo IS NOT NULL AS product_photo_exists,
           purchase_price, purchase_currency, purchase_quantity,
           deposit_amount, deposit_txid,
-          created_at, deposit_detected_at, deposit_confirmed_at
+          created_at, deposit_detected_at, deposit_confirmed_at, expired_at
         FROM orders
         ORDER BY created_at DESC
       `,
@@ -105,7 +106,7 @@ class Orders {
           product_name, product_photo IS NOT NULL AS product_photo_exists, 
           purchase_price, purchase_currency, purchase_quantity, 
           deposit_amount, deposit_txid,
-          created_at, deposit_detected_at, deposit_confirmed_at
+          created_at, deposit_detected_at, deposit_confirmed_at, expired_at
         FROM orders
         WHERE customer = $1
         ORDER BY created_at DESC
@@ -131,7 +132,7 @@ class Orders {
         SELECT
           id,
           created_at AS ext_message_occured_at,
-          'NEW_ORDER_CREATED' AS ext_message_type,
+          'ORDER_CREATED' AS ext_message_type,
           jsonb_build_object(
             'product_name', product_name,
             'product_photo_exists', product_photo IS NOT NULL,
@@ -174,6 +175,22 @@ class Orders {
         FROM orders
         WHERE customer = $1 AND deposit_confirmed_at IS NOT NULL
 
+        UNION ALL
+
+        SELECT
+          id,
+          expired_at AS ext_message_occured_at,
+          'ORDER_EXPIRED' as ext_message_type,
+          jsonb_build_object(
+            'product_name', product_name,
+            'product_photo_exists', product_photo IS NOT NULL,
+            'purchase_price', purchase_price,
+            'purchase_currency', purchase_currency,
+            'purchase_quantity', purchase_quantity
+          ) AS ext_message_payload
+        FROM orders
+        WHERE customer = $1 AND expired_at IS NOT NULL
+
         ORDER BY ext_message_occured_at;
       `,
       [customer],
@@ -198,7 +215,8 @@ class Orders {
           
           created_at,
           deposit_detected_at,
-          deposit_confirmed_at 
+          deposit_confirmed_at,
+          expired_at
         FROM orders
         WHERE id = $1
       `,
@@ -209,12 +227,33 @@ class Orders {
     return result && map(result);
   }
 
+  async expireOld(maxAge) {
+    const result = await this.pool.query(
+      `
+        UPDATE orders
+        SET expired_at = now()
+        WHERE
+          deposit_detected_at IS NULL AND
+          deposit_confirmed_at IS NULL AND
+          deposit_txid IS NULL AND
+          expired_at IS NULL AND
+          created_at < NOW() - ($1 * INTERVAL '1 minute')
+      `,
+      [maxAgeHours],
+    );
+
+    return result.rowCount;
+  }
+
   async markDepositDetected({ deposit_amount }) {
     const result = await this.pool.query(
       `
         UPDATE orders
         SET deposit_detected_at = now()
-        WHERE deposit_amount = $1 AND deposit_detected_at IS NULL
+        WHERE
+          deposit_amount = $1 AND
+          deposit_detected_at IS NULL AND
+          expired_at IS NULL
       `,
       [deposit_amount],
     );
@@ -227,7 +266,10 @@ class Orders {
       `
         UPDATE orders
         SET deposit_confirmed_at = now()
-        WHERE deposit_amount = $1 AND deposit_confirmed_at IS NULL
+        WHERE
+          deposit_amount = $1 AND
+          deposit_confirmed_at IS NULL AND
+          expired_at IS NULL
       `,
       [deposit_amount],
     );
@@ -240,7 +282,10 @@ class Orders {
       `
         UPDATE orders
         SET deposit_txid = $2
-        WHERE deposit_amount = $1 AND deposit_txid IS NULL
+        WHERE
+          deposit_amount = $1 AND
+          deposit_txid IS NULL AND
+          expired_at IS NULL
       `,
       [deposit_amount, deposit_txid],
     );

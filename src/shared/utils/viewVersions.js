@@ -19,10 +19,12 @@ export const orderVersion = (order) => hash({
   id: order.id,
   depositDetectedAt: order.deposit_detected_at,
   depositConfirmedAt: order.deposit_confirmed_at,
+  expiredAt: order.expired_at,
 });
 
 export const ordersVersion = (orders) => hash(orders.map((order) => ({
   id: order.id,
   depositDetectedAt: order.deposit_detected_at,
   depositConfirmedAt: order.deposit_confirmed_at,
+  expiredAt: order.expired_at,
 })));

@@ -4,7 +4,7 @@ const getExtMessages = async ({ pool, customer }) => {
       SELECT
         id,
         created_at AS ext_message_occured_at,
-        'NEW_ORDER_CREATED' AS ext_message_type,
+        'ORDER_CREATED' AS ext_message_type,
         jsonb_build_object(
           'product_name', product_name,
           'product_photo_exists', product_photo IS NOT NULL,
@@ -46,6 +46,22 @@ const getExtMessages = async ({ pool, customer }) => {
         ) AS ext_message_payload
       FROM orders
       WHERE customer = $1 AND deposit_confirmed_at IS NOT NULL
+
+      UNION ALL
+
+      SELECT
+        id,
+        expired_at AS ext_message_occured_at,
+        'ORDER_EXPIRED' as ext_message_type,
+        jsonb_build_object(
+          'product_name', product_name,
+          'product_photo_exists', product_photo IS NOT NULL,
+          'purchase_price', purchase_price::text,
+          'purchase_currency', purchase_currency,
+          'purchase_quantity', purchase_quantity
+        ) AS ext_message_payload
+      FROM orders
+      WHERE customer = $1 AND expired_at IS NOT NULL
 
       UNION ALL
 

@@ -47,7 +47,7 @@ test('can get some', async () => {
   const allExtMessages = await getExtMessages({ pool, customer: CUSTOMER });
   expect(allExtMessages).toMatchObject([
     {
-      ext_message_type: 'NEW_ORDER_CREATED',
+      ext_message_type: 'ORDER_CREATED',
       ext_message_payload: {
         product_name: 'brownie',
         product_photo_exists: false,
@@ -117,7 +117,7 @@ test('can get some with image', async () => {
   const allExtMessages = await getExtMessages({ pool, customer: CUSTOMER });
   expect(allExtMessages).toMatchObject([
     {
-      ext_message_type: 'NEW_ORDER_CREATED',
+      ext_message_type: 'ORDER_CREATED',
       ext_message_payload: {
         product_name: 'brownie',
         product_photo_exists: true,

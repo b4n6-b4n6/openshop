@@ -13,7 +13,7 @@ import staticFiles from '../shared/middlewares/staticFiles.js';
 import utilsMw from '../shared/middlewares/utilsMw.js';
 
 const walletSetupMw = await createWalletSetupMw();
-const backendMw = await createBackendMw();
+const backendMw = await createBackendMw(true);
 
 const app = new Koa();
 
