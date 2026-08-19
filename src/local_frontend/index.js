@@ -6,6 +6,7 @@ import createBackendMw from '../shared/middlewares/backendMw.js';
 import createWalletSetupMw from './middlewares/walletSetupMw.js';
 import thumbCacheMw from '../shared/middlewares/thumbCacheMw.js';
 import singularAccess from './middlewares/singularAccess.js';
+import eula from './middlewares/eula.js';
 import exportBrowsedOnion from './middlewares/exportBrowsedOnion.js';
 import onionSpinner from './middlewares/onionSpinner.js';
 import requireOnion from './middlewares/requireOnion.js';
@@ -27,6 +28,7 @@ const server = app
   .use(requireOnion())
   .use(singularAccess())
   .use(staticFiles())
+  .use(eula())
   .use(exportBrowsedOnion())
   .use(routes())
   .listen(7001, () => {

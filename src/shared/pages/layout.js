@@ -31,10 +31,13 @@ export const icon = (name, classes = 'size-5') => {
   return `<svg class="${escapeAttribute(classes)}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] ?? ''}</svg>`;
 };
 
+const DEFAULT_STYLESHEETS = ['app.css', 'ssr.css'];
+
 export const document = ({
   title = 'OpenShop',
   body,
   scripts = [],
+  stylesheets = [],
   refresh,
 }) => {
   const refreshTag = refresh
@@ -42,6 +45,9 @@ export const document = ({
     : '';
   const scriptTags = scripts.map(
     (src) => `<script src="/static/${escapeAttribute(src)}?v=${ASSET_VERSION}" defer></script>`,
+  ).join('');
+  const stylesheetsTags = [...DEFAULT_STYLESHEETS, ...stylesheets].map(
+    (src) => `<link rel="stylesheet" href="/static/${escapeAttribute(src)}?v=${ASSET_VERSION}">`,
   ).join('');
 
   return `<!doctype html>
@@ -53,8 +59,7 @@ export const document = ({
   ${refreshTag}
   <title>${escapeHtml(title)} · OpenShop</title>
   <link rel="icon" href="/static/images/logo-orange.svg?v=${ASSET_VERSION}">
-  <link rel="stylesheet" href="/static/app.css?v=${ASSET_VERSION}">
-  <link rel="stylesheet" href="/static/ssr.css?v=${ASSET_VERSION}">
+  ${stylesheetsTags}
   ${scriptTags}
 </head>
 <body>${body}</body>

@@ -3,5 +3,6 @@ export default () => async (ctx, next) => {
     ctx.redirect('/browser/');
     return;
   }
+
   await next();
 };
