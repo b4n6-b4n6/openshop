@@ -2,10 +2,12 @@
 import {
   orderStatus,
   orderStatusBadge,
-  qrViewButtonCrossFrame,
-  qrViewModalCrossFrame,
   thumb,
 } from './components.js';
+import {
+  qrViewButtonCrossFrame,
+  qrViewModalCrossFrame,
+} from './qr.js';
 import {
   appFrame,
   button,

@@ -1,6 +1,5 @@
 import {
   avatar,
-  qrView,
   richText,
   shopBanner,
 } from '../../shared/pages/components.js';
@@ -10,6 +9,7 @@ import {
   document,
   icon,
 } from '../../shared/pages/layout.js';
+import { qrView } from '../../shared/pages/qr.js';
 import { escapeAttribute, escapeHtml } from '../../shared/utils/html.js';
 import truncateMiddle from '../../shared/utils/truncateMiddle.js';
 
