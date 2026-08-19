@@ -1,13 +1,10 @@
 <code style='color: cyan;'>[Core]</code>
   * reduce quantity in purchase flow❗
-  * implement order expiration in purchase flow❗
-  * os specific notifications❗
-    * per convo message
-    * per order status change
+  * run in termux❗
   * add owner-only per-order metadata field that can be modified in owners order page
 
 <code style='color: cyan;'>[UI]</code>
-  * Improve live chat❗
+  * Improve live chat
     * reveal new message once a new message appears
     * save and restore scroll position across reloads (probably save when user triggers scroll and load on new page load event)
   * Improve aesthetic
