@@ -35,7 +35,7 @@ export const BROWSER_ERROR_REFRESH = 32;
 export const UPLOAD_FILE_MAX_SIZE = 10 * 1024 * 1024; // Bytes
 export const UPLOAD_FORM_MAX_SIZE = 8 * 1024 * 1024;
 
-export const ORDER_EXPIRY_PERIOD = 6 * 60; // Minutes
+export const ORDER_EXPIRY_PERIOD = 4 * 60; // Minutes
 
 export const CACHE_CONTROL_LIVE = 'no-cache';
 export const CACHE_CONTROL_FOREVER = 'immutable';

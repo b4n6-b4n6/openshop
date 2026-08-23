@@ -19,7 +19,8 @@ class Products {
           currency TEXT NOT NULL,
           CHECK (currency <> ''),
 
-          available_quantity integer NOT NULL
+          available_quantity integer NOT NULL,
+          CHECK (available_quantity >= 0)
         )
       `,
     );
@@ -62,6 +63,19 @@ class Products {
     );
 
     if (result.rowCount !== 1) { throw new Error('Products.update rowCount !== 1'); }
+  }
+
+  async reduceAvailableQuantity({ id, available_quantity_delta }) {
+    const result = await this.pool.query(
+      `
+        UPDATE products
+        SET available_quantity = available_quantity - $2
+        WHERE id = $1
+      `,
+      [id, available_quantity_delta],
+    );
+
+    return result.rowCount === 1;
   }
 
   async getAll() {

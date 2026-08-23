@@ -6,6 +6,7 @@ import getExtMessages from './getExtMessages.js';
 
 const SHOP_ADDRESS = '2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion';
 const CUSTOMER = '370c6cbe-8a6c-4d77-8070-bc21c32fc904';
+const BROWNIE_ID = 'e54bc641-5614-494c-a618-1d8635059f34';
 
 test('can get none', async () => {
   const pool = createPool();
@@ -28,6 +29,7 @@ test('can get some', async () => {
 
     product_name: 'brownie',
     product_description: 'coco!',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -98,6 +100,7 @@ test('can get some with image', async () => {
     product_name: 'brownie',
     product_photo: Buffer.from('aabbccdd', 'hex'),
     product_description: 'coco!',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',

@@ -6,7 +6,7 @@ import { ipcWrite } from '../../../utils/ipc.js';
 
 await ipcWrite(MY_SHOP_WALLET_SYNC_STATUS_IPC, '');
 
-export default ({ orders }) => (
+export default ({ orders, products }) => (
   new class extends moneroTs.MoneroWalletListener {
     async onOutputReceived(output) {
       const tx = output.getTx();
@@ -28,6 +28,7 @@ export default ({ orders }) => (
         isIncoming,
         isOutgoing,
         orders,
+        products,
       });
     }
 

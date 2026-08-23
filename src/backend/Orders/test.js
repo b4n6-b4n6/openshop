@@ -3,6 +3,8 @@ import timers from 'node:timers/promises';
 import createOrders from './index.js';
 
 const CUSTOMER = '370c6cbe-8a6c-4d77-8070-bc21c32fc904';
+const BROWNIE_ID = 'e54bc641-5614-494c-a618-1d8635059f34';
+const COOKIE_ID = '733cc7fb-6f70-4052-8e3a-73789270e0f5';
 
 test('can get a non-existent order', async () => {
   const orders = await createOrders();
@@ -21,6 +23,7 @@ test('can create an order', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -45,6 +48,84 @@ test('can create an order', async () => {
   await orders.destroy();
 });
 
+test('can create an order and get product details', async () => {
+  const orders = await createOrders();
+
+  const id = await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_id: BROWNIE_ID,
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+
+  const productDetails = await orders.getProductDetails(id);
+  expect(productDetails).toMatchObject({
+    product_id: BROWNIE_ID,
+    purchase_quantity: 200,
+  });
+
+  await orders.destroy();
+});
+
+test('can create orders and get number of booked', async () => {
+  const orders = await createOrders();
+
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_id: BROWNIE_ID,
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000123,
+  });
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_id: BROWNIE_ID,
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000456,
+  });
+  await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+    product_id: BROWNIE_ID,
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000789,
+  });
+
+  expect(await orders.getBooked({ product_id: BROWNIE_ID })).toBe(3);
+
+  await orders.destroy();
+});
+
+test('can create orders and get no bookings', async () => {
+  const orders = await createOrders();
+
+  expect(await orders.getBooked({ product_id: BROWNIE_ID })).toBe(0);
+
+  await orders.destroy();
+});
+
 test('can create an order with a photo', async () => {
   const orders = await createOrders();
 
@@ -52,6 +133,7 @@ test('can create an order with a photo', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
     product_photo: Buffer.from('12341234', 'hex'),
 
     purchase_currency: 'usd',
@@ -85,6 +167,7 @@ test('can create an order and mark deposit as detected', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -110,6 +193,7 @@ test('can create an order and mark deposit as detected and get notifiable', asyn
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -138,6 +222,7 @@ test('cannot create an order with negative price', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '-1.50',
@@ -156,6 +241,7 @@ test('cannot create an order with negative quantity', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -174,6 +260,7 @@ test('errors on 2 orders with identical deposit amount', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -198,6 +285,7 @@ test('errors on 2 orders with identical deposit amount', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -216,6 +304,7 @@ test('can create an order with identical deposit amount but one has no txid', as
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -245,6 +334,7 @@ test('can create an order with identical deposit amount but one has no txid', as
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -275,6 +365,7 @@ test('can create an order with identical deposit amount but one is expired', asy
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -300,6 +391,7 @@ test('can create an order with identical deposit amount but one is expired', asy
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -330,6 +422,7 @@ test('can create an order and get all for shop', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -342,6 +435,7 @@ test('can create an order and get all for shop', async () => {
     customer: CUSTOMER,
 
     product_name: 'cookie',
+    product_id: COOKIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '0.60',
@@ -388,6 +482,7 @@ test('can create an order and get all for customer', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -400,6 +495,7 @@ test('can create an order and get all for customer', async () => {
     customer: CUSTOMER,
 
     product_name: 'cookie',
+    product_id: COOKIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '0.60',
@@ -442,6 +538,7 @@ test('can create an order and get as ext. messages', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -468,6 +565,7 @@ test('can create an order and get as ext. messages with photo', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
     product_photo: Buffer.from('abcdabcd', 'hex'),
 
     purchase_currency: 'usd',
@@ -495,6 +593,7 @@ test('can create an order and get as ext. messages including deposit detected', 
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -530,6 +629,7 @@ test('can create an order and get as ext. messages including deposit confirmed',
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -567,6 +667,7 @@ test('can create an order and get as ext. messages including expired', async () 
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -595,6 +696,7 @@ test('can create many orders and get as ext. messages', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -607,6 +709,7 @@ test('can create many orders and get as ext. messages', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
+    product_id: BROWNIE_ID,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',

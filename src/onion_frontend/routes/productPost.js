@@ -25,20 +25,25 @@ export default async (ctx) => {
     ctx.throw(400, 'Specified quantity is not available');
   }
 
+  const booked_quantity = await orders.getBooked({ product_id: id });
+  if (!(available_quantity - purchase_quantity - booked_quantity >= 0)) {
+    ctx.throw(400, 'Specified quantity is booked, try again later');
+  }
+
   const fiatRates = await fetchFiatRates();
   const fiatRate = fiatRates[product.currency];
   if (!fiatRate) {
-    ctx.throw(500, 'Faield to acquire current market rate');
+    ctx.throw(500, 'Failed to acquire current market rate');
   }
 
   const purchase_price = Number(product.price) * Number(purchase_quantity);
   if (!purchase_price) {
-    ctx.throw(500, 'Faield to calculate order price in fiat');
+    ctx.throw(500, 'Failed to calculate order price in fiat');
   }
 
   const deposit_amount = floatingXmrToPico(purchase_price / fiatRate);
   if (!deposit_amount) {
-    ctx.throw(500, 'Faield to calculate order deposit amount in xmr');
+    ctx.throw(500, 'Failed to calculate order deposit amount in xmr');
   }
   const deposit_amount_noisy = deposit_amount + genPicoNoise();
 
@@ -46,6 +51,7 @@ export default async (ctx) => {
     customer: userId,
     product_name: product.name,
     product_photo: product.photo,
+    product_id: id,
     purchase_currency: product.currency,
     deposit_amount: deposit_amount_noisy,
     purchase_price,

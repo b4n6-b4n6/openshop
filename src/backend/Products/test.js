@@ -270,3 +270,41 @@ test('can update a product: description', async () => {
 
   await products.destroy();
 });
+
+test('can reduce available_quantity', async () => {
+  const products = await createProducts();
+
+  const brownieId = await products.create({
+    name: 'brownie',
+    description: 'coco!',
+    currency: 'usd',
+    price: '1.50',
+    available_quantity: 25,
+  });
+
+  expect(await products.reduceAvailableQuantity({
+    id: brownieId,
+    available_quantity_delta: 5,
+  })).toBeTruthy();
+
+  expect(await products.getAll()).toMatchObject([
+    {
+      id: brownieId,
+      name: 'brownie',
+      photo_exists: false,
+      currency: 'usd',
+      price: '1.50',
+      available_quantity: 20,
+    },
+  ]);
+  expect(await products.get(brownieId)).toMatchObject({
+    name: 'brownie',
+    photo: null,
+    description: 'coco!',
+    currency: 'usd',
+    price: '1.50',
+    available_quantity: 20,
+  });
+
+  await products.destroy();
+});

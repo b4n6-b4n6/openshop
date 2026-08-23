@@ -80,7 +80,7 @@ class Messages {
   }
 
   async getUnread(party) {
-    const { rows } = await this.pool.query(
+    const result = await this.pool.query(
       `
           SELECT TRUE
           FROM messages
@@ -90,7 +90,7 @@ class Messages {
       [party],
     );
 
-    return Boolean(rows.length);
+    return Boolean(result.rowCount);
   }
 
   async getImageContent(id) {

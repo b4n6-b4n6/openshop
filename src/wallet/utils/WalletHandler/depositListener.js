@@ -9,7 +9,7 @@ const deriveTxState = ({ isConfirmed, isLocked }) => (
   || (isConfirmed === true && isLocked === false) && 'UNLOCKED'
 );
 
-const act = ({
+const mark = ({
   orders, amount, isConfirmed, isLocked,
 }) => {
   const txState = deriveTxState({ isConfirmed, isLocked });
@@ -39,22 +39,36 @@ export default async ({
   txid,
   isOutgoing,
   orders,
+  products,
 }) => {
   const logParams = { isConfirmed, isLocked, txid };
 
   if (isOutgoing) { log('Tx is outgoing', logParams); return; }
   if (subaddressIndex !== 0) { log('Tx has bad subadress', logParams); return; }
 
-  const acted = await act({
+  const marked = await mark({
     amount, isConfirmed, isLocked, orders,
   });
-  if (acted) {
+
+  if (marked) {
     log(`Tx with ${formatPiconero(amount)} XMR processed`, logParams);
 
-    await orders.setDepositTxid({
+    const txid_updated = await orders.setDepositTxid({
       deposit_amount: amount,
       deposit_txid: txid,
     });
+
+    if (txid_updated) {
+      const productDetails = await orders.getProductDetails(txid_updated);
+
+      if (productDetails) {
+        const { product_id, purchase_quantity } = productDetails;
+        await products.reduceAvailableQuantity({
+          id: product_id,
+          available_quantity_delta: purchase_quantity,
+        });
+      }
+    }
   } else {
     log(`Tx with ${formatPiconero(amount)} XMR not processed`, logParams);
   }

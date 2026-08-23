@@ -20,6 +20,7 @@ class Orders {
 
           product_name TEXT NOT NULL,
           product_photo BYTEA,
+          product_id UUID NOT NULL,
 
           purchase_price NUMERIC(8, 2) NOT NULL,
           CHECK (purchase_price > 0),
@@ -52,7 +53,7 @@ class Orders {
 
   async create({
     customer,
-    product_name, product_photo, 
+    product_name, product_photo, product_id,
     purchase_price, purchase_currency, purchase_quantity,
     deposit_amount,
   }) {
@@ -60,16 +61,16 @@ class Orders {
       `
         INSERT INTO orders(
           customer, 
-          product_name, product_photo, 
+          product_name, product_photo, product_id,
           purchase_price, purchase_currency, purchase_quantity,
           deposit_amount
         )
-        VALUES($1, $2, $3, $4, $5, $6, $7)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING id
       `,
       [
         customer,
-        product_name, product_photo, 
+        product_name, product_photo, product_id,
         purchase_price, purchase_currency, purchase_quantity,
         deposit_amount,
       ],
@@ -257,7 +258,7 @@ class Orders {
   }
 
   async markDepositDetected({ deposit_amount }) {
-    const result = await this.pool.query(
+    const { rows } = await this.pool.query(
       `
         UPDATE orders
         SET deposit_detected_at = now()
@@ -265,15 +266,16 @@ class Orders {
           deposit_amount = $1 AND
           deposit_detected_at IS NULL AND
           expired_at IS NULL
+        RETURNING id
       `,
       [deposit_amount],
     );
 
-    return result.rowCount === 1;
+    return rows[0]?.id;
   }
 
   async markDepositConfirmed({ deposit_amount }) {
-    const result = await this.pool.query(
+    const { rows } = await this.pool.query(
       `
         UPDATE orders
         SET deposit_confirmed_at = now()
@@ -281,15 +283,16 @@ class Orders {
           deposit_amount = $1 AND
           deposit_confirmed_at IS NULL AND
           expired_at IS NULL
+        RETURNING id
       `,
       [deposit_amount],
     );
 
-    return result.rowCount === 1;
+    return rows[0]?.id;
   }
 
   async setDepositTxid({ deposit_amount, deposit_txid }) {
-    const result = await this.pool.query(
+    const { rows } = await this.pool.query(
       `
         UPDATE orders
         SET deposit_txid = $2
@@ -297,11 +300,37 @@ class Orders {
           deposit_amount = $1 AND
           deposit_txid IS NULL AND
           expired_at IS NULL
+        RETURNING id
       `,
       [deposit_amount, deposit_txid],
     );
 
-    return result.rowCount !== 1;
+    return rows[0]?.id;
+  }
+
+  async getBooked({ product_id }) {
+    const result = await this.pool.query(
+      `
+        SELECT COUNT(*)
+        FROM orders
+        WHERE
+          product_id = $1 AND
+          deposit_txid IS NULL AND
+          expired_at IS NULL
+      `,
+      [product_id],
+    );
+
+    return Number(result.rows[0]?.count);
+  }
+
+  async getProductDetails(id) {
+    const { rows } = await this.pool.query(
+      'SELECT product_id, purchase_quantity FROM orders WHERE id = $1',
+      [id],
+    );
+
+    return rows[0];
   }
 
   async destroy() {
