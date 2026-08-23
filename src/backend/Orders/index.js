@@ -20,7 +20,6 @@ class Orders {
 
           product_name TEXT NOT NULL,
           product_photo BYTEA,
-          product_description TEXT NOT NULL,
 
           purchase_price NUMERIC(8, 2) NOT NULL,
           CHECK (purchase_price > 0),
@@ -44,7 +43,7 @@ class Orders {
         CREATE UNIQUE INDEX
         IF NOT EXISTS orders_deposit_amount_idx
         ON orders (deposit_amount)
-        WHERE deposit_txid IS NULL OR expired_at IS NULL
+        WHERE deposit_txid IS NULL AND expired_at IS NULL
       `,
     );
 
@@ -53,7 +52,7 @@ class Orders {
 
   async create({
     customer,
-    product_name, product_photo, product_description,
+    product_name, product_photo, 
     purchase_price, purchase_currency, purchase_quantity,
     deposit_amount,
   }) {
@@ -61,16 +60,16 @@ class Orders {
       `
         INSERT INTO orders(
           customer, 
-          product_name, product_photo, product_description,
+          product_name, product_photo, 
           purchase_price, purchase_currency, purchase_quantity,
           deposit_amount
         )
-        VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+        VALUES($1, $2, $3, $4, $5, $6, $7)
         RETURNING id
       `,
       [
         customer,
-        product_name, product_photo, product_description,
+        product_name, product_photo, 
         purchase_price, purchase_currency, purchase_quantity,
         deposit_amount,
       ],
@@ -221,7 +220,6 @@ class Orders {
           
           product_name,
           product_photo IS NOT NULL AS product_photo_exists,
-          product_description,
           
           purchase_price, purchase_currency, purchase_quantity, 
           deposit_amount, deposit_txid, 

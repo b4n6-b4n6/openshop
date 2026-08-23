@@ -21,7 +21,6 @@ test('can create an order', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -34,7 +33,6 @@ test('can create an order', async () => {
   expect(order).toMatchObject({
     product_name: 'brownie',
     product_photo_exists: false,
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -55,7 +53,6 @@ test('can create an order with a photo', async () => {
 
     product_name: 'brownie',
     product_photo: Buffer.from('12341234', 'hex'),
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -68,7 +65,6 @@ test('can create an order with a photo', async () => {
   expect(order).toMatchObject({
     product_name: 'brownie',
     product_photo_exists: true,
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -89,7 +85,6 @@ test('can create an order and mark deposit as detected', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -115,7 +110,6 @@ test('can create an order and mark deposit as detected and get notifiable', asyn
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -144,7 +138,6 @@ test('cannot create an order with negative price', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '-1.50',
@@ -163,7 +156,6 @@ test('cannot create an order with negative quantity', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -182,7 +174,6 @@ test('errors on 2 orders with identical deposit amount', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -194,7 +185,6 @@ test('errors on 2 orders with identical deposit amount', async () => {
   expect(order).toMatchObject({
     product_name: 'brownie',
     product_photo_exists: false,
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -208,7 +198,6 @@ test('errors on 2 orders with identical deposit amount', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -220,14 +209,13 @@ test('errors on 2 orders with identical deposit amount', async () => {
   await orders.destroy();
 });
 
-test('can create an order with identical deposit amount and on txid', async () => {
+test('can create an order with identical deposit amount but one has no txid', async () => {
   const orders = await createOrders();
 
   const id_1 = await orders.create({
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -239,7 +227,6 @@ test('can create an order with identical deposit amount and on txid', async () =
   expect(order_1).toMatchObject({
     product_name: 'brownie',
     product_photo_exists: false,
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -258,7 +245,6 @@ test('can create an order with identical deposit amount and on txid', async () =
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -270,7 +256,61 @@ test('can create an order with identical deposit amount and on txid', async () =
   expect(order_2).toMatchObject({
     product_name: 'brownie',
     product_photo_exists: false,
-    product_description: 'coco!',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  expect(order_2.created_at).toBeTruthy();
+
+  await orders.destroy();
+});
+
+test('can create an order with identical deposit amount but one is expired', async () => {
+  const orders = await createOrders();
+
+  const id_1 = await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  expect(await orders.expireOld(0)).toBe(1);
+  const order_1 = await orders.get(id_1);
+  expect(order_1).toMatchObject({
+    product_name: 'brownie',
+    product_photo_exists: false,
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  expect(order_1.created_at).toBeTruthy();
+
+  const id_2 = await orders.create({
+    customer: CUSTOMER,
+
+    product_name: 'brownie',
+
+    purchase_currency: 'usd',
+    purchase_price: '1.50',
+    purchase_quantity: 200,
+
+    deposit_amount: 2000000000000,
+  });
+  const order_2 = await orders.get(id_2);
+  expect(order_2).toMatchObject({
+    product_name: 'brownie',
+    product_photo_exists: false,
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -290,7 +330,6 @@ test('can create an order and get all for shop', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -303,7 +342,6 @@ test('can create an order and get all for shop', async () => {
     customer: CUSTOMER,
 
     product_name: 'cookie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '0.60',
@@ -350,7 +388,6 @@ test('can create an order and get all for customer', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -363,7 +400,6 @@ test('can create an order and get all for customer', async () => {
     customer: CUSTOMER,
 
     product_name: 'cookie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '0.60',
@@ -406,7 +442,6 @@ test('can create an order and get as ext. messages', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -434,7 +469,6 @@ test('can create an order and get as ext. messages with photo', async () => {
 
     product_name: 'brownie',
     product_photo: Buffer.from('abcdabcd', 'hex'),
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -461,7 +495,6 @@ test('can create an order and get as ext. messages including deposit detected', 
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -497,7 +530,6 @@ test('can create an order and get as ext. messages including deposit confirmed',
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -535,7 +567,6 @@ test('can create an order and get as ext. messages including expired', async () 
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -564,7 +595,6 @@ test('can create many orders and get as ext. messages', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',
@@ -577,7 +607,6 @@ test('can create many orders and get as ext. messages', async () => {
     customer: CUSTOMER,
 
     product_name: 'brownie',
-    product_description: 'coco!',
 
     purchase_currency: 'usd',
     purchase_price: '1.50',

@@ -46,7 +46,6 @@ export default async (ctx) => {
     customer: userId,
     product_name: product.name,
     product_photo: product.photo,
-    product_description: product.description,
     purchase_currency: product.currency,
     deposit_amount: deposit_amount_noisy,
     purchase_price,
