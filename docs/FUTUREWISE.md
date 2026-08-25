@@ -1,5 +1,4 @@
 <code style='color: cyan;'>[Core]</code>
-  * reduce quantity in purchase flow❗
   * run in termux❗
   * add owner-only per-order metadata field that can be modified in owners order page
 
@@ -23,6 +22,5 @@
     * regular version
 
 <code style='color: cyan;'>[Refactor]</code>
-  * remove product_description from Orders (including tests)
   * mainly spacing of html in .js pages needs to be fixed
   * review whether the inclusion of the frontend .js files should be modernised?
