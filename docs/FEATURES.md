@@ -15,11 +15,11 @@
 <code style='color: cyan;'>[Core]</code> Image upload implementation (shop banner photo / shop profile photo / product photo) ✅
   * resize to a predefined size based on the HTML container width/height
 
-<code style='color: cyan;'>[Core]</code> Notifications ✅
+<code style='color: cyan;'>[Core]</code> Notifications
   * Chat messages implementation
     * shop owner polls his backend and generates notifications when it finds unread messages
     * shop owner polls his backend and generates notifications when it finds new orders (save previous state, diff with current state)
-    * customer polls his last visited onion and generates notifications when it finds unread messages
+    * customer polls his last visited onion and generates notifications when it finds unread messages ❌
 
 <code style='color: red;'>[Core]</code> No pagination
 
