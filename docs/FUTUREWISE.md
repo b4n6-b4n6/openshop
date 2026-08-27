@@ -1,9 +1,11 @@
 <code style='color: cyan;'>[Core]</code>
-  * run in termux❗
+  * run in android / termux - r&d - (next task by priority)
   * add owner-only per-order metadata field that can be modified in owners order page
+  * fix order shop details update page discarding name & descrption when changing images
+  * referral system - r&d
 
 <code style='color: cyan;'>[UI]</code>
-  * Improve live chat
+  * Improve live chat - r&d
     * reveal new message once a new message appears
     * save and restore scroll position across reloads (probably save when user triggers scroll and load on new page load event)
   * Improve aesthetic
@@ -11,9 +13,6 @@
     * Add cute profile pictures to each chat (generated from name uuid)
   * Improved `title` attribute behaviour
     * Add a script that would transform all HTML elements with title attribute into focusable and tappable tooltips
-  * Improved UX
-    * for all customer pages - Add message ting on order status changes
-    * for all customer pages - Add message ting for every new message that arrives
 
 <code style='color: cyan;'>[Android]</code>
   * Ask user to disable battery optimisations
