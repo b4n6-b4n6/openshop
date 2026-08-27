@@ -40,6 +40,8 @@ export default () => async (ctx, next) => {
       rightKey,
       { expires: new Date('9999-12-31T23:59:59.999Z') },
     );
+    ctx.redirect('/');
+    return;
   }
 
   const key = ctx.cookies.get(KEY_COOKIE_NAME);
