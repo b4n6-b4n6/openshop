@@ -1,3 +1,4 @@
+import { THUMB_CACHE_KEY } from '../../const.js';
 import assertImage from '../../utils/assertImage.js';
 import viewProductPage from '../pages/viewProductPage.js';
 import validateProductInput from '../utils/validateProductInput.js';
@@ -45,7 +46,7 @@ export default async (ctx) => {
     available_quantity: available_quantity || '0',
   });
 
-  if (photo) { await thumbCache.clear(`product:${id}`); }
+  if (photo) { await thumbCache.clear(`${THUMB_CACHE_KEY.PRODUCT}:${id}`); }
 
   ctx.redirectWith303('/shop/products');
 };
