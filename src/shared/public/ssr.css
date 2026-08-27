@@ -237,7 +237,7 @@ button:disabled,
 .product-photo-full img {
   height: auto;
   max-height: 420px;
-  object-fit: contain;
+  object-fit: cover;
   width: 100%;
 }
 
