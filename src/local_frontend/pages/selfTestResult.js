@@ -24,53 +24,53 @@ const selfTestResultPage = ({ result } = {}) => {
   const isTransient = result === undefined;
 
   return (
-`<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="15">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Shop status</title>
-  <style>
-    * { box-sizing: border-box; }
-    html, body { background: transparent !important; height: 100%; margin: 0; }
-    body {
-      align-items: center;
-      background: transparent;
-      display: flex;
-      font-family: ui-sans-serif, system-ui, sans-serif;
-      justify-content: flex-end;
-      overflow: hidden;
-    }
-    .pill {
-      align-items: center;
-      background: ${bg};
-      border: 1px solid ${border};
-      border-radius: 999px;
-      color: ${color};
-      display: inline-flex;
-      font-size: 11px;
-      font-weight: 700;
-      gap: 6px;
-      height: 26px;
-      padding: 0 9px;
-      white-space: nowrap;
-    }
-    .onion-icon {
-      animation: ${isTransient ? 'pulse 1.5s ease-in-out infinite' : 'none'};
-      display: block;
-      flex-shrink: 0;
-      height: 13px;
-      width: 13px;
-    }
-    @keyframes pulse { 50% { opacity: 0.35; } }
-    @media (prefers-reduced-motion: reduce) { .onion-icon { animation: none; } }
-  </style>
-</head>
-<body>
-  <span class="pill" title="${title}"><svg class="onion-icon" viewBox="0 0 180 180" width="13" height="13" fill="${color}" aria-hidden="true"><path d="${ONION_GLYPH_PATH}"></path></svg>${label}</span>
-</body>
-</html>`
+    `<!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="refresh" content="15">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>Shop status</title>
+      <style>
+        * { box-sizing: border-box; }
+        html, body { background: transparent !important; height: 100%; margin: 0; }
+        body {
+          align-items: center;
+          background: transparent;
+          display: flex;
+          font-family: ui-sans-serif, system-ui, sans-serif;
+          justify-content: flex-end;
+          overflow: hidden;
+        }
+        .pill {
+          align-items: center;
+          background: ${bg};
+          border: 1px solid ${border};
+          border-radius: 999px;
+          color: ${color};
+          display: inline-flex;
+          font-size: 11px;
+          font-weight: 700;
+          gap: 6px;
+          height: 26px;
+          padding: 0 9px;
+          white-space: nowrap;
+        }
+        .onion-icon {
+          animation: ${isTransient ? 'pulse 1.5s ease-in-out infinite' : 'none'};
+          display: block;
+          flex-shrink: 0;
+          height: 13px;
+          width: 13px;
+        }
+        @keyframes pulse { 50% { opacity: 0.35; } }
+        @media (prefers-reduced-motion: reduce) { .onion-icon { animation: none; } }
+      </style>
+    </head>
+    <body>
+      <span class="pill" title="${title}"><svg class="onion-icon" viewBox="0 0 180 180" width="13" height="13" fill="${color}" aria-hidden="true"><path d="${ONION_GLYPH_PATH}"></path></svg>${label}</span>
+    </body>
+    </html>`
   );
 };
 

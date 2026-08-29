@@ -1,7 +1,7 @@
 import { document } from './layout.js';
 
-export const eulaModal = () => `
-<div id="eulaOverlay" class="eula-overlay">
+export const eulaModal = () => (
+`<div id="eulaOverlay" class="eula-overlay">
   <form class="eula-modal" method='post' action='/eula'>
     <div class="eula-icon-wrap">
       <div class="eula-icon-glow"></div>
@@ -40,7 +40,8 @@ export const eulaModal = () => `
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
     </button>
   </form>
-</div>`;
+</div>`
+);
 
 export const eulaPage = () => document({
   title: 'EULA',

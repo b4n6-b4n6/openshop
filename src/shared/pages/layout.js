@@ -50,20 +50,22 @@ export const document = ({
     (src) => `<link rel="stylesheet" href="/static/${escapeAttribute(src)}?v=${ASSET_VERSION}">`,
   ).join('');
 
-  return `<!doctype html>
-<html lang="en" class="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0f1115">
-  ${refreshTag}
-  <title>${escapeHtml(title)} · OpenShop</title>
-  <link rel="icon" href="/static/images/logo-orange.svg?v=${ASSET_VERSION}">
-  ${stylesheetsTags}
-  ${scriptTags}
-</head>
-<body>${body}</body>
-</html>`;
+  return (
+    `<!doctype html>
+    <html lang="en" class="dark">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+      <meta name="theme-color" content="#0f1115">
+      ${refreshTag}
+      <title>${escapeHtml(title)} · OpenShop</title>
+      <link rel="icon" href="/static/images/logo-orange.svg?v=${ASSET_VERSION}">
+      ${stylesheetsTags}
+      ${scriptTags}
+    </head>
+    <body>${body}</body>
+    </html>`
+  );
 };
 
 export const appFrame = ({
@@ -76,25 +78,41 @@ export const appFrame = ({
   animate = true,
 }) => {
   const backButton = back
-    ? `<a class="inline-flex size-11 items-center justify-center rounded-xl text-muted transition-colors hover:bg-surface-2 hover:text-text active:scale-95" href="${escapeAttribute(back)}" aria-label="Back">${icon('arrowLeft', 'size-6')}</a>`
+    ? (
+      `<a
+        class="inline-flex size-11 items-center justify-center rounded-xl text-muted transition-colors hover:bg-surface-2 hover:text-text active:scale-95"
+        href="${escapeAttribute(back)}"
+        aria-label="Back"
+      >${icon('arrowLeft', 'size-6')}</a>`
+    )
     : '';
 
-  return `<div class="mx-auto flex h-full max-w-[480px] flex-col bg-base${animate ? ' page-enter' : ''}">
-  <header class="sticky top-0 z-30 border-b border-border bg-elevated/95 backdrop-blur pt-safe">
-    <div class="flex h-14 items-center gap-1 px-2">
-      <div class="flex w-11 shrink-0 justify-start">${backButton}</div>
-      <h1 class="min-w-0 flex-1 ${back ? 'text-left' : 'text-center'} text-[15px] font-bold text-text">
-        <span class="inline-flex max-w-full items-center ${back ? 'justify-start' : 'justify-center'} gap-1.5">
-          ${titleIcon ? `<span class="shrink-0 text-accent">${titleIcon}</span>` : ''}
-          <span class="truncate">${escapeHtml(title)}</span>
-        </span>
-      </h1>
-      <div class="flex min-w-11 shrink-0 items-center justify-end gap-1.5 pr-1">${status}</div>
-    </div>
-  </header>
-  <main class="no-scrollbar flex-1 overflow-y-auto">${content}</main>
-  ${bottom ? `<div class="sticky bottom-0 border-t border-border bg-elevated/95 px-5 pt-3 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] backdrop-blur">${bottom}</div>` : ''}
-</div>`;
+  return (
+    `<div class="mx-auto flex h-full max-w-[480px] flex-col bg-base${animate ? ' page-enter' : ''}">
+      <header class="sticky top-0 z-30 border-b border-border bg-elevated/95 backdrop-blur pt-safe">
+        <div class="flex h-14 items-center gap-1 px-2">
+          <div class="flex w-11 shrink-0 justify-start">${backButton}</div>
+
+          <h1 class="min-w-0 flex-1 ${back ? 'text-left' : 'text-center'} text-[15px] font-bold text-text">
+            <span class="inline-flex max-w-full items-center ${back ? 'justify-start' : 'justify-center'} gap-1.5">
+              ${titleIcon ? `<span class="shrink-0 text-accent">${titleIcon}</span>` : ''}
+              <span class="truncate">${escapeHtml(title)}</span>
+            </span>
+          </h1>
+
+          <div
+            class="flex min-w-11 shrink-0 items-center justify-end gap-1.5 pr-1"
+          >${status}</div>
+        </div>
+      </header>
+
+      <main class="no-scrollbar flex-1 overflow-y-auto">${content}</main>
+
+      ${bottom
+        ? `<div class="sticky bottom-0 border-t border-border bg-elevated/95 px-5 pt-3 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] backdrop-blur">${bottom}</div>`
+        : ''}
+    </div>`
+  );
 };
 
 const BUTTON_VARIANTS = {
@@ -116,8 +134,17 @@ export const button = ({
   const tag = href ? 'a' : 'button';
   const target = href ? ` href="${escapeAttribute(href)}"` : ` type="${escapeAttribute(type)}"`;
 
-  return `<${tag}${target} class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-[15px] font-semibold transition-colors duration-150 select-none active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50 ${BUTTON_VARIANTS[variant]} ${escapeAttribute(classes)}" ${attributes}>${buttonIcon}${escapeHtml(label)}</${tag}>`;
+  return (
+    `<${tag}${target}
+      class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-[15px] font-semibold transition-colors duration-150 select-none active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50 ${BUTTON_VARIANTS[variant]} ${escapeAttribute(classes)}"
+      ${attributes}
+    >${buttonIcon}${escapeHtml(label)}</${tag}>`
+  );
 };
+
+const getFieldErrorClasses = (error) => (
+  error ? 'border-danger focus:border-danger focus:ring-danger/30' : 'border-border focus:border-accent focus:ring-accent/30'
+);
 
 export const field = ({
   label,
@@ -127,16 +154,33 @@ export const field = ({
   mono = false,
   error = '',
   attributes = '',
-}) => `<label class="block">
-  <span class="mb-1.5 block text-[12px] font-semibold uppercase tracking-wide text-muted">${escapeHtml(label)}</span>
-  <input class="h-12 w-full rounded-xl bg-surface-2 border ${error ? 'border-danger focus:border-danger focus:ring-danger/30' : 'border-border focus:border-accent focus:ring-accent/30'} px-4 text-[15px] text-text placeholder:text-faint transition-colors outline-none focus:ring-2 ${mono ? 'font-mono text-[13px]' : ''}" name="${escapeAttribute(name)}" value="${escapeAttribute(value)}" placeholder="${escapeAttribute(placeholder)}" ${attributes}>
-  ${error ? `<span class="mt-1.5 block text-[13px] text-danger">${escapeHtml(error)}</span>` : ''}
-</label>`;
+}) => (
+  `<label class="block">
+    <span class="mb-1.5 block text-[12px] font-semibold uppercase tracking-wide text-muted">${escapeHtml(label)}</span>
+    <input
+      class="h-12 w-full rounded-xl bg-surface-2 border ${getFieldErrorClasses(error)} px-4 text-[15px] text-text placeholder:text-faint transition-colors outline-none focus:ring-2 ${mono ? 'font-mono text-[13px]' : ''}"
+      name="${escapeAttribute(name)}"
+      value="${escapeAttribute(value)}"
+      placeholder="${escapeAttribute(placeholder)}" ${attributes}
+    >
+    ${error ? `<span class="mt-1.5 block text-[13px] text-danger">${escapeHtml(error)}</span>` : ''}
+  </label>`
+);
 
-export const errorNotice = (message, title = 'Something went wrong') => `
-<div role="alert" class="rounded-2xl border border-danger/35 bg-danger/10 p-4">
-  <p class="text-[15px] font-semibold text-danger">${escapeHtml(title)}</p>
-  <p class="mt-1.5 text-[13px] leading-relaxed text-muted">${escapeHtml(message)}</p>
-</div>`;
+export const errorNotice = (message, title = 'Something went wrong') => (
+  `<div role="alert" class="rounded-2xl border border-danger/35 bg-danger/10 p-4">
+    <p class="text-[15px] font-semibold text-danger">${escapeHtml(title)}</p>
+    <p class="mt-1.5 text-[13px] leading-relaxed text-muted">${escapeHtml(message)}</p>
+  </div>`
+);
 
-export const logo = (size = 92) => `<img src="/static/images/logo-orange.svg" alt="OpenShop" width="${size}" height="${size}" style="--logo-size:${size}px" class="welcome-logo">`;
+export const logo = (size = 92) => (
+  `<img
+    src="/static/images/logo-orange.svg"
+    alt="OpenShop"
+    width="${size}"
+    height="${size}"
+    style="--logo-size:${size}px"
+    class="welcome-logo"
+  >`
+);

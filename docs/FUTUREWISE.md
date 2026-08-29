@@ -1,8 +1,8 @@
 <code style='color: cyan;'>[Core]</code>
-  * run in android / termux - r&d - (next task by priority)
+  * run in android / termux - r&d - 👀
+  * referral system - r&d - 👀
   * add owner-only per-order metadata field that can be modified in owners order page
   * fix order shop details update page discarding name & descrption when changing images
-  * referral system - r&d
 
 <code style='color: cyan;'>[UI]</code>
   * Improve live chat - r&d
@@ -21,5 +21,4 @@
     * regular version
 
 <code style='color: cyan;'>[Refactor]</code>
-  * mainly spacing of html in .js pages needs to be fixed
-  * review whether the inclusion of the frontend .js files should be modernised?
+  * review whether the inclusion of the frontend .js files can be modernised or modulised?

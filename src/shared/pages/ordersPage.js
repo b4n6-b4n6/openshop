@@ -11,7 +11,6 @@ export const ordersPage = ({ owner = false, status = '' }) => (
       title: owner ? 'My Orders' : 'Orders',
       titleIcon: icon('receipt', 'size-4'),
       back: owner ? '/shop' : '/browser/',
-      status,
       animate: false,
       content: (
         `<iframe
@@ -20,28 +19,30 @@ export const ordersPage = ({ owner = false, status = '' }) => (
           class="live-frame h-full w-full border-0 bg-base"
         ></iframe>`
       ),
+      status,
     }),
   })
 );
 
-export const ordersThreadPage = ({
-  allOrders, owner = false, refresh,
-}) => {
-  const root = owner ? '/shop/orders' : '/browser/orders';
+const getOrdersRoot = (owner) => (
+  owner ? '/shop/orders' : '/browser/orders'
+);
 
-  return document({
-    title: 'Orders',
-    scripts: [],
-    body: (
-      `<div class="live-body">
-        ${(allOrders.length
+export const ordersThreadPage = ({
+  allOrders, owner = false, refresh
+}) => document({
+  title: 'Orders',
+  scripts: [],
+  body: (
+    `<div class="live-body">
+      ${(allOrders.length
         ? (
-          `<div class="flex flex-col gap-2.5 px-5 py-5">${(
+          `<div class="flex flex-col gap-2.5 px-5 py-5">${
             allOrders.map((order) => orderCard({
               order,
-              href: `${root}/${encodeURIComponent(order.id)}`,
+              href: `${getOrdersRoot(owner)}/${encodeURIComponent(order.id)}`,
             })).join('')
-          )}</div>`
+          }</div>`
         )
         : (
           emptyState({
@@ -52,8 +53,7 @@ export const ordersThreadPage = ({
               : 'Your purchases will appear here.',
           })
         ))}
-      </div>`
-    ),
-    refresh,
-  });
-};
+    </div>`
+  ),
+  refresh,
+});

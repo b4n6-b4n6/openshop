@@ -162,22 +162,40 @@ const orderEventBubble = ({ event, orderBase }) => {
     classes: 'border-border bg-surface-2 text-muted',
   };
 
-  return `<div data-event-key="${escapeAttribute(eventKey(event))}" class="flex justify-start">
-    <div class="max-w-[82%] rounded-2xl border p-3 ${state.classes}">
-      <p class="mb-2 text-[11px] font-semibold uppercase tracking-wide">${escapeHtml(state.label)}</p>
-      <div class="flex items-center gap-2 text-text">
-        ${thumb(payload.product_photo, 40)}
-        <div class="min-w-0 flex-1">
-          <p class="truncate text-[14px] font-semibold">${escapeHtml(payload.product_name)}</p>
-          <p class="text-[12px] text-muted">${Number(payload.purchase_quantity)} × ${escapeHtml(formatFiat(payload.purchase_price, payload.purchase_currency))}</p>
+  return (
+    `<div
+      data-event-key="${escapeAttribute(eventKey(event))}"
+      class="flex justify-start"
+    >
+      <div class="max-w-[82%] rounded-2xl border p-3 ${state.classes}">
+        <p class="mb-2 text-[11px] font-semibold uppercase tracking-wide">${escapeHtml(state.label)}</p>
+        <div class="flex items-center gap-2 text-text">
+          ${thumb(payload.product_photo, 40)}
+
+          <div class="min-w-0 flex-1">
+            <p
+              class="truncate text-[14px] font-semibold"
+            >${escapeHtml(payload.product_name)}</p>
+            <p
+              class="text-[12px] text-muted"
+            >${Number(payload.purchase_quantity)} × ${escapeHtml(formatFiat(payload.purchase_price, payload.purchase_currency))}</p>
+          </div>
+        </div>
+        <div class="mt-2 flex items-end justify-between gap-3">
+          <span
+            title="${escapeAttribute(event.ext_message_occured_at)}"
+            class="py-1 text-[11px] text-faint"
+          >${escapeHtml(formatTime(event.ext_message_occured_at))}</span>
+
+          <a
+            href="${escapeAttribute(`${orderBase}/${encodeURIComponent(event.id)}`)}"
+            target="_top"
+            class="rounded-lg px-2.5 py-1 text-[11px] font-semibold text-text"
+          >View</a>
         </div>
       </div>
-      <div class="mt-2 flex items-end justify-between gap-3">
-        <span title="${escapeAttribute(event.ext_message_occured_at)}" class="py-1 text-[11px] text-faint">${escapeHtml(formatTime(event.ext_message_occured_at))}</span>
-        <a href="${escapeAttribute(`${orderBase}/${encodeURIComponent(event.id)}`)}" target="_top" class="rounded-lg px-2.5 py-1 text-[11px] font-semibold text-text">View</a>
-      </div>
-    </div>
-  </div>`;
+    </div>`
+  );
 };
 
 export const chatPage = ({
@@ -198,12 +216,14 @@ export const chatPage = ({
     status,
     animate: false,
     content: (
-      `${error
-        ? `<div
+      `${
+        error
+          ? `<div
             role="alert"
             class="mx-4 mt-4 rounded-xl border border-danger/35 bg-danger/10 p-3 text-[13px] text-danger"
           >${escapeHtml(error)}</div>`
-        : ''}
+          : ''
+      }
       <iframe 
         data-chat-frame
         title="Messages"
@@ -269,6 +289,8 @@ export const chatPage = ({
   </form>`,
 });
 
+const NO_MESSAGES_YET_TEXT = '<p data-thread-empty class="my-auto text-center text-[13px] text-faint">No messages yet. Say hello.</p>';
+
 export const chatThreadPage = ({
   allExtMessages,
   me,
@@ -297,17 +319,20 @@ export const chatThreadPage = ({
         style="${(''
           + `--image-thumb-width: ${CONVO_IMAGE_THUMB_WIDTH};`
           + ` --image-thumb-height: ${CONVO_IMAGE_THUMB_HEIGHT};`)}"
-      >${(
+      >${
         allExtMessages.length
-          ? allExtMessages.toReversed().map((event) => (
-            event.ext_message_type === 'CONVO'
-              ? messageBubble({
-                event, me, owner, imageBase,
-              })
-              : orderEventBubble({ event, orderBase })
-          )).join('')
-          : '<p data-thread-empty class="my-auto text-center text-[13px] text-faint">No messages yet. Say hello.</p>'
-      )}</div>`
+          ? allExtMessages
+              .toReversed()
+              .map((event) => (
+                event.ext_message_type === 'CONVO'
+                  ? messageBubble({
+                    event, me, owner, imageBase,
+                  })
+                  : orderEventBubble({ event, orderBase })
+              ))
+              .join('')
+          : NO_MESSAGES_YET_TEXT
+      }</div>`
     ),
     refresh,
   });

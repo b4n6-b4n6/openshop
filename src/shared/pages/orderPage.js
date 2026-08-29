@@ -86,6 +86,7 @@ export const orderPage = ({
         src="${escapeAttribute(thread)}"
         class="live-frame h-full w-full border-0 bg-base"
       ></iframe>
+
       ${qrViewModalCrossFrame({
         qr,
         caption: qrCaption,
@@ -95,30 +96,31 @@ export const orderPage = ({
     ),
     bottom: (
       `<div class="flex flex-col gap-2.5">
-          ${(owner
-        ? `${button({
-          label: 'Chat with customer',
-          href: chat,
-          variant: 'secondary',
-          buttonIcon: icon('message', 'size-4'),
-        })}${button({
-          label: 'View all orders',
-          href: back,
-          variant: 'secondary',
-          buttonIcon: icon('receipt', 'size-4'),
-        })}`
-        : '')}
-          ${(!owner
-        ? (
-          button({
-            label: 'View my orders',
+        ${owner
+          ? `${button({
+            label: 'Chat with customer',
+            href: chat,
+            variant: 'secondary',
+            buttonIcon: icon('message', 'size-4'),
+          })}${button({
+            label: 'View all orders',
             href: back,
             variant: 'secondary',
             buttonIcon: icon('receipt', 'size-4'),
-          })
-        )
-        : '')}
-        </div>`
+          })}`
+          : ''}
+
+        ${!owner
+          ? (
+            button({
+              label: 'View my orders',
+              href: back,
+              variant: 'secondary',
+              buttonIcon: icon('receipt', 'size-4'),
+            })
+          )
+          : ''}
+      </div>`
     ),
   }),
 });

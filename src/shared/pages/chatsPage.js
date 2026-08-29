@@ -32,7 +32,7 @@ export const chatsThreadPage = ({
   scripts: ['sound.js'],
   body: (
     `<div class='live-body' data-chat-list data-version="${escapeAttribute(version)}">
-      ${(allConvos.length
+      ${allConvos.length
       ? (
         `<div class="flex flex-col gap-2.5 px-5 py-5">${(
           allConvos.map((chat) => (
@@ -72,7 +72,7 @@ export const chatsThreadPage = ({
         emptyIcon: 'message',
         title: 'No chats yet',
         description: 'Conversations with customers appear here.',
-      }))}
+      })}
     </div>`
   ),
   refresh,
