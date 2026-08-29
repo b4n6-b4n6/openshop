@@ -34,6 +34,7 @@ const viewShopPage = ({
     status: indicators(),
     content: (
       `${shopBanner(banner_photo)}
+
       <div class="px-5">
         <div class="relative z-10 -mt-8 mb-3 w-fit">${avatar(profile_photo)}</div>
 
