@@ -6,5 +6,4 @@ dist/
 .bo
 .tor-my-shop
 .tor-proxy
-.ipc
 .jwt
