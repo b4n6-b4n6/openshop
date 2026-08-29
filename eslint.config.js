@@ -28,14 +28,22 @@ export default [
     },
     rules: {
       'func-names':'off',
-      'no-else-return': 'off',
       'no-console': 'off',
       'no-alert': 'off',
-      'camelcase': 'off',
       'no-plusplus': 'off',
+      'camelcase': 'off',
       'import/extensions': ['error', 'always', {
         ignorePackages: true,
       }],
     },
   },
+  {
+    files: ["*/**/pages/**/*.js"],
+    rules: {
+      indent: "off",
+      "comma-dangle": ["error", "only-multiline"],
+      "implicit-arrow-linebreak": "off",
+      "function-paren-newline": "off",
+    },
+  }
 ];

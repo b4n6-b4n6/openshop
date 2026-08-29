@@ -9,7 +9,8 @@ const syncStatusResult = ({ height, percent } = {}) => {
     ? `Wallet block ${height} · ${progress}% synchronized`
     : 'Waiting for wallet sync status';
 
-  return `<!doctype html>
+  return (
+`<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -55,7 +56,8 @@ const syncStatusResult = ({ height, percent } = {}) => {
 <body>
   <span class="pill" title="${title}"><span class="dot"></span>${label}</span>
 </body>
-</html>`;
+</html>`
+  );
 };
 
 export default syncStatusResult;

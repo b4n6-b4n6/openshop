@@ -23,7 +23,8 @@ const selfTestResultPage = ({ result } = {}) => {
 
   const isTransient = result === undefined;
 
-  return `<!doctype html>
+  return (
+`<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -69,7 +70,8 @@ const selfTestResultPage = ({ result } = {}) => {
 <body>
   <span class="pill" title="${title}"><svg class="onion-icon" viewBox="0 0 180 180" width="13" height="13" fill="${color}" aria-hidden="true"><path d="${ONION_GLYPH_PATH}"></path></svg>${label}</span>
 </body>
-</html>`;
+</html>`
+  );
 };
 
 export default selfTestResultPage;

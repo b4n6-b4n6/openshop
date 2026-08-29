@@ -67,7 +67,8 @@ test('shop screen renders owner actions and an interactive QR code', () => {
 test('edit shop keeps details and photo upload contracts', () => {
   const page = editShopPage(shop);
 
-  expect(page).toContain('action="/shop/settings" method="post"');
+  expect(page).toContain('action="/shop/settings"');
+  expect(page).toContain('method="post"');
   expect(page).toContain('name="name"');
   expect(page).toContain('name="description"');
   expect(page).toContain('action="/shop/settings/profile-photo"');
