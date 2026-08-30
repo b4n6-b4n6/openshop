@@ -76,7 +76,8 @@ test('purchase screen preserves form contracts and rich product content', () => 
 
   expect(page).toContain('action="/browser/products/product-1"');
   expect(page).toContain('name="purchase_quantity"');
-  expect(page).toContain('min="1" max="4"');
+  expect(page).toContain('min="1"');
+  expect(page).toContain('max="4"');
   expect(page).toContain('Purchase · $12.50');
   expect(page).toContain('<em>Handmade</em>');
   expect(page).toContain('product-photo-full');

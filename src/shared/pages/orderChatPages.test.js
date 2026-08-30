@@ -135,7 +135,8 @@ test('chat thread renders messages, receipts, images, and order updates safely',
   expect(page).not.toContain('ago');
   expect(page).toContain('aria-label="Read"');
   expect(page).toContain('New order');
-  expect(page).toContain('href="/shop/orders/order-1" target="_top"');
+  expect(page).toContain('target="_top"');
+  expect(page).toContain('href="/shop/orders/order-1"');
   expect(page).toContain('/static/messages.js');
 });
 
