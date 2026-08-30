@@ -1,8 +1,6 @@
-import {
-  photoField,
-  richEditor,
-  selectCurrency,
-} from '../../shared/pages/components.js';
+import photoField from '../../shared/pages/photoField.js';
+import { richEditor } from '../../shared/pages/richComponents.js';
+import selectCurrency from '../../shared/pages/selectCurrency.js';
 import {
   appFrame,
   button,

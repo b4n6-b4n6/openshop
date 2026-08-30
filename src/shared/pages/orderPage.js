@@ -1,9 +1,11 @@
 /* eslint-disable no-constant-binary-expression */
 import {
-  orderStatus,
-  orderStatusBadge,
   thumb,
 } from './components.js';
+import {
+  orderStatus,
+  orderStatusBadge,
+} from './orderComponents.js';
 import {
   qrViewButtonCrossFrame,
   qrViewModalCrossFrame,

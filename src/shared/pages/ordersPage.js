@@ -1,4 +1,5 @@
-import { emptyState, orderCard } from './components.js';
+import { emptyState } from './components.js';
+import { orderCard } from './orderComponents.js';
 import { appFrame, document, icon } from './layout.js';
 
 const ownerScripts = ['sound.js'];

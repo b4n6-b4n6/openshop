@@ -1,13 +1,11 @@
-import {
-  productPhoto,
-  richText,
-} from '../../shared/pages/components.js';
+import { richText } from '../../shared/pages/richComponents.js';
 import {
   appFrame,
   button,
   document,
   icon,
 } from '../../shared/pages/layout.js';
+import productPhoto from '../../shared/pages/productPhoto.js';
 import { escapeAttribute, escapeHtml } from '../../shared/utils/html.js';
 import formatFiat from '../../shared/utils/formatFiat.js';
 

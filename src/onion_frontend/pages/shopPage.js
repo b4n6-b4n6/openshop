@@ -1,8 +1,8 @@
 import {
   avatar,
-  richText,
   shopBanner,
 } from '../../shared/pages/components.js';
+import { richText } from '../../shared/pages/richComponents.js';
 import {
   appFrame,
   button,

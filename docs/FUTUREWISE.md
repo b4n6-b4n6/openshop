@@ -1,6 +1,7 @@
 <code style='color: cyan;'>[Core]</code>
   * run in android / termux - r&d - 👀
   * referral system - r&d - 👀
+  * make all ext messages ephemeral with a 30 day deletion timer
   * add owner-only per-order metadata field that can be modified in owners order page
   * fix order shop details update page discarding name & descrption when changing images
 
@@ -21,4 +22,4 @@
     * regular version
 
 <code style='color: cyan;'>[Refactor]</code>
-  * review whether the inclusion of the frontend .js files can be modernised or modulised?
+  * Improve frontend .js files

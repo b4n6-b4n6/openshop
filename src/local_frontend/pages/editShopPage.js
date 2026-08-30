@@ -1,7 +1,5 @@
-import {
-  photoField,
-  richEditor,
-} from '../../shared/pages/components.js';
+import photoField from '../../shared/pages/photoField.js';
+import { richEditor } from '../../shared/pages/richComponents.js';
 import {
   appFrame,
   button,
