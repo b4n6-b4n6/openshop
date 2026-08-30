@@ -2,6 +2,7 @@
   * run in android / termux - r&d - 👀
   * referral system - r&d - 👀
   * make all ext messages ephemeral with a 30 day deletion timer
+  * add expiration timer to pending order page
   * add owner-only per-order metadata field that can be modified in owners order page
   * fix order shop details update page discarding name & descrption when changing images
 
