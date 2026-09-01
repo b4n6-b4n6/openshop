@@ -14,11 +14,20 @@ npm -g install pm2
 # Confgiure postgresql access
 mkdir -p $PREFIX/var/lib/postgresql
 initdb $PREFIX/var/lib/postgresql
-USER=$(id -un)
-createdb "$USER"
 
 # Clone repo
 git clone https://github.com/b4n6-b4n6/openshop
 cd openshop
 yarn install
 pm2 start ecosystem.config.js
+
+echo Sleeping for 5 seconds
+sleep 5
+
+USER=$(id -un)
+createdb "$USER"
+
+echo Sleeping for 5 seconds
+sleep 5
+
+termux-open-url http://localhost:7001

@@ -25,3 +25,5 @@ git clone https://github.com/b4n6-b4n6/openshop
 cd openshop
 yarn install
 pm2 start ecosystem.config.js
+
+xdg-open http://localhost:7001
