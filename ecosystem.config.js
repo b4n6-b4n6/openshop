@@ -1,13 +1,11 @@
-/* eslint-disable no-mixed-operators */
-
-import os from 'node:os';
+/* eslint-disable import/prefer-default-export */
 import process from 'node:process';
 
 const isAndroid = process.platform === 'android';
-const isLinux = process.platform === 'linux';
+const isLinuxDesktop = ['wayland', 'x11'].includes(process.env.XDG_SESSION_TYPE);
 
 const optionalNodejsServices = [
-  ...(isLinux ? [
+  ...(isLinuxDesktop ? [
     {
       name: 'notifier',
       script: 'yarn notifier',
@@ -24,7 +22,7 @@ const optionalNodejsServices = [
       script: './bin/termux/start-redis.sh',
     },
   ] : []),
-]
+];
 
 export const apps = [
   {

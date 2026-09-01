@@ -12,7 +12,7 @@ const pgEnv = {
   } : {}),
   ...(isLinux ? {
     host: '/var/run/postgresql',
-  } : {})
+  } : {}),
 };
 
 const createPool = () => new Pool({
