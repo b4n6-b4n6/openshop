@@ -12,7 +12,7 @@ Effectively
 Enable battery optimisations [[1](https://github.com/termux/termux-app#f-droid)]  
 > Make sure battery optimizations are disabled for the app, check https://dontkillmyapp.com/ for details on how to do that.  
 
-Don't use Termux from Google Play! [[1](https://github.com/termux/termux-app#google-play-store-experimental-branch)]  
+Do not use Termux from Google Play! [[1](https://github.com/termux/termux-app#google-play-store-experimental-branch)]  
 > There is currently a build of Termux available on **Google Play** ... This is under development and has **missing functionality** and **bugs**  
 
 ## Hardcore anti-sleep
