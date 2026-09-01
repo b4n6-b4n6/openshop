@@ -31,3 +31,5 @@ echo Sleeping for 5 seconds
 sleep 5
 
 termux-open-url http://localhost:7001
+
+pm2 monit

@@ -5,17 +5,15 @@ import isTest from '../utils/isTest.js';
 
 const isAndroid = process.platform === 'android';
 const isLinux = process.platform === 'linux';
-const pgEnv = (
-  false
-  || isAndroid && {
+const pgEnv = {
+  ...(isAndroid ? {
     user: os.userInfo().username,
     host: `${process.env.PREFIX}/tmp`,
-  }
-  || isLinux && {
+  } : {}),
+  ...(isLinux ? {
     host: '/var/run/postgresql',
-  }
-  || (() => { throw new Error('Bad platform'); })()
-);
+  } : {})
+};
 
 const createPool = () => new Pool({
   database: isTest ? 'test' : undefined,
