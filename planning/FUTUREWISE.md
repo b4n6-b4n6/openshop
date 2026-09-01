@@ -1,10 +1,12 @@
 <code style='color: cyan;'>[Core]</code>
-  * run in android / termux - r&d - 👀
-  * referral system - r&d - 👀
   * make all ext messages ephemeral with a 30 day deletion timer
   * add expiration timer to pending order page
-  * add owner-only per-order metadata field that can be modified in owners order page
   * fix order shop details update page discarding name & descrption when changing images
+  * add owner-only per-order metadata field that can be modified in owners order page
+  * add js load based captcha that asks that automatically has the user's browser do js calculations to prove he's a human
+  * 
+  * referral system - r&d
+  * casino/gambling component - r&d
 
 <code style='color: cyan;'>[UI]</code>
   * Improve live chat - r&d
