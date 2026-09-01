@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-binary-expression */
 import {
   thumb,
 } from './components.js';

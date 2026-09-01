@@ -1,5 +1,4 @@
 /* global document, window */
-/* eslint-disable no-constant-binary-expression */
 (() => {
   document.querySelectorAll('[data-qr-view]').forEach((view) => {
     view.querySelector('[data-qr-open-cross-frame]')?.addEventListener('click', () => {

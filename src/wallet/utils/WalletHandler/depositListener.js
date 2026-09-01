@@ -1,5 +1,3 @@
-/* eslint-disable no-mixed-operators */
-/* eslint-disable no-constant-binary-expression */
 import formatPiconero from '../../../utils/formatPiconero.js';
 
 const deriveTxState = ({ isConfirmed, isLocked }) => (

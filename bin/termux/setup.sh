@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# redis + imagemagick + postgresql + nodejs 24 + git + tor
+# Install postgresql + redis + tor + imagemagick + git + nodejs
 pkg install redis
 pkg install imagemagick
 pkg install postgresql
@@ -9,13 +9,13 @@ pkg install tor
 pkg install git
 npm -g install yarn
 
-git clone https://github.com/b4n6-b4n6/openshop
-
-# postgresql configuration
+# Confgiure postgresql access
 mkdir -p $PREFIX/var/lib/postgresql
 initdb $PREFIX/var/lib/postgresql
 createdb "$USER"
 
-# daemons
-./bin/termux/start-postgresql.sh &
-./bin/termux/start-redis.sh &
+# Clone repo
+git clone https://github.com/b4n6-b4n6/openshop
+cd openshop
+yarn install
+pm2 start ecosystem.config.js

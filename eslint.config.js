@@ -27,23 +27,25 @@ export default [
       jest: jestPlugin,
     },
     rules: {
-      'func-names':'off',
+      'func-names': 'off',
       'no-console': 'off',
       'no-alert': 'off',
       'no-plusplus': 'off',
-      'camelcase': 'off',
+      camelcase: 'off',
+      'no-mixed-operators': 'off',
+      'no-constant-binary-expression': 'off',
       'import/extensions': ['error', 'always', {
         ignorePackages: true,
       }],
     },
   },
   {
-    files: ["*/**/pages/**/*.js"],
+    files: ['*/**/pages/**/*.js'],
     rules: {
-      indent: "off",
-      "comma-dangle": ["error", "only-multiline"],
-      "implicit-arrow-linebreak": "off",
-      "function-paren-newline": "off",
+      indent: 'off',
+      'comma-dangle': ['error', 'only-multiline'],
+      'implicit-arrow-linebreak': 'off',
+      'function-paren-newline': 'off',
     },
-  }
+  },
 ];

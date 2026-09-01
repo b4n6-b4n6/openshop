@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-binary-expression */
 import formatDate from '../../utils/formatDate.js';
 import formatFiat from '../utils/formatFiat.js';
 import formatXmr from '../utils/formatXmr.js';

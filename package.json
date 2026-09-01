@@ -30,7 +30,7 @@
     "notifer": "node src/notifier",
     "tor-proxy": "tor -f torrc/proxy",
     "lint": "yarn eslint src",
-    "lint-config": "yarn eslint eslint.config.js",
+    "lint-config": "yarn eslint eslint.config.js ./envs",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js src"
   },
   "devDependencies": {

@@ -4,9 +4,10 @@ Effectively
 
 Install and/or configure ([linux script](../bin/linux/setup.sh))
 - nodejs (24)
+- postgresql
 - redis
+- tor
 - imagemagick
-- postgresql ([configure](CONFIGURE-POSTGRESQL.md))
 
 Run `yarn install`, then open 6 terminal instances, run in each
 - `yarn onion-frontend-dev`
