@@ -26,31 +26,29 @@ const optionalNodejsServices = [
   ] : []),
 ]
 
-export default {
-  apps: [
-    {
-      name: 'my-shop-onion-launcher',
-      script: 'yarn my-shop-onion-launcher',
-    },
-    {
-      name: 'tor-proxy',
-      script: 'yarn tor-proxy',
-    },
-    {
-      name: 'wallet-launcher',
-      script: 'yarn wallet-launcher',
-      log_date_format: 'YYYY-MM-DDTHH:mm:ss',
-    },
-    {
-      name: 'local-frontend',
-      script: 'yarn local-frontend',
-      log_date_format: 'YYYY-MM-DDTHH:mm:ss',
-    },
-    {
-      name: 'onion-frontend',
-      script: 'yarn onion-frontend',
-      log_date_format: 'YYYY-MM-DDTHH:mm:ss',
-    },
-    ...optionalNodejsServices,
-  ],
-};
+export const apps = [
+  {
+    name: 'my-shop-onion-launcher',
+    script: 'yarn my-shop-onion-launcher',
+  },
+  {
+    name: 'tor-proxy',
+    script: 'yarn tor-proxy',
+  },
+  {
+    name: 'wallet-launcher',
+    script: 'yarn wallet-launcher',
+    log_date_format: 'YYYY-MM-DDTHH:mm:ss',
+  },
+  {
+    name: 'local-frontend',
+    script: 'yarn local-frontend',
+    log_date_format: 'YYYY-MM-DDTHH:mm:ss',
+  },
+  {
+    name: 'onion-frontend',
+    script: 'yarn onion-frontend',
+    log_date_format: 'YYYY-MM-DDTHH:mm:ss',
+  },
+  ...optionalNodejsServices,
+];

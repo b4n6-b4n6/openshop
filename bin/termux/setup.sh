@@ -1,17 +1,20 @@
 #!/bin/sh
+pkg update -y
 
 # Install postgresql + redis + tor + imagemagick + git + nodejs
-pkg install redis
-pkg install imagemagick
-pkg install postgresql
-pkg install nodejs-lts
-pkg install tor
-pkg install git
+pkg install -y redis
+pkg install -y imagemagick
+pkg install -y postgresql
+pkg install -y nodejs-lts
+pkg install -y tor
+pkg install -y git
 npm -g install yarn
+npm -g install pm2
 
 # Confgiure postgresql access
 mkdir -p $PREFIX/var/lib/postgresql
 initdb $PREFIX/var/lib/postgresql
+USER=$(id -un)
 createdb "$USER"
 
 # Clone repo

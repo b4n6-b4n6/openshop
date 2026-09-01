@@ -1,5 +1,5 @@
 #!/bin/sh
-sudo apt update
+sudo apt update -y
 sudo apt install -y curl
 
 # Install nodejs (https://nodejs.org/en/download)
@@ -7,6 +7,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash
 \. "$HOME/.nvm/nvm.sh"
 nvm install 24
 npm -g install yarn
+npm -g install pm2
 
 # Install postgresql + redis + tor + imagemagick + git
 sudo apt install -y postgresql
