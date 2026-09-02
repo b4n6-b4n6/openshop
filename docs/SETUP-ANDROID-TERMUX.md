@@ -15,6 +15,6 @@ Enable battery optimisations [[1](https://github.com/termux/termux-app#f-droid)]
 Do not use Termux from Google Play! [[1](https://github.com/termux/termux-app#google-play-store-experimental-branch)]  
 > There is currently a build of Termux available on **Google Play** ... This is under development and has **missing functionality** and **bugs**  
 
-## Hardcore anti-sleep
-Enable `Stay awake` from under `Developer options`
+## Setup demo video
+<video width="540" controls src="https://github.com/b4n6-b4n6/openshop-demo-videos/raw/refs/heads/main/demo-open-new-shop.out.mp4" title="Setup demo video"></video>
 
