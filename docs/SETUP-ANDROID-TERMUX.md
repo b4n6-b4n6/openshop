@@ -16,5 +16,5 @@ Do not use Termux from Google Play! [[1](https://github.com/termux/termux-app#go
 > There is currently a build of Termux available on **Google Play** ... This is under development and has **missing functionality** and **bugs**  
 
 ## Setup demo video
-<video width="540" controls src="https://github.com/b4n6-b4n6/openshop-demo-videos/raw/refs/heads/main/demo-open-new-shop.out.mp4" title="Setup demo video"></video>
+[Telegraph post](https://telegra.ph/OpenShop-Setup-for-Android--Termux-on-video-09-02)
 
