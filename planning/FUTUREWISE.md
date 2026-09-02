@@ -19,7 +19,6 @@
     * Add a script that would transform all HTML elements with title attribute into focusable and tappable tooltips
 
 <code style='color: cyan;'>[Android]</code>
-  * Ask user to disable battery optimisations
   * Release 2 versions
     * tor snowflake auto-configured version
     * regular version
