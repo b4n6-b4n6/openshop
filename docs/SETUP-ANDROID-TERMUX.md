@@ -6,7 +6,7 @@ Effectively
 - Install [Termux](https://f-droid.org/en/packages/com.termux/)
 - Disable battery optimisations for Termux
 - Acquire wake lock for Termux
-- Open Termux and Run `curl -s https://openshop.free/termux.sh | bash`
+- Open Termux and run `curl https://0p3n.cc/termux | bash`
 
 ## Termux notes
 Enable battery optimisations [[1](https://github.com/termux/termux-app#f-droid)]  
