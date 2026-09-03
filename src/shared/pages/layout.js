@@ -1,6 +1,8 @@
 import { ASSET_VERSION } from '../../const.js';
 import { escapeAttribute, escapeHtml } from '../utils/html.js';
 
+const { NO_REFRESH } = process.env;
+
 export const icon = (name, classes = 'size-5') => {
   const paths = {
     arrowLeft: '<path d="m15 18-6-6 6-6"/>',
@@ -40,7 +42,7 @@ export const document = ({
   stylesheets = [],
   refresh,
 }) => {
-  const refreshTag = refresh
+  const refreshTag = refresh && !NO_REFRESH
     ? `<meta http-equiv="refresh" content="${escapeAttribute(refresh)}">`
     : '';
   const scriptTags = scripts.map(

@@ -1,3 +1,4 @@
+import { addMinutes, formatDistanceToNow } from 'date-fns';
 import {
   thumb,
 } from './components.js';
@@ -19,6 +20,8 @@ import { escapeAttribute, escapeHtml } from '../utils/html.js';
 import formatDate from '../../utils/formatDate.js';
 import formatFiat from '../utils/formatFiat.js';
 import formatXmr from '../utils/formatXmr.js';
+import transactionDetails from './transactionDetails.js';
+import { ORDER_EXPIRY_PERIOD } from '../../const.js';
 
 const ownerScripts = ['sound.js'];
 
@@ -28,35 +31,6 @@ const statusMessage = (order) => (
   || (order.deposit_detected_at && 'Incoming transaction detected')
   || (order.expired_at && 'Expired')
   || 'Waiting for incoming transaction'
-);
-
-const transactionDetails = (order) => (
-  order.deposit_txid
-    ? (
-      `<div
-        class="rounded-xl border border-border bg-surface p-3"
-      >
-        <p
-          class="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted"
-        >Deposit txid</p>
-
-        <div class="flex items-start gap-2">
-          <span
-            class="min-w-0 flex-1 break-all font-mono text-[11px] text-text"
-          >${escapeHtml(order.deposit_txid)}</span>
-
-          <button
-            type="button"
-            data-copy="${escapeAttribute(order.deposit_txid)}"
-            aria-label="Copy transaction ID"
-            class="inline-flex size-10 shrink-0 items-center justify-center rounded-xl text-muted hover:bg-surface hover:text-text"
-          >
-            ${icon('copy', 'size-4')}
-          </button>
-        </div>
-      </div>`
-    )
-    : ''
 );
 
 export const orderPage = ({
@@ -140,6 +114,7 @@ export const orderThreadPage = ({
   const currentStatus = orderStatus(order);
   const complete = checkOrderComplete(order);
   const expire = checkOrderExpire(order);
+  const expires_at = addMinutes(order.created_at, ORDER_EXPIRY_PERIOD);
 
   const scripts = [
     owner ? 'owner.js' : 'customer.js',
@@ -238,7 +213,7 @@ export const orderThreadPage = ({
         ? (
           `<p
             class="text-center text-[12px] leading-relaxed text-faint"
-          >Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed.</p>`
+          >Send exactly this amount in Monero. The order updates automatically when the payment is detected and confirmed. The order expires in <span class="font-bold" title="${escapeAttribute(expires_at)}">${escapeHtml(formatDistanceToNow(expires_at))}</span> - please be sure to <span class='font-bold'>pay before</span> this time!</p>`
         )
         : ''}
       </div>`
